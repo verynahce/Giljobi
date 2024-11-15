@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.companys.mapper.CompanyMapper">  
+  
+  <select id="login">
+  	SELECT *
+  	FROM COMPANYS
+  	WHERE COMPANY_ID = #{arg0} AND COMPANY_PW = #{arg1}
+  </select>
+  
+  
+  <insert id="insertCompany">
+		INSERT INTO COMPANYS (
+    COMPANY_IDX,
+    COMPANY_ID,
+    COMPANY_PW,
+    COMPANY_NAME,
+    COMPANY_BRNUM,
+    COMPANY_TEL,
+    COMPANY_AREA,
+    REP_NAME,
+    COMPANY_EMAIL
+) VALUES (
+    (SELECT NVL(MAX(company_idx)+1,0) FROM COMPANYS),
+    #{company_id},
+    #{company_pw},
+    #{company_name},
+    #{company_brnum},
+    #{company_tel},
+    #{company_area},
+    #{rep_name},
+    #{company_email}
+)
+  </insert>
+  
+  
+  <select id="countP">
+ 	SELECT COUNT(*)
+	FROM POST
+	WHERE COMPANY_IDX = #{company_idx}
+  
+  </select>
+  
+  <select id= "countA">
+  	SELECT COUNT(*)
+	FROM APPLICATION
+	WHERE POST_IDX IN (
+	SELECT POST_IDX 
+	FROM POST
+	WHERE COMPANY_IDX = #{company_idx})
+  
+  </select>
+  
+  
+  <select id="countB">
+  	SELECT COUNT(*)
+	FROM COMPANY_BOOKMARK
+	WHERE COMPANY_IDX = #{company_idx}
+  
+  </select>
+  
+  <select id="getPostList">
+  SELECT * FROM POST
+  WHERE COMPANY_IDX = #{company_idx}
+  
+  </select>
+  
+  <select id="getPost">
+  SELECT * FROM POST
+  WHERE POST_IDX = #{post_idx}
+  </select>
+  
+  <select id="getPosts">
+  SELECT 
+    D.DUTY_NAME,
+    C.CITY_NAME,
+    E.EDU_NAME,
+    CA.CAREER_NAME,
+    EM.EMP_NAME
+FROM 
+    POST P
+LEFT JOIN DUTY D ON P.DUTY_ID = D.DUTY_ID
+LEFT JOIN CITY C ON P.CITY_ID = C.CITY_ID
+LEFT JOIN EDU E ON P.EDU_ID = E.EDU_ID
+LEFT JOIN CAREER CA ON P.CAREER_ID = CA.CAREER_ID
+LEFT JOIN EMP EM ON P.EMP_ID = EM.EMP_ID
+WHERE P.POST_IDX = #{post_idx}
+  </select>
+  
+  <select id="getCompany">
+  SELECT * FROM COMPANYS
+  WHERE COMPANY_IDX = #{company_idx}
+  </select>
+  
+   <select id="getCompanys">
+  SELECT * FROM COMPANYS
+  WHERE COMPANY_IDX = #{company_idx}
+  </select>
+  
+  <select id="getSalary">
+  SELECT POST_SALARY FROM POST
+  WHERE POST_IDX = #{post_idx}
+  </select>
+  
+  <select id="getContent">
+  SELECT POST_CONTENT FROM POST
+  WHERE POST_IDX = #{post_idx}
+  </select>
+  
+  <select id="getDutyName">
+    SELECT D.DUTY_NAME
+	FROM DUTY D
+	JOIN POST P ON D.DUTY_ID = P.DUTY_ID
+	WHERE POST_IDX = #{post_idx};
+  </select>
+  
+  
+  <update id="updateCompany">
+  UPDATE COMPANYS
+  SET
+  	COMPANY_NAME = #{company_name},
+  	COMPANY_TEL = #{company_tel},
+  	COMPANY_AREA = #{company_area},
+  	REP_NAME = #{rep_name},
+  	COMPANY_EMAIL = #{company_email},
+  	COMPANY_BRNUM = #{company_brnum}
+  WHERE COMPANY_IDX = #{company_idx}
+  
+  </update>
+  
+  <select id="getDuty">
+  SELECT * FROM DUTY
+  </select>
+  
+  <select id="getEmp">
+  SELECT * FROM EMP
+  </select>
+ 
+  <select id="getCareer">
+  SELECT * FROM CAREER
+  </select>
+  
+  <select id="getEdu">
+  SELECT * FROM EDU
+  </select>
+  
+  <select id="getCity">
+  SELECT * FROM CITY
+  </select>
+  
+  <select id="getSkill">
+  SELECT * FROM SKILL 
+  </select>
+  
+  <insert id="insertPost">
+  INSERT INTO POST (
+    POST_IDX,
+    COMPANY_IDX,
+    DUTY_ID,
+    CAREER_ID,
+    EMP_ID,
+    CITY_ID,
+    EDU_ID,
+    POST_TITLE,
+    POST_CONTENT,
+    POST_SALARY,
+    POST_DDATE
+) VALUES (
+    (SELECT NVL(MAX(post_idx)+1,0) FROM POST),
+    #{company_idx},
+    #{duty_id},
+    #{career_id},
+    #{emp_id},
+    #{city_id},
+    #{edu_id},
+    #{post_title},
+    #{post_content},
+    #{post_salary},
+    #{post_ddate}    
+)
+</insert>
+
+<insert id="insertPostSkill">
+	INSERT INTO POST_SKILL VALUES (
+	(SELECT NVL(MAX(post_skill_idx)+ 1 , 0) FROM POST_SKILL),
+	(SELECT MAX(POST_IDX) FROM POST),
+    (SELECT SKILL_ID FROM SKILL WHERE SKILL_NAME = #{skill_name})	
+)
+	
+  </insert>
+  
+  
+  <update id="updatePost">
+  UPDATE POST
+  SET DUTY_ID = #{duty_id},
+      CAREER_ID = #{career_id},
+      EMP_ID = #{emp_id},
+      CITY_ID = #{city_id},
+      EDU_ID = #{edu_id},
+      POST_TITLE = #{post_title},
+      POST_CONTENT = #{post_content},
+      POST_SALARY = #{post_salary},
+      POST_DDATE = #{post_ddate}
+  WHERE POST_IDX = #{post_idx}
+  </update>
+  
+  <update id="updatePostSkill">
+  UPDATE POST_SKILL
+  SET SKILL_ID = (SELECT SKILL_ID FROM SKILL WHERE SKILL_NAME = #{skill_name} ) 
+  WHERE POST_IDX = #{post_idx}
+  </update>
+  
+  <select id="getSkillIDX">
+  SELECT POST_SKILL_IDX
+  FROM POST_SKILL
+  WHERE POST_IDX = #{post_idx}
+  
+  </select>
+  
+  <insert id="insertSkill">
+  INSERT INTO POST_SKILL (POST_SKILL_IDX, POST_IDX, SKILL_ID)
+  VALUES ((SELECT NVL(MAX(POST_SKILL_IDX),0)+1 FROM POST_SKILL),#{post_idx}, 
+  (SELECT SKILL_ID FROM SKILL WHERE SKILL_NAME = #{skill_name})
+  )
+  </insert>
+  
+  <delete id="deleteSkill">
+  DELETE FROM POST_SKILL
+  WHERE POST_IDX = #{post_idx}
+  </delete>
+  
+  
+  <delete id="deletePost">
+  DELETE FROM POST
+  WHERE POST_IDX = #{post_idx}
+  </delete>
+  
+  <delete id="deletePostSkill">
+  DELETE FROM POST_SKILL
+  WHERE POST_IDX = #{post_idx}
+  </delete>
+ 
+  <select id="getSkills">
+SELECT S.SKILL_NAME
+FROM SKILL S
+LEFT JOIN POST_SKILL PS ON S.SKILL_ID = PS.SKILL_ID
+WHERE PS.POST_IDX = #{post_idx}
+  </select> 
+
+<!-- 여기서부터 book mark -->
+  <select id="getBookList">
+  SELECT CB.CB_IDX,
+       CB.RESUME_IDX,
+       CB.COMPANY_IDX,
+       RE.RESUME_TITLE,
+       SK.SKILL_NAME,
+       U.USER_NAME,
+       U.USER_GENDER,
+       FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(U.USER_BIRTHDATE, 'YYYYMMDD')) / 12) AS AGE,
+       FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, CAREER_SDATE) / 12) AS CYEARS,
+        MOD(FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, CAREER_SDATE)), 12) AS CMONTHS     
+  FROM RESUME RE LEFT JOIN USERS U ON RE.USER_IDX = U.USER_IDX 
+               LEFT JOIN RESUME_SKILL RS ON RE.RESUME_IDX = RS.RESUME_IDX
+               LEFT JOIN RESUME_CAREER RC ON RE.RESUME_IDX = RC.RESUME_IDX
+               LEFT JOIN COMPANY_BOOKMARK CB ON RE.RESUME_IDX = CB.RESUME_IDX
+               LEFT JOIN SKILL SK ON RS.SKILL_ID = SK.SKILL_ID
+  WHERE CB.COMPANY_IDX = #{company_idx}
+  
+  </select>
+
+  <insert id="insertBook">
+	INSERT INTO SCOUT (SCOUT_IDX,USER_IDX,POST_IDX) 
+	VALUES ((SELECT NVL(MAX(SCOUT_IDX),0)+1 FROM SCOUT),#{arg0},#{arg1})  
+  </insert>
+
+	<delete id="deleteBook">
+	 DELETE FROM COMPANY_BOOKMARK 
+	 WHERE CB_IDX =#{cb_idx}
+	</delete>
+	
+	<select id="getRCount">
+	 SELECT P.POST_IDX,
+	        P.COMPANY_IDX,
+	        P.POST_TITLE,
+	        TO_CHAR(P.POST_DDATE, 'YYYY-MM-DD') AS POST_DDATE,
+	        TO_CHAR(P.POST_DDATE, 'DY') AS POST_DDAY,
+      COUNT(AP.APPLI_IDX) AS COUNT
+	  FROM POST P LEFT JOIN APPLICATION AP ON P.POST_IDX = AP.POST_IDX
+	  WHERE COMPANY_IDX = #{company_idx}
+	  GROUP BY  P.POST_IDX,
+		      P.COMPANY_IDX,
+		      P.POST_TITLE,
+		      P.POST_DDATE	
+	</select>
+
+
+  <select id="getapplyList">
+    SELECT AP.APPLI_IDX,
+         AP.RESUME_IDX,
+         AP.POST_IDX,
+         AP.APPLI_DATE,
+         AP.APPLI_STATUS,
+         RE.RESUME_TITLE,
+         SK.SKILL_NAME,
+         U.USER_NAME,
+         U.USER_GENDER,
+         FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(U.USER_BIRTHDATE, 'YYYYMMDD')) / 12) AS AGE,
+         FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, CAREER_SDATE) / 12) AS CYEARS,         
+         MOD(FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, CAREER_SDATE)), 12) AS CMONTHS  
+    FROM APPLICATION AP LEFT JOIN RESUME RE ON AP.RESUME_IDX = RE.RESUME_IDX
+                        LEFT JOIN RESUME_SKILL RS ON RE.RESUME_IDX = RS.RESUME_IDX
+                        LEFT JOIN SKILL SK ON RS.SKILL_ID = SK.SKILL_ID
+                        LEFT JOIN USERS U ON RE.USER_IDX = U.USER_IDX 
+                        LEFT JOIN RESUME_CAREER RC ON RE.RESUME_IDX = RC.RESUME_IDX
+  WHERE POST_IDX =#{post_idx}
+  </select>
+
+	 <update id="updateApply">
+	 UPDATE APPLICATION
+	 SET APPLI_STATUS =#{arg1}
+	 WHERE APPLI_IDX = #{arg0}
+	 </update>
+
+
+        <select id="getReviewScore">
+      SELECT 
+        ROUND((AVG(WC_POINT) + AVG(WLB_POINT) + AVG(CC_POINT) + AVG(PO_POINT) + AVG(EM_POINT)) / 5, 1)
+          AS SCORE
+        FROM REVIEW
+        WHERE  COMPANY_IDX = #{company_idx}
+        GROUP BY COMPANY_IDX
+
+		UNION ALL
+		
+		SELECT 0 AS SCORE
+		FROM DUAL
+		WHERE NOT EXISTS (
+		    SELECT REVIEW_IDX
+		    FROM REVIEW 
+		    WHERE COMPANY_IDX = #{company_idx})
+		                       		                   		                   
+     </select>
+
+
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
