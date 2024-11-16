@@ -453,7 +453,21 @@ public class MyPageController {
 		
 	}
 	
-	
+
+	/* 개인회원탈퇴 */
+	@RequestMapping("/Home/Delete")
+	public ModelAndView Delete(HttpSession session,UserVo uservo) {
+		
+		userMapper.deleteUser(uservo);
+
+		ModelAndView mv = new ModelAndView();
+		
+		session.invalidate();
+		mv.setViewName("redirect:/");
+		return mv;
+		
+	}
+
 	
 	
 	

@@ -60,13 +60,26 @@
   </select>
   
   <select id="getPostList">
-  SELECT * FROM POST
+  SELECT 
+    POST_IDX,
+    COMPANY_IDX,
+    DUTY_ID,
+    CAREER_ID,
+    EMP_ID,
+    CITY_ID,
+    EDU_ID,
+    POST_TITLE,
+    POST_CONTENT,
+    POST_SALARY,
+    TO_CHAR(POST_DDATE, 'YYYY-MM-DD') AS POST_DDATE
+  FROM POST
   WHERE COMPANY_IDX = #{company_idx}
   
   </select>
   
   <select id="getPost">
-  SELECT * FROM POST
+  SELECT *
+  FROM POST
   WHERE POST_IDX = #{post_idx}
   </select>
   
@@ -176,7 +189,8 @@ WHERE P.POST_IDX = #{post_idx}
     #{post_title},
     #{post_content},
     #{post_salary},
-    #{post_ddate}    
+    #{post_ddate}
+
 )
 </insert>
 
@@ -302,6 +316,7 @@ WHERE PS.POST_IDX = #{post_idx}
          AP.APPLI_STATUS,
          RE.RESUME_TITLE,
          SK.SKILL_NAME,
+         U.USER_IDX,
          U.USER_NAME,
          U.USER_GENDER,
          FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(U.USER_BIRTHDATE, 'YYYYMMDD')) / 12) AS AGE,
@@ -320,6 +335,11 @@ WHERE PS.POST_IDX = #{post_idx}
 	 SET APPLI_STATUS =#{arg1}
 	 WHERE APPLI_IDX = #{arg0}
 	 </update>
+	 
+	<delete id="deleteApply">   
+	DELETE FROM APPLICATION
+	WHERE APPLI_IDX = #{appli_idx}
+    </delete> 
 
 
         <select id="getReviewScore">
@@ -341,6 +361,11 @@ WHERE PS.POST_IDX = #{post_idx}
 		                       		                   		                   
      </select>
 
+
+<delete id="deleteCompany">
+DELETE FROM COMPANYS
+WHERE COMPANY_IDX=#{company_idx}
+</delete>
 
 
 </mapper>

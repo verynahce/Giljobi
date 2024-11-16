@@ -136,6 +136,8 @@
                      POST_DDATE,
                      POST_CDATE,
                      POST_FDATE
+                     ORDER BY POST_HIT DESC
+
   	</select>
  
  	<select id="getCompanyPost">
@@ -268,6 +270,7 @@
   <select id="getResume">
 	 SELECT
 	    R.RESUME_IDX,
+	    U.USER_IDX,
 	    U.USER_NAME,
 	    TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), TO_DATE(U.USER_BIRTHDATE,'YYYYMMDD')) / 12) USER_AGE,
 	    U.USER_GENDER,
@@ -306,6 +309,7 @@
  	<select id="getResumeList">
   SELECT
 	    R.RESUME_IDX,
+	    U.USER_IDX,
 	    U.USER_NAME,
 	    TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), TO_DATE(U.USER_BIRTHDATE,'YYYYMMDD')) / 12) USER_AGE,
 	    U.USER_GENDER,

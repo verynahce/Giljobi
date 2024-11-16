@@ -197,8 +197,11 @@
         </c:forEach>
         
         <div class="space"> </div>
+<<<<<<< HEAD
+=======
         <div><a id="restT" href="/api/article">restapi 테스트</a> </div>
         <div class="output"></div>
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
         </div>
        </div>
        </div>
@@ -211,6 +214,8 @@
 <script>
 
 $(function() {
+<<<<<<< HEAD
+=======
     
 	const  restT  =  document.querySelector('#restT') 
       // 모든 a tag
@@ -230,6 +235,7 @@ $(function() {
 	
     }
 	
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
 	//사이드바 
     const links = document.querySelectorAll(".link");
 

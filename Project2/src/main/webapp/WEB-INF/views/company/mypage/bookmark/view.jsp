@@ -10,7 +10,11 @@
 <script src="https://cdn.jsdelivr.net/npm/browser-scss@1.0.3/dist/browser-scss.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer></script>
+<<<<<<< HEAD
+<script src="/js/header.js" defer ></script>
+=======
 
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
 <style>
 /*오버레이*/
 .overlay {

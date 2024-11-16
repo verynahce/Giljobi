@@ -29,8 +29,13 @@
    margin:0;
    
     position: sticky; 
+<<<<<<< HEAD
+    top: 124px; 
+
+=======
     top: 20px; 
     z-index: 1000;
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
   
  }
  

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ResumeListVo {
 	private int  	resume_idx;
+	private int  	user_idx;
 	private String 	user_name;
 	private String 	user_age;
 	private String 	user_gender;

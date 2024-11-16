@@ -67,6 +67,7 @@ public class HrsController {
 	        @RequestParam(required = false, value="skill_id") 	String skill_id) {
 		
 	    List<ResumeListVo> hrsFilter = mainMapper.getFilteredResumes(city_id, duty_id, career_id, emp_id, skill_id);
+	    System.out.println(hrsFilter);
 	    
 	    Map<String, Object> response = new HashMap<>();
 	    response.put("resumeList", hrsFilter);
@@ -77,6 +78,7 @@ public class HrsController {
 	
 	
 	
+
 	//-- hrs bookmark
 	
 	@RequestMapping("/Hrs/View")
@@ -95,19 +97,16 @@ public class HrsController {
 			CompanyVo userVo = (CompanyVo) session.getAttribute("login");
 			if(userVo != null ) {			
 				List<PostListVo> postVo = mainMapper.getCompanyPost(userVo.getCompany_idx());
+				String cb_idx = mainMapper.getBookC(userVo.getCompany_idx(),resume_idx);
+				mv.addObject("cb_idx",cb_idx);
 				mv.addObject("postVo",postVo);
 				System.out.println(postVo);
 			}	
 		}
-		
-		//북마크 확인 
-		CompanyVo configVo = (CompanyVo) session.getAttribute("login");
-		String cb_idx = mainMapper.getBookC(configVo.getCompany_idx(),resume_idx);
-		
+
 		
 		mv.addObject("vo",vo);
 		mv.addObject("userObject",userObject);
-		mv.addObject("cb_idx",cb_idx);
 		mv.setViewName("main/hrs/view");
 		return mv;
 	}
@@ -124,7 +123,6 @@ public class HrsController {
 	}
 	
 
-	
 	@RequestMapping(value="Hrs/BookMark/On")
 	@ResponseBody
 	public String bookmarkon(@RequestParam("company_idx") int company_idx,@RequestParam("resume_idx") int resume_idx) {

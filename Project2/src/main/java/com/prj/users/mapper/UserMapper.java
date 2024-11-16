@@ -122,6 +122,8 @@ public interface UserMapper {
 
 	void deleteBookmarkR(int resume_idx);
 
+	void deleteUser(UserVo vo);
+
 
 
 

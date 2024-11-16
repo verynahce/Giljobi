@@ -462,10 +462,23 @@ height: 28px;
       <div id="info">
         <img src="/images/icon/user-profile.png" alt="유저 이미지"/>
         <div id="info-content">
+<<<<<<< HEAD
+        <c:choose>
+        <c:when test="${vo.user_idx == 0}">
+            <h3 id="info-title">탈퇴회원</h3>
+            </c:when>
+            <c:otherwise>
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
            <h3 id="info-title">${vo.user_name}</h3>
            <p>${vo.user_gender},${vo.user_age}세 (${vo.user_year}년생)</p>
            <p>${vo.user_email}</p>
            <p>${vo.user_tel}<p/>
+<<<<<<< HEAD
+           </c:otherwise>
+        </c:choose>
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
         </div>
       </div>
 
@@ -571,6 +584,11 @@ height: 28px;
            <div id="btn-scrape" >
            
            <c:choose>
+<<<<<<< HEAD
+           <c:when test="${vo.user_idx == 0}">
+           </c:when>
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
            <c:when test="${empty cb_idx}">
             <input type="image" class="star"src="/images/bookmark/staroff.png" alt="Star Image"class="image" data-com="${login.company_idx}" data-re="${vo.resume_idx}">
            </c:when>
