@@ -197,6 +197,11 @@
         </c:forEach>
         
         <div class="space"> </div>
+<<<<<<< HEAD
+=======
+        <div><a id="restT" href="/api/article">restapi 테스트</a> </div>
+        <div class="output"></div>
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
         </div>
        </div>
        </div>
@@ -209,6 +214,28 @@
 <script>
 
 $(function() {
+<<<<<<< HEAD
+=======
+    
+	const  restT  =  document.querySelector('#restT') 
+      // 모든 a tag
+   
+       restT.onclick  =  function( e ) {
+           e.preventDefault();  // 기본이벤트를 취소: a tag 를 누르면 href로 이동한다
+           e.stopPropagation();
+          
+          
+           	fetch( restT.href  )
+           	  .then((response) => response.json())
+           	  .then( result => {
+                     console.log(result)
+
+           	  })  
+           	 
+	
+    }
+	
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
 	//사이드바 
     const links = document.querySelectorAll(".link");
 

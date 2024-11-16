@@ -1,6 +1,6 @@
 package com.prj.companys.controller;
 
-import java.util.List;
+import java.util.List;	
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,6 +92,7 @@ public class MypageController {
 	}
 	
 	@RequestMapping("/Post/List")
+
 	public ModelAndView postList(PostVo postVo, ComApplyVo comApplyVo) {
 	
 	List <PostVo> postList = companyMapper.getPostList(postVo);
@@ -146,11 +147,13 @@ public class MypageController {
 	postWriteVo.getCompany_idx();
 	
 	companyMapper.insertPost(postWriteVo);
+
 	if (postWriteVo.getSkill_name() != null) {
         companyMapper.insertPostSkill(postWriteVo);
     }
 	
 	/*companyMapper.insertPostSkill(postWriteVo);*/
+
 	
 	ModelAndView mv = new ModelAndView();
 	mv.setViewName("redirect:/Company/Mypage/Post/List?company_idx=" + postWriteVo.getCompany_idx());
@@ -248,6 +251,7 @@ public class MypageController {
 		
 	}
 	
+
 	@RequestMapping("/Home/Delete")
 	public ModelAndView delete(CompanyVo companyvo, HttpSession session) {
 		companyMapper.deleteCompany(companyvo);
@@ -257,5 +261,5 @@ public class MypageController {
 		return mv;
 		
 	}
-	
+
 }

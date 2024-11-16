@@ -137,6 +137,7 @@
                      POST_CDATE,
                      POST_FDATE
                      ORDER BY POST_HIT DESC
+
   	</select>
  
  	<select id="getCompanyPost">
@@ -634,14 +635,27 @@
     WHERE USER_IDX = #{arg0} AND POST_IDX = #{arg1}
    </delete>
 
-	<!--  HRS북마크  -->
-<insert id="insertBookC"> INSERT INTO COMPANY_BOOKMARK (CB_IDX ,RESUME_IDX, COMPANY_IDX) VALUES (NVL((SELECT MAX(CB_IDX) FROM COMPANY_BOOKMARK), 0) + 1,#{arg1},#{arg0}) </insert>
-<delete id="deleteBookC"> DELETE FROM COMPANY_BOOKMARK WHERE COMPANY_IDX =#{arg0} AND RESUME_IDX=#{arg1} </delete>
-<select id="getBookC"> SELECT CB_IDX FROM COMPANY_BOOKMARK WHERE COMPANY_IDX =#{arg0} AND RESUME_IDX=#{arg1} </select>
 
 
+   <!-- HRS북마크 -->
 
+   <insert id="insertBookC">
+   INSERT INTO COMPANY_BOOKMARK (CB_IDX ,RESUME_IDX, COMPANY_IDX)
+   VALUES (NVL((SELECT MAX(CB_IDX) FROM COMPANY_BOOKMARK), 0) + 1,#{arg1},#{arg0})    
+   </insert>
 
+   <delete id="deleteBookC">
+   DELETE FROM COMPANY_BOOKMARK
+   WHERE COMPANY_IDX =#{arg0} AND RESUME_IDX=#{arg1}   
+   </delete>
+   
+   <select id="getBookC">
+   SELECT CB_IDX
+   FROM COMPANY_BOOKMARK
+   WHERE COMPANY_IDX =#{arg0} AND RESUME_IDX=#{arg1}  
+   </select>
+   
+   
 </mapper>
 
 

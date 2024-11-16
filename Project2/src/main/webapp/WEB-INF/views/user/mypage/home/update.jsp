@@ -168,8 +168,11 @@
  
  .btn-layout {
    margin: 100px 180px;
+<<<<<<< HEAD
    display: flex; 
    justify-content: space-between;
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
 }
 
  .btn {
@@ -185,12 +188,18 @@
   background-color:#666577;
   color: white;
    } 
+<<<<<<< HEAD
  .btn-back, .btn-delete {
    background: #585766; 
    color: white;
    padding: 20px;
    margin : 10px;
 
+=======
+ .btn-back {
+   background: #585766; 
+   color: white;
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
  }
  
  
@@ -226,7 +235,10 @@
       	  </div>      	 
       	 </div>
        <form action="/User/MyPage/Home/update" method="POST">
+<<<<<<< HEAD
        <input type="hidden" name="user_idx" value="${userVo.user_idx}"/>
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
       	 <div class="info-sub">
       	  <table class="updatetitles">
       	  	<tr>
@@ -284,8 +296,12 @@
       	   
       	   <div class="btn-layout">
       	      <input  type="hidden"  name="user_idx"value="${userVo.user_idx}"/>
+<<<<<<< HEAD
               <input class="btn btn-back" type="submit" value="회원정보 수정"/>             
               <input class="btn btn-delete" type="button" value="회원 탈퇴"/>             
+=======
+              <input class="btn btn-back" type="submit" value="이력서저장"/>             
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
          </div>
           </form>
       	</div>
@@ -352,11 +368,14 @@ $(function() {
          
     	
     })
+<<<<<<< HEAD
     $('.btn-delete').on('click', function() {
         if (confirm("정말 탈퇴하시겠습니까?")) {
             location.href = "/User/MyPage/Home/Delete?user_idx="+${userVo.user_idx};
         }
     });
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
     
 })
  

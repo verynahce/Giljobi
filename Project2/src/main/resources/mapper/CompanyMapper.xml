@@ -190,6 +190,7 @@ WHERE P.POST_IDX = #{post_idx}
     #{post_content},
     #{post_salary},
     #{post_ddate}
+
 )
 </insert>
 
@@ -359,6 +360,7 @@ WHERE PS.POST_IDX = #{post_idx}
 		    WHERE COMPANY_IDX = #{company_idx})
 		                       		                   		                   
      </select>
+
 
 <delete id="deleteCompany">
 DELETE FROM COMPANYS

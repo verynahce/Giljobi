@@ -78,6 +78,8 @@ public class HrsController {
 	
 	
 	
+
+	//-- hrs bookmark
 	
 	@RequestMapping("/Hrs/View")
 	public ModelAndView view(HttpServletRequest request
@@ -105,7 +107,6 @@ public class HrsController {
 		
 		mv.addObject("vo",vo);
 		mv.addObject("userObject",userObject);
-		
 		mv.setViewName("main/hrs/view");
 		return mv;
 	}
@@ -121,6 +122,7 @@ public class HrsController {
 		
 	}
 	
+
 	@RequestMapping(value="Hrs/BookMark/On")
 	@ResponseBody
 	public String bookmarkon(@RequestParam("company_idx") int company_idx,@RequestParam("resume_idx") int resume_idx) {
@@ -138,8 +140,6 @@ public class HrsController {
 		
 		return "";	
 	}
-	
-	
 	
 	
 }

@@ -223,6 +223,7 @@
        	  <c:forEach var="a" items="${applyList}">
        	  
        	  <tr class="Dcontent"  data-idx="${a.appli_idx}">
+<<<<<<< HEAD
        	   <c:choose>
 	        <c:when test="${a.user_idx == 0}">
 	           <td>탈퇴회원</td>
@@ -231,6 +232,9 @@
 	       	   <td>${a.user_name}<br><span class="namebot">(${a.user_gender},${a.age}세)</span></td>
        	    </c:otherwise>
        	   </c:choose>
+=======
+       	   <td>${a.user_name}<br><span class="namebot">(${a.user_gender},${a.age}세)</span></td>
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
        	   <td><a href="/Company/Mypage/ApplyList/View?resume_idx=${a.resume_idx}&company_idx=${company_idx}&post_idx=${post_idx}">${a.resume_title}</a>
        	   <br>
        	   <c:choose>      	    

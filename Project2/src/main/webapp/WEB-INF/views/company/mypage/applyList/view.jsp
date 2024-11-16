@@ -290,6 +290,7 @@ p {
       <h2 class="main-title">${resumeVo.resume_title}</h2>
       <hr>
       <div id="info">
+<<<<<<< HEAD
        <c:choose>
         <c:when test="${resumeVo.user_idx == 0}">
         <img src="/images/icon/user-profile.png" alt="이미지"/>
@@ -298,6 +299,8 @@ p {
            </div>
         </c:when>
         <c:otherwise>
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
         <img src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지"/>
         <div id="info-content">
            <h3 id="info-title">${resumeVo.user_name}</h3>
@@ -305,8 +308,11 @@ p {
            <p>${resumeVo.user_email}</p>
            <p>${resumeVo.user_tel}</p>
         </div>
+<<<<<<< HEAD
         </c:otherwise>
         </c:choose>
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
       </div>
 
       <div class="sub-filed">
