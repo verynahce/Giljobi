@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.users.mapper.UserMapper">  
+ 	<select id="login">
+ 		SELECT *
+ 		FROM USERS
+ 		WHERE USER_ID = #{arg0} AND USER_PW =#{arg1}
+ 	</select>
+ 	
+ 	<insert id="insertUser">
+ 		INSERT INTO USERS
+ 		VALUES(
+ 			    (SELECT NVL(MAX(USER_IDX)+1,0) FROM USERS),
+			    #{user_id},
+			    #{user_pw},
+			    #{user_name},
+			    #{user_birthdate},
+			    #{user_gender},
+			    #{user_tel},
+			    #{user_email}
+ 		)
+ 	</insert>
+ 	
+ 	<select id="countR" >
+ 	 SELECT COUNT(*)
+     FROM RESUME
+     WHERE USER_IDX=#{user_idx}	
+ 	</select>
+ 	
+ 	 <select id="countB" >
+ 	SELECT COUNT(*)
+    FROM USER_BOOKMARK
+    WHERE USER_IDX=#{user_idx}	
+ 	</select>
+ 	
+ 	<select id="countA" >
+	SELECT COUNT(*)
+	FROM APPLICATION
+	WHERE RESUME_IDX IN(
+    SELECT RESUME_IDX
+    FROM RESUME
+    WHERE USER_IDX= #{user_idx}	)
+ 	</select>
+ 	
+  	<select id="countS" >
+ 	 SELECT COUNT(*)
+     FROM SCOUT
+     WHERE USER_IDX=#{user_idx}	
+ 	</select>	
+ 	
+ 	<select id="getUser">
+ 	 SELECT *
+     FROM USERS
+     WHERE USER_IDX=#{user_idx}	
+ 	
+ 	</select>
+ 	
+ 	<update id="updateUser">
+    UPDATE USERS
+    SET 
+        USER_NAME = #{user_name},
+        USER_BIRTHDATE = #{user_birthdate},
+        USER_TEL = #{user_tel},
+        USER_EMAIL = #{user_email} 
+    WHERE USER_IDX = #{user_idx}
+    </update>
+    
+    <select id="getApplycation">
+    SELECT     
+          AP.APPLI_IDX,
+          AP.RESUME_IDX,
+          AP.POST_IDX,
+          TO_CHAR(AP.APPLI_DATE, 'YYYY-MM-DD') AS APPLI_DATE,
+          AP.APPLI_STATUS,
+          PO.POST_TITLE,
+          TO_CHAR(PO.POST_DDATE, 'YYYY-MM-DD') AS POST_DDATE,
+          CO.COMPANY_NAME
+          FROM APPLICATION AP LEFT JOIN POST PO ON AP.POST_IDX = PO.POST_IDX         
+                    LEFT JOIN COMPANYS CO ON CO.COMPANY_IDX = PO.COMPANY_IDX
+          WHERE RESUME_IDX IN (
+                    SELECT RESUME_IDX
+                    FROM  RESUME 
+                    WHERE USER_IDX = #{user_idx})
+            
+    
+    </select>
+    
+    <select id="getApply">
+    SELECT * FROM APPLICATION
+    WHERE APPLI_IDX= #{appli_idx}    
+    </select>
+    
+   <delete id="deleteApply">   
+	DELETE FROM APPLICATION
+	WHERE APPLI_IDX = #{appli_idx}
+   </delete> 
+    
+	<select id="getResume">
+    SELECT * FROM RESUME
+    WHERE RESUME_IDX= #{resume_idx} 
+	
+	</select>
+
+	<select id="getBookList">
+	SELECT  UB.UB_IDX,
+		    UB.USER_IDX,
+		    UB.COMPANY_IDX,
+		    CO.COMPANY_AREA,
+		    CO.COMPANY_NAME
+	FROM USER_BOOKMARK UB LEFT JOIN COMPANYS CO ON UB.COMPANY_IDX = CO.COMPANY_IDX
+	WHERE USER_IDX = #{user_idx}
+	
+	</select>
+
+     <select id="getPost">
+     SELECT
+	    P.POST_IDX,
+	    CO.COMPANY_NAME,
+	    D.DUTY_NAME,
+	    CR.CAREER_NAME,
+	    E.EMP_NAME,
+	    C.CITY_NAME,
+	    ED.EDU_NAME,
+	    S.SKILL_NAME,
+	    POST_TITLE,
+	    POST_CONTENT,
+	    POST_SALARY,
+	    POST_HIT,
+	    TO_CHAR(POST_DDATE, 'YYYY-MM-DD') AS POST_DDATE,
+	    POST_CDATE,
+	    POST_FDATE
+	FROM
+	    POST P LEFT JOIN DUTY D ON P.DUTY_ID = D.DUTY_ID
+	           LEFT JOIN CITY C ON P.CITY_ID = C.CITY_ID
+	           LEFT JOIN CAREER CR ON P.CAREER_ID = CR.CAREER_ID
+	           LEFT JOIN EMP E ON P.EMP_ID = E.EMP_ID
+	           LEFT JOIN EDU ED ON P.EDU_ID = ED.EDU_ID 
+	           LEFT JOIN COMPANYS CO ON P.COMPANY_IDX = CO.COMPANY_IDX
+	           LEFT JOIN POST_SKILL PS ON P.POST_IDX = PS.POST_IDX
+             LEFT JOIN SKILL S ON PS.SKILL_ID = S.SKILL_ID  
+    WHERE P.POST_IDX = #{post_idx}                
+     </select>
+     
+     <select id="getCompany">
+	SELECT  
+	CO.COMPANY_IDX,
+	CO.COMPANY_NAME,
+	CO.COMPANY_TEL,
+	CO.COMPANY_EMAIL
+	FROM COMPANYS CO LEFT JOIN POST PO ON CO.COMPANY_IDX = PO.COMPANY_IDX
+	WHERE PO.POST_IDX = #{post_idx}
+     </select>
+     
+     <select id="getSRList">
+	  SELECT 
+	        RESUME_IDX,
+			USER_IDX,
+			DUTY_ID,
+			CITY_ID,
+			EMP_ID,
+			EDU_ID,
+			RESUME_TITLE,
+			EB_NAME,
+			COVER_LETTER,
+			RESUME_HIT,
+			RESUME_CDATE,
+			TO_CHAR(RESUME_FDATE,'YYYY-MM-DD') AS RESUME_FDATE
+	  FROM RESUME
+	  WHERE USER_IDX= #{user_idx}      
+     
+     </select>
+     
+     <update id="insertApply">
+     INSERT INTO APPLICATION (APPLI_IDX,RESUME_IDX,POST_IDX) 
+     VALUES ( NVL((SELECT MAX(APPLI_IDX) FROM APPLICATION), 0) + 1, 
+     #{resume_idx},#{post_idx} )  
+     </update>
+     
+     <insert id="insertBookmark">
+     INSERT INTO USER_BOOKMARK (UB_IDX,USER_IDX,COMPANY_IDX)
+     VALUES (NVL((SELECT MAX(ub_idx) FROM USER_BOOKMARK), 0) + 1,#{arg0},#{arg1})
+     </insert>
+     
+     <delete id="deleteBookmark">
+      DELETE FROM USER_BOOKMARK
+      WHERE UB_IDX=#{ub_idx}
+     </delete>
+     
+     <select id="getScoutList">
+        SELECT 
+		CO.COMPANY_NAME,
+		PO.POST_TITLE,
+		TO_CHAR(PO.POST_DDATE,'YYYY-MM-DD') AS POST_DDATE,
+		SC.SCOUT_IDX,
+		SC.USER_IDX,
+		SC.POST_IDX,
+		TO_CHAR(SC.SCOUT_DATE, 'YYYY-MM-DD') AS SCOUT_DATE
+		FROM SCOUT SC LEFT JOIN POST PO ON SC.POST_IDX = PO.POST_IDX
+		              LEFT JOIN COMPANYS CO ON CO.COMPANY_IDX = PO.COMPANY_IDX
+		WHERE SC.USER_IDX=#{user_idx}
+     </select>
+     
+     <select id="getResumeList">
+     SELECT RESUME_IDX,
+			USER_IDX,
+			DUTY_ID,
+			CITY_ID,
+			EMP_ID,
+			EDU_ID,
+			RESUME_TITLE,
+			EB_NAME,
+			COVER_LETTER,
+			RESUME_HIT,
+			TO_CHAR(RESUME_CDATE,'YYYY-MM-DD') AS RESUME_CDATE ,
+ 			TO_CHAR(RESUME_FDATE,'YYYY-MM-DD') AS RESUME_FDATE
+      FROM RESUME
+      WHERE USER_IDX=#{user_idx}    
+     </select>
+     
+     <select id="getResumeLong">
+ 	SELECT
+    R.RESUME_IDX,
+    U.USER_NAME,
+    EXTRACT(YEAR FROM SYSDATE) - TO_NUMBER(SUBSTR(U.USER_BIRTHDATE, 1, 4)) AS USER_AGE,
+    U.USER_GENDER,
+    SUBSTR(U.USER_BIRTHDATE, 1, 4) AS USER_YEAR,
+    U.USER_TEL,
+    U.USER_EMAIL,              
+    RESUME_TITLE,
+    EB_NAME,
+    ED.EDU_NAME,
+    S.SKILL_NAME,
+    C.CITY_NAME,
+    D.DUTY_NAME,
+    E.EMP_NAME,
+    RC.CAREER_CNAME,
+    TO_CHAR(TO_DATE(RC.CAREER_SDATE, 'YY/MM/DD'), 'YYYY-MM') AS CAREER_SDATE,
+    TO_CHAR(TO_DATE(RC.CAREER_EDATE, 'YY/MM/DD'), 'YYYY-MM') AS CAREER_EDATE,
+    RC.CAREER_DESCRIPTION,
+    COVER_LETTER, 
+    RESUME_HIT, 
+    RESUME_CDATE, 
+    RESUME_FDATE
+	FROM
+	    RESUME R LEFT JOIN DUTY D ON R.DUTY_ID = D.DUTY_ID
+	           LEFT JOIN CITY C ON R.CITY_ID = C.CITY_ID
+	           LEFT JOIN EMP E ON R.EMP_ID = E.EMP_ID
+	           LEFT JOIN EDU ED ON R.EDU_ID = ED.EDU_ID 
+	           LEFT JOIN USERS U ON R.USER_IDX = U.USER_IDX
+               LEFT JOIN RESUME_SKILL RS ON R.RESUME_IDX = RS.RESUME_IDX
+               LEFT JOIN SKILL S ON RS.SKILL_ID = S.SKILL_ID
+               LEFT JOIN RESUME_CAREER RC ON R.RESUME_IDX = RC.RESUME_IDX
+    WHERE R.RESUME_IDX=#{resume_idx}               
+     </select>
+     
+     <select id="getEduList">
+     SELECT *  FROM EDU   
+     </select>
+     
+     <select id="getCityList">
+     SELECT *  FROM CITY   
+     </select>
+     
+     <select id="getDutyList">
+     SELECT *  FROM DUTY   
+     </select>
+     
+    <select id="getEmpList">
+     SELECT *  FROM EMP   
+     </select>
+     
+     <select id="getSkillList">
+     SELECT *  FROM SKILL   
+     </select>    
+     
+     <update id="updateResume">
+     UPDATE RESUME
+     SET DUTY_ID = #{duty_id}, 
+         CITY_ID =#{city_id},
+         EMP_ID = #{emp_id},
+         EDU_ID = #{edu_id},
+         EB_NAME = #{eb_name},
+         COVER_LETTER = #{cover_letter},
+         RESUME_FDATE = SYSDATE    
+     WHERE  RESUME_IDX=#{resume_idx}
+     </update>
+     
+     <update id="updateSkill">
+		UPDATE RESUME_SKILL
+		SET  SKILL_ID = (
+		SELECT SKILL_ID
+		FROM SKILL
+		WHERE SKILL_NAME = #{arg0})
+		WHERE RESUME_IDX = #{arg1}
+     </update>
+     
+     <update id="updateCareer">
+		UPDATE RESUME_CAREER
+		SET CAREER_SDATE = 
+		    CASE 
+		        WHEN LENGTH(#{arg2}) = 5 THEN TO_DATE(SUBSTR(#{arg2}, 1, 4) || '-' || LPAD(SUBSTR(#{arg2}, 5, 1), 2, '0') || '-01', 'YYYY-MM-DD')
+		        WHEN LENGTH(#{arg2}) = 6 THEN TO_DATE(SUBSTR(#{arg2}, 1, 4) || '-' || SUBSTR(#{arg2}, 5, 2) || '-01', 'YYYY-MM-DD')
+		        ELSE CAREER_SDATE 
+		    END,
+		    CAREER_EDATE = 
+		    CASE 
+		        WHEN LENGTH(#{arg3}) = 5 THEN TO_DATE(SUBSTR(#{arg3}, 1, 4) || '-' || LPAD(SUBSTR(#{arg3}, 5, 1), 2, '0') || '-01', 'YYYY-MM-DD')
+		        WHEN LENGTH(#{arg3}) = 6 THEN TO_DATE(SUBSTR(#{arg3}, 1, 4) || '-' || SUBSTR(#{arg3}, 5, 2) || '-01', 'YYYY-MM-DD')
+		        ELSE CAREER_EDATE 
+		    END,
+		    CAREER_CNAME = #{arg0},
+		    CAREER_DESCRIPTION = #{arg1}
+		WHERE RESUME_IDX = #{arg4}
+     
+     </update>
+     
+     <insert id="insertResume">
+     INSERT INTO RESUME (RESUME_IDX,USER_IDX,DUTY_ID,CITY_ID,EMP_ID,EDU_ID,
+		RESUME_TITLE,EB_NAME,COVER_LETTER)
+		VALUES 
+		(
+		(SELECT NVL(MAX(RESUME_IDX), 0) + 1 FROM RESUME),
+		#{user_idx},#{duty_id},#{city_id},#{emp_id},#{edu_id},#{resume_title},#{eb_name},#{cover_letter}
+		)    
+     </insert>
+     
+     <insert id="insertSkill">
+     INSERT INTO RESUME_SKILL (RESUME_SKILL_IDX,RESUME_IDX,SKILL_ID)
+      VALUES ((SELECT NVL(MAX(RESUME_SKILL_IDX), 0) + 1 FROM RESUME_SKILL),
+         (SELECT MAX(RESUME_IDX) FROM RESUME WHERE USER_IDX = #{arg0}),
+         (SELECT SKILL_ID FROM SKILL WHERE SKILL_NAME = #{arg1})
+       )     
+     </insert>
+     
+     <insert id="insertCarrer">
+     INSERT INTO RESUME_CAREER (CAREER_IDX,RESUME_IDX,CAREER_CNAME,CAREER_DESCRIPTION,CAREER_SDATE,CAREER_EDATE)
+	VALUES ((SELECT NVL(MAX(CAREER_IDX), 0) + 1 FROM RESUME_CAREER),
+         (SELECT MAX(RESUME_IDX) FROM RESUME WHERE USER_IDX = #{arg0}),
+         #{arg1},#{arg2},
+          (CASE 
+        	WHEN LENGTH(#{arg3}) = 5 THEN TO_DATE(SUBSTR(#{arg3}, 1, 4) || '-' || LPAD(SUBSTR(#{arg3}, 5, 1), 2, '0') || '-01', 'YYYY-MM-DD')
+        	WHEN LENGTH(#{arg3}) = 6 THEN TO_DATE(SUBSTR(#{arg3}, 1, 4) || '-' || SUBSTR(#{arg3}, 5, 2) || '-01', 'YYYY-MM-DD')
+        	ELSE NULL
+   	       END),   
+   		 (CASE 
+       	   WHEN LENGTH(#{arg4}) = 5 THEN TO_DATE(SUBSTR(#{arg4}, 1, 4) || '-' || LPAD(SUBSTR(#{arg4}, 5, 1), 2, '0') || '-01', 'YYYY-MM-DD')
+       	   WHEN LENGTH(#{arg4}) = 6 THEN TO_DATE(SUBSTR(#{arg4}, 1, 4) || '-' || SUBSTR(#{arg4}, 5, 2) || '-01', 'YYYY-MM-DD')
+           ELSE NULL 
+         END) )
+     
+     </insert>
+     
+    <select id="getResumeIdx">
+	SELECT MAX(RESUME_IDX) AS RESUME_IDX
+	FROM RESUME
+	WHERE USER_IDX = ${user_idx}
+    </select>
+     
+     
+     <delete id="deleteResume">
+     DELETE FROM RESUME
+     WHERE RESUME_IDX =#{resume_idx}     
+     </delete> 
+     
+     <delete id="deleteSkill">
+     DELETE FROM RESUME_SKILL
+     WHERE RESUME_IDX =#{resume_idx}     
+     </delete>     
+      
+     <delete id="deleteCarrer">
+     DELETE FROM RESUME_CAREER
+     WHERE RESUME_IDX =#{resume_idx}     
+     </delete> 
+     
+      <delete id="deleteApplyR">
+     DELETE FROM APPLICATION
+     WHERE RESUME_IDX =#{resume_idx}     
+     </delete>       
+     
+      <delete id="deleteBookmarkR">
+     DELETE FROM COMPANY_BOOKMARK
+     WHERE RESUME_IDX =#{resume_idx}     
+     </delete>  
+            
+      <select id="getSkill">
+      SELECT * FROM RESUME_SKILL
+      WHERE RESUME_IDX =#{resume_idx} 
+      
+      </select> 
+       
+      <insert id="insertSkill2">
+      INSERT INTO RESUME_SKILL (RESUME_SKILL_IDX,RESUME_IDX,SKILL_ID)
+      VALUES ((SELECT NVL(MAX(RESUME_SKILL_IDX), 0) + 1 FROM RESUME_SKILL),
+      #{arg0},(SELECT SKILL_ID FROM SKILL WHERE SKILL_NAME = #{arg1})
+      )
+      </insert>
+      
+      <select id="getCarrer">
+       SELECT * FROM RESUME_CAREER
+       WHERE RESUME_IDX =#{resume_idx}       
+      </select>
+      
+      <insert id="insertCareer2">
+           INSERT INTO RESUME_CAREER (CAREER_IDX,RESUME_IDX,CAREER_CNAME,CAREER_DESCRIPTION,CAREER_SDATE,CAREER_EDATE)
+	   VALUES ((SELECT NVL(MAX(CAREER_IDX), 0) + 1 FROM RESUME_CAREER),
+          #{arg0},#{arg1},#{arg2},
+          (CASE 
+        	WHEN LENGTH(#{arg3}) = 5 THEN TO_DATE(SUBSTR(#{arg3}, 1, 4) || '-' || LPAD(SUBSTR(#{arg3}, 5, 1), 2, '0') || '-01', 'YYYY-MM-DD')
+        	WHEN LENGTH(#{arg3}) = 6 THEN TO_DATE(SUBSTR(#{arg3}, 1, 4) || '-' || SUBSTR(#{arg3}, 5, 2) || '-01', 'YYYY-MM-DD')
+        	ELSE NULL
+   	       END),   
+   		 (CASE 
+       	   WHEN LENGTH(#{arg4}) = 5 THEN TO_DATE(SUBSTR(#{arg4}, 1, 4) || '-' || LPAD(SUBSTR(#{arg4}, 5, 1), 2, '0') || '-01', 'YYYY-MM-DD')
+       	   WHEN LENGTH(#{arg4}) = 6 THEN TO_DATE(SUBSTR(#{arg4}, 1, 4) || '-' || SUBSTR(#{arg4}, 5, 2) || '-01', 'YYYY-MM-DD')
+           ELSE NULL 
+         END) )
+      </insert>
+      
+      <delete id="deleteScope">
+      DELETE FROM SCOUT
+      WHERE SCOUT_IDX =#{scout_idx}
+      </delete>
+     
+     
+     <select id="getReviewScore">
+      SELECT 
+        ROUND((AVG(WC_POINT) + AVG(WLB_POINT) + AVG(CC_POINT) + AVG(PO_POINT) + AVG(EM_POINT)) / 5, 1)
+          AS SCORE
+        FROM REVIEW
+        WHERE  COMPANY_IDX = (
+						        SELECT COMPANY_IDX
+						        FROM POST
+						        WHERE POST_IDX = #{post_idx}
+                                                   )
+        GROUP BY COMPANY_IDX
+
+		UNION ALL
+		
+		SELECT 0 AS SCORE
+		FROM DUAL
+		WHERE NOT EXISTS (
+		    SELECT REVIEW_IDX
+		    FROM REVIEW 
+		    WHERE 
+		          COMPANY_IDX = (
+		                          SELECT COMPANY_IDX
+		                          FROM POST
+		                          WHERE POST_IDX = #{post_idx}		        
+		                          )
+		                       )
+		                       		                   		                   
+     </select>
+     
+     <delete id = "deleteUser">
+     DELETE FROM USERS
+     WHERE USER_IDX=#{user_idx}
+     </delete>
+     
+     
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.main.mapper.PagingMapper">  
+
+	<select id="companyCount">
+		SELECT COUNT(*)
+		FROM   COMPANYS
+	</select>
+
+	<select id="getCompanyPagingList">
+		SELECT 
+			C.COMPANY_IDX,
+			C.COMPANY_NAME,
+			C.COMPANY_AREA,
+			COUNT(P.POST_IDX) COUNT
+		FROM 
+			COMPANYS C LEFT JOIN POST   P  ON C.COMPANY_IDX = P.COMPANY_IDX
+		GROUP BY 	 C.COMPANY_IDX,C.COMPANY_NAME,C.COMPANY_AREA
+		OFFSET #{arg0} ROWS FETCH NEXT #{arg1} ROWS ONLY
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
