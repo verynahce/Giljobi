@@ -8,6 +8,10 @@
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer></script>
+<<<<<<< HEAD
+<script src="/js/header.js" defer ></script>
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
 <style>
  .innercontents {
    display:flex;
@@ -23,7 +27,12 @@
    margin:0;
    position:sticky;
    top:20px;
+<<<<<<< HEAD
+
+
+=======
    z-index:1000;
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
  }
  
  .sidebar table {
@@ -168,6 +177,11 @@
  
  .btn-layout {
    margin: 100px 180px;
+<<<<<<< HEAD
+   display: flex; 
+   justify-content: space-between;
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
 }
 
  .btn {
@@ -186,9 +200,17 @@
  }
  }
  
+<<<<<<< HEAD
+ .btn-back, .btn-delete {
+   background: #585766; 
+   color: white;
+   padding: 20px;
+   margin : 10px;
+=======
  .btn-back {
    background: #585766; 
    color: white;
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
  }
  
  
@@ -299,6 +321,10 @@
       	 </div>
       	    <div class="btn-layout">
              <input class="btn btn-back" type="submit" value="회원정보 수정"/>
+<<<<<<< HEAD
+             <input class="btn btn-delete" type="button" value="회원 탈퇴"/>             
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
             </div>
            </form>
          </div>
@@ -355,6 +381,14 @@ $(function() {
        
        
     })
+<<<<<<< HEAD
+    $('.btn-delete').on('click', function() {
+        if (confirm("정말 탈퇴하시겠습니까?")) {
+            location.href = "/Company/MyPage/Home/Delete?company_idx="+${companyVo.company_idx};
+        }
+    });
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
     
 })
     

@@ -101,6 +101,9 @@ public interface CompanyMapper {
 
 	void insertSkill(PostWriteVo vo);
 
+	void deleteCompany(CompanyVo companyvo);
+
+
 
 
 

@@ -122,7 +122,11 @@ header {
     font-size: 18px;
     font-weight: 500;
      & li{
+<<<<<<< HEAD
+     	transition : color .4s;
+=======
      	transition : all .4s;
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
      }
     
      & li:hover{
@@ -285,6 +289,10 @@ header.menu-btn-active {
   & .header-gnb {
     position: absolute;
     top: 20%;
+<<<<<<< HEAD
+    font-size : 24px;
+=======
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
   }
 }
 
@@ -894,7 +902,11 @@ footer {
 
 .company-list .company-card button.book-on{
     	 background: url("/images/star1.png") no-repeat right 12px center;
+<<<<<<< HEAD
+ }
+=======
  };
+>>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
 
 .paging-container{
 	display: flex;

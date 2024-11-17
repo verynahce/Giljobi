@@ -8,6 +8,7 @@ public class ComApplyVo {
 	private int appli_idx;
 	private int resume_idx;
 	private int post_idx;
+	private int user_idx;
 	private String   appli_date;
 	private String   appli_status;
 	private String resume_title;

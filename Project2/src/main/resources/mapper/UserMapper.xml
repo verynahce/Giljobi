@@ -276,7 +276,6 @@
      <update id="updateResume">
      UPDATE RESUME
      SET DUTY_ID = #{duty_id}, 
-         RESUME_TITLE = #{resume_title}, 
          CITY_ID =#{city_id},
          EMP_ID = #{emp_id},
          EDU_ID = #{edu_id},
@@ -451,6 +450,12 @@
 		                       )
 		                       		                   		                   
      </select>
+     
+
+     <delete id = "deleteUser">
+     DELETE FROM USERS
+     WHERE USER_IDX=#{user_idx}
+     </delete>
      
      
 </mapper>
