@@ -9,12 +9,14 @@ import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
+import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.ReviewCompanyInfoVo;
 import com.prj.main.vo.ReviewCompanyListVo;
 import com.prj.main.vo.SkillVo;
 import com.prj.main.vo.UserReviewVo;
+import com.prj.post.dto.PostClickListDTO;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.UserScoutVo;
 
@@ -69,6 +71,10 @@ public interface MainMapper {
 	void insertBookC(int company_idx, int resume_idx);
 	void deleteBookC(int company_idx, int resume_idx);
 	String getBookC(int company_idx, String resume_idx);
+	//지원자수 및 추천공고리스트
+	PostCountVo getPostCount(String post_idx);
+	List<PostClickListDTO> getPostClickList(int user_idx, String post_idx);
+
 
 	
 }

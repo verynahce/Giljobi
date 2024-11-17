@@ -1271,3 +1271,125 @@ footer {
 .book-off{
 	cursor: pointer
 }
+/**/
+/* post 접수방법/사이드 추천공고 =====================================*/
+.sub-applyinfo {
+  table-layout: fixed;
+  width: 100%;
+   border-bottom:1px solid #cccccc;
+  border-collapse:collapse;
+ tr {
+ width: 770px; 
+ height: 240px;
+ td:nth-child(2) {
+ background-color: #EBECF1;
+
+ }
+ td {
+ width: 33.33%; 
+
+ .apply-layout1 {
+ display:flex;
+ justify-content:center;
+ align-items: center;
+ flex-direction: column;
+ }
+  .apply-layout2 {
+  padding-left:35px;
+ display:flex;
+ justify-content:flex-start;
+margin-bottom: 10px;
+  gap:20px;
+
+
+ }
+ .apply-title {
+  color: #333333; font-size: 16px; font-family: Pretendard; font-weight: 600; line-height: 22.40px; 
+ }
+ .apply-dday {
+ color: #2D65F2; font-size: 24px; font-family: Pretendard; font-weight: 600; line-height: 33.60px; 
+ margin : 7.6px 0 7.6px 0;
+ }
+ .apply-date {
+  color: #333333; font-size: 14px; font-family: Pretendard; font-weight: 400; line-height: 19.60px;
+    
+ }
+ .apply-paper{
+    display: block; /* 이미지를 블록 요소로 설정 */
+    margin: 0 auto 54px auto; 
+    
+ }
+  } 
+ }
+
+}
+    .side-recommend{
+    margin-top:15px;
+    padding :0 24px 20px 24px;  
+    width: 280px; 
+    min-height: 222px;
+    max-height: 400px;
+    background: white; 
+    border-radius: 16px; 
+    border: 1px #EBEDF1 solid;    
+    position: sticky; 
+    top: 257px; 
+     
+    p{    
+    color: #767676; 
+    font-size: 14px; 
+    font-weight: 400; 
+    line-height: 19.60px;
+    margin-bottom: 8px;
+
+    }
+    #side-hit {    
+    color: #767676; 
+    font-size: 12px; 
+    font-weight: 400; 
+    line-height: 16.80px; 
+    padding-bottom: 22px;
+ 
+    }
+    
+   h4 {
+   color: #333333; 
+   font-size: 20px; 
+   font-weight: 600; 
+   line-height: 28px;
+    padding-top: 20px ;
+    padding-bottom: 2px;
+       white-space: nowrap;
+      overflow: hidden; 
+   text-overflow: ellipsis;  
+   }
+    }
+    
+   .side-post {
+     border: 1px #cccccc solid;  
+     padding:10px 12px ;
+      border-radius: 16px; 
+      margin:12px 0 6px 0;  
+    .side-ptitle {
+    color: black; font-size: 15px; font-family: Pretendard; font-weight: 500; line-height: 21px;
+    
+    }  
+    .side-pcontent{
+     color: #767676; font-size: 13px; font-family: Pretendard; font-weight: 400; line-height: 16.80px; 
+     display:flex;
+     justify-content: space-between;
+     gap:5px;
+            
+     }
+     .side-pcontent2{
+     color: #767676; font-size: 13px; font-family: Pretendard; font-weight: 400; line-height: 16.80px; 
+     }
+    } 
+    
+  .side-hover {
+  
+  :hover {
+background-color:#cccccc;
+
+}
+  }  
