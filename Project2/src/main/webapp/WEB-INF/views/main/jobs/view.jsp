@@ -373,59 +373,57 @@ cursor: pointer;
 	font-weight: 500;
 	
 }
+.talk {
+border-bottom: 1px solid #cccccc;
+background-color: #FAFAFA;
+width: 100%;
 
-     .speech-bubble {
-            position: relative;
+tr:nth-child(even) {
+border-bottom: 1px solid #cccccc;
+td {
+    text-align: right; /* 오른쪽 정렬 */
+    border-bottom: 1px dashed  #cccccc;
+    img {
+    margin: 0px 20px -15px 5px;
+    padding: 0;
+    }
+    
+    }
+}
+tr:nth-child(6) td{
+border-bottom: none;
+
+}
+}
+     .bubble {
+     
+            border: 1px solid #cccccc;
             background-color: #FFFCEA;
             border-radius: 15px;
-            padding: 10px 20px;
+            padding: 7px 16px;
             display: inline-block;
             max-width: 300px;
             word-wrap: break-word;
             font-size: 16px;
-            margin: 20px; 
+            font-weight:500;
+            margin: 10px 5px 0px 20px; 
             color: #333333 
         }
-
-        .speech-bubble::after {
-            content: '';
-            position: absolute;
-            top: 50%; 
-            left: -10px; 
-            transform: translateY(-50%); 
-            width: 0;
-            height: 0;
-            border: 10px solid transparent;
-            border-right-color: #FFFCEA; 
-            border-left: 0;
-            color: #333333 
-        }
-
-      .speech-bubble2 {
-            position: relative;
-            background-color: #f0f0f0;
+      .bubble2 {
+            border: 1px solid #cccccc;
+            background-color: #F1F4FE;
             border-radius: 15px;
-            padding: 10px 20px;
+            padding: 7px 16px;
             display: inline-block;
             max-width: 300px;
             word-wrap: break-word;
-            font-family: Arial, sans-serif;
+            font-weight:400;
             font-size: 16px;
-            margin: 20px; /* Adds space around the bubble */
+            margin: 0px 10px 10px 5px;
+             color: #333333 
+            
         }
 
-        .speech-bubble2::after {
-            content: '';
-            position: absolute;
-            top: 50%; /* Centers the tail vertically */
-            right: -10px; /* Positions the tail to the right of the bubble */
-            transform: translateY(-50%); /* Adjusts for vertical centering */
-            width: 0;
-            height: 0;
-            border: 10px solid transparent;
-            border-left-color: #f0f0f0; /* Matches the bubble's color */
-            border-right: 0;
-        }
 </style>
 
 </head>
@@ -589,23 +587,28 @@ cursor: pointer;
            <div class="sub-filed">
 	    <h4 class="sub-title">인사담당자 TALK</h4>
 	    <hr> 
-	    <table>
+	      </div>
+	    <table class="talk">
 		<tr>
-	      <td><div class="speech-bubble">1. 근무환경은 어떤가요?</div></td>
-
+	      <td><div class="bubble">1. 근무환경은 어떤가요?</div></td>
 	    </tr>
 	    <tr>
-	      <td>근무지역</td>
-	      <td>${vo.city_name}</td>
+	     <td><div class="bubble2">자율복장</div><div class="bubble2">대부분 2030대</div><img src="/images/post/notebook.png" alt="면접관"></td>
+	    </tr>
+	    <tr>
+	      <td><div class="bubble">2.복지 및 처우는 어떻게 되나요?</div></td>
+	    </tr>
+	    <tr>
+	     <td><div class="bubble2">생일반차사용</div><div class="bubble2">리프레쉬휴가</div><img src="/images/post/notebook.png" alt="면접관"></td>
+	    </tr>
+	    <tr>
+	      <td><div class="bubble">3.면접은 어떻게 진행되나요?</div></td>
+	    </tr>
+	    <tr>
+	     <td><div class="bubble2">수시면접</div><div class="bubble2">면접자1명 대 다수</div><img src="/images/post/notebook.png" alt="면접관"></td>
 	    </tr>
 	   </table>
-	  </div>
-	          <div class="speech-bubble">
-        이 말풍선은
-    </div>
-    	          <div class="speech-bubble2">
-        이 말풍선은
-    </div>
+	
 	  
      <div class="sub-filed">
         <h4 class="sub-title" >유의사항</h4>
