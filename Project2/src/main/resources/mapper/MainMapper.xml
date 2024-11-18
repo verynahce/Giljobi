@@ -699,6 +699,16 @@
 	   
    </select>
    
+   <select id="getPostclick">
+   SELECT *
+   FROM POST_CLICK
+   WHERE POST_IDX = #{arg1} AND USER_IDX = #{arg0} 
+   </select>
+   
+   <insert id="insertPostClick">
+   INSERT INTO POST_CLICK (PC_IDX,USER_IDX,POST_IDX) 
+   VALUES ( POST_CLICK_SEQ.NEXTVAL,#{arg0},#{arg1})
+   </insert>
 </mapper>
 
 

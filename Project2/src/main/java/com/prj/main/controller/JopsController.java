@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.prj.main.mapper.MainMapper;
+import com.prj.main.service.PostClickService;
 import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.DutyVo;
@@ -33,7 +34,8 @@ public class JopsController {
 	
 	@Autowired
 	private MainMapper mainMapper;
-
+	@Autowired
+	private PostClickService postClickService;
 	/* Jobs 관련 */
 	/*================================================================================*/
 	@RequestMapping("/Jobs/List")
@@ -94,7 +96,7 @@ public class JopsController {
 			
 			/*추가*/
 			List<PostClickListVo> list =	mainMapper.getPostClickList(userVo.getUser_idx(),post_idx);
-			// postClickService.insertPostClick(userVo.getUser_idx(),post_idx);
+			postClickService.insertPostClick(userVo.getUser_idx(),Integer.parseInt(post_idx));
 			
 			mv.addObject("clickList",list);
 			System.out.println("clickList : " + list);
