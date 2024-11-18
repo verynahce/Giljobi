@@ -1,4 +1,4 @@
-package com.prj.post.dto;
+package com.prj.main.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostClickListDTO {
+public class PostClickListVo {
 	
 	private String post_title;
 	private String post_ddate;

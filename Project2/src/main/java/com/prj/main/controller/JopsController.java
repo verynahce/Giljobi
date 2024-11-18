@@ -16,12 +16,11 @@ import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
+import com.prj.main.vo.PostClickListVo;
 import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
-import com.prj.post.dto.PostClickListDTO;
-import com.prj.post.service.PostClickService;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.UserVo;
 
@@ -34,8 +33,7 @@ public class JopsController {
 	
 	@Autowired
 	private MainMapper mainMapper;
-	@Autowired
-	private PostClickService postClickService;
+
 	/* Jobs 관련 */
 	/*================================================================================*/
 	@RequestMapping("/Jobs/List")
@@ -95,8 +93,8 @@ public class JopsController {
 			System.out.println("userlogin : " + userVo);
 			
 			/*추가*/
-			List<PostClickListDTO> list =	mainMapper.getPostClickList(userVo.getUser_idx(),post_idx);
-			postClickService.insertPostClick(userVo.getUser_idx(),post_idx);
+			List<PostClickListVo> list =	mainMapper.getPostClickList(userVo.getUser_idx(),post_idx);
+			// postClickService.insertPostClick(userVo.getUser_idx(),post_idx);
 			
 			mv.addObject("clickList",list);
 			System.out.println("clickList : " + list);
