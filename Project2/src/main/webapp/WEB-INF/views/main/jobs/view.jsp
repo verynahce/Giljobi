@@ -374,50 +374,58 @@ cursor: pointer;
 	
 }
 
+     .speech-bubble {
+            position: relative;
+            background-color: #FFFCEA;
+            border-radius: 15px;
+            padding: 10px 20px;
+            display: inline-block;
+            max-width: 300px;
+            word-wrap: break-word;
+            font-size: 16px;
+            margin: 20px; 
+            color: #333333 
+        }
 
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            top: 50%; 
+            left: -10px; 
+            transform: translateY(-50%); 
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-right-color: #FFFCEA; 
+            border-left: 0;
+            color: #333333 
+        }
 
-/* 원그래프 (파이 차트) */
-.pie-chart {
-margin:10px 0 8px 0;
-  width: 140px;
-  height: 140px;
+      .speech-bubble2 {
+            position: relative;
+            background-color: #f0f0f0;
+            border-radius: 15px;
+            padding: 10px 20px;
+            display: inline-block;
+            max-width: 300px;
+            word-wrap: break-word;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            margin: 20px; /* Adds space around the bubble */
+        }
 
-  border-radius: 50%;
-  position: relative;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  
-   background: conic-gradient(
-    #CCCCCC 0% 70%,   /* 70% 까지 파란색 */
-    #CCCCCC 70% 100%  /* 나머지 30%는 금색 */
-  );
-}
-
-/* 원그래프 중간을 비워두기 */
-.pie-chart-inner {
-  position: absolute;
-  top: 17.5%;  /* 150px의 17.5% = 26.25px */
-  left: 17.5%; /* 150px의 17.5% = 26.25px */
-  width: 65%;  /* 150px의 65% = 97.5px */
-  height: 65%; /* 150px의 65% = 97.5px */
-  background-color: white;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-   /* 배경에 사람 이모티콘 이미지 추가 */
-  background-image: url('/images/post/people.png'); /* 실제 이미지 경로로 수정 */
-  background-size: 70%; /* 이미지 크기를 80%로 설정하여 배경보다 작게 만들기 */
-  background-position: center; /* 이미지를 중앙에 배치 */
-  background-repeat: no-repeat; /* 이미지 반복 안 함 */
-}
-
-/* 중앙 텍스트 스타일 */
-.chart-text {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-}
-
+        .speech-bubble2::after {
+            content: '';
+            position: absolute;
+            top: 50%; /* Centers the tail vertically */
+            right: -10px; /* Positions the tail to the right of the bubble */
+            transform: translateY(-50%); /* Adjusts for vertical centering */
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-left-color: #f0f0f0; /* Matches the bubble's color */
+            border-right: 0;
+        }
 </style>
 
 </head>
@@ -577,7 +585,28 @@ margin:10px 0 8px 0;
       
        </table>
      </div>
+     
+           <div class="sub-filed">
+	    <h4 class="sub-title">인사담당자 TALK</h4>
+	    <hr> 
+	    <table>
+		<tr>
+	      <td><div class="speech-bubble">1. 근무환경은 어떤가요?</div></td>
 
+	    </tr>
+	    <tr>
+	      <td>근무지역</td>
+	      <td>${vo.city_name}</td>
+	    </tr>
+	   </table>
+	  </div>
+	          <div class="speech-bubble">
+        이 말풍선은
+    </div>
+    	          <div class="speech-bubble2">
+        이 말풍선은
+    </div>
+	  
      <div class="sub-filed">
         <h4 class="sub-title" >유의사항</h4>
         <hr> 

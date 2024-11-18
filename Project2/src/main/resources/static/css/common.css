@@ -1393,4 +1393,45 @@ margin-bottom: 10px;
 background-color:#cccccc;
 
 }
-  }  
+  }
+/* 원그래프 (파이 차트) */
+.pie-chart {
+margin:10px 0 8px 0;
+  width: 140px;
+  height: 140px;
+
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+   background: conic-gradient(
+    #CCCCCC 0% 70%,   /* 70% 까지 파란색 */
+    #CCCCCC 70% 100%  /* 나머지 30%는 금색 */
+  );
+}
+
+/* 원그래프 중간을 비워두기 */
+.pie-chart-inner {
+  position: absolute;
+  top: 17.5%;  /* 150px의 17.5% = 26.25px */
+  left: 17.5%; /* 150px의 17.5% = 26.25px */
+  width: 65%;  /* 150px의 65% = 97.5px */
+  height: 65%; /* 150px의 65% = 97.5px */
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+   /* 배경에 사람 이모티콘 이미지 추가 */
+  background-image: url('/images/post/people.png'); /* 실제 이미지 경로로 수정 */
+  background-size: 70%; /* 이미지 크기를 80%로 설정하여 배경보다 작게 만들기 */
+  background-position: center; /* 이미지를 중앙에 배치 */
+  background-repeat: no-repeat; /* 이미지 반복 안 함 */
+}
+
+/* 중앙 텍스트 스타일 */
+.chart-text {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}    
