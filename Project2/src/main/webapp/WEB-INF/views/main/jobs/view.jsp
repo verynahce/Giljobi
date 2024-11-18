@@ -169,22 +169,17 @@ justify-content: space-between;
     }
     
     /*오른쪽 메뉴*/ 
-    #side-menu{
-    padding :0 24px ;
-  
+    .side-menu{
+    padding :0 24px ;  
     width: 280px; 
     height: 222px;
     background: white; 
     border-radius: 16px; 
-    border: 1px #EBEDF1 solid;
-    
+    border: 1px #EBEDF1 solid;    
     position: sticky; 
     top: 20px; 
-    
-    
-    
-    p:nth-child(1) {
-    
+
+    p:nth-child(1) {    
     color: #767676; 
     font-size: 14px; 
     font-weight: 400; 
@@ -376,6 +371,51 @@ cursor: pointer;
 	margin-top : 60px;
 	text-align: center;
 	font-weight: 500;
+	
+}
+
+
+
+/* 원그래프 (파이 차트) */
+.pie-chart {
+margin:10px 0 8px 0;
+  width: 140px;
+  height: 140px;
+
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+   background: conic-gradient(
+    #CCCCCC 0% 70%,   /* 70% 까지 파란색 */
+    #CCCCCC 70% 100%  /* 나머지 30%는 금색 */
+  );
+}
+
+/* 원그래프 중간을 비워두기 */
+.pie-chart-inner {
+  position: absolute;
+  top: 17.5%;  /* 150px의 17.5% = 26.25px */
+  left: 17.5%; /* 150px의 17.5% = 26.25px */
+  width: 65%;  /* 150px의 65% = 97.5px */
+  height: 65%; /* 150px의 65% = 97.5px */
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+   /* 배경에 사람 이모티콘 이미지 추가 */
+  background-image: url('/images/post/people.png'); /* 실제 이미지 경로로 수정 */
+  background-size: 70%; /* 이미지 크기를 80%로 설정하여 배경보다 작게 만들기 */
+  background-position: center; /* 이미지를 중앙에 배치 */
+  background-repeat: no-repeat; /* 이미지 반복 안 함 */
+}
+
+/* 중앙 텍스트 스타일 */
+.chart-text {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
 }
 
 </style>
@@ -497,22 +537,44 @@ cursor: pointer;
 	  </div>
 
 	  <div class="sub-filed">
-	    <h4 class="sub-title">접수기간</h4>
+	    <h4 class="sub-title">접수기간 및 방법</h4>
 	    <hr> 
-	    <table class="sub-topic">
+	    <table class="sub-applyinfo">
 	     <tr>
-	       <td>접수기간</td>
-	       <td>${vo.post_cdate} ~ ${vo.post_ddate}</td>
+	       <td>
+	       <div class="apply-layout1">
+	         <div><img src="/images/post/clock.png"  alt="시계"/></div>
+	         <div class="apply-title">남은기간</div>
+	         <div class="apply-dday"></div>
+	         <div class="apply-date">시작일&nbsp;&nbsp;<span>|</span>&nbsp;&nbsp;${vo.post_cdate}</div>
+	         <div class="apply-date">마감일&nbsp;&nbsp;<span>|</span>&nbsp;&nbsp;${vo.post_ddate}</div>
+	       </div>
+	       </td>
+	       
+	       <td>	    
+	      <img class="apply-paper" src="/images/post/paper.png"  alt="종이"/>
+	       <div class="apply-layout2">
+	         <div class="apply-title">지원방법</div><div>길잡이 입사지원</div>
+	       </div>
+	       <div class="apply-layout2">
+	         <div class="apply-title">접수양식</div><div>길잡이 이력서양식</div>
+           </div>        
+	       </td>
+	       
+	       <td>	 
+	       <div class="apply-layout1">   
+	         <div class="apply-title">지원자수</div>
+		    <div class="pie-chart">
+		      <div class="pie-chart-inner">
+		        <span class="chart-text" id="total-applicants">${pcount.total_count}명</span>
+		      </div>
+		    </div>
+	         <div class="apply-date">여자&nbsp;&nbsp;&nbsp;${pcount.female_count}명&nbsp;&nbsp;<span>|</span>&nbsp;&nbsp;남자&nbsp;&nbsp;&nbsp;${pcount.male_count}명</div>	         
+	       </div>
+	       </td>
 	     </tr>
    
-        <tr>
-          <td>접수방법</td>
-          <td>잡덕 입사지원</td>
-        </tr>
-        <tr>
-           <td>이력서 양식</td>
-           <td>잡덕 온라인 이력서</td>
-        </tr>
+      
        </table>
      </div>
 
@@ -525,9 +587,9 @@ cursor: pointer;
     </main>
     <div class="btn-back"><a href ="List">돌아가기</a></div>
    </div>
-
-    <div id="side-menu">
-       <div id ="side-frame">
+     <div>
+    <div class="side-menu">
+       <div class ="side-frame">
          <p>최종수정일 : ${vo.post_fdate}<p>
          <hr>
          <h4>${vo.post_title}</h4>
@@ -541,7 +603,28 @@ cursor: pointer;
          </div>
        </div>
     </div>
+    <c:if test="${not empty clickList}">
+    <div class="side-recommend">
+    <h4>추천공고</h4>
+    <p>해당 공고를 본 유저들이 <span style="color: #4876EF;">클릭한</span> 공고<p>
+    <hr>
+    
+    <c:forEach var="c"  items="${clickList}">
+     <a class="side-hover" href="/Main/Jobs/View?post_idx=${c.post_idx}" style="display: block;"> 
+     <div class="side-post" >
+       <div class="side-pcontent" >${c.company_name}<span>${c.post_ddate}</span></div>
+       <div class="side-ptitle">${c.post_title}</div>
+       <div class="side-pcontent2" >${c.career_name}&nbsp;<span>|</span>&nbsp;${c.duty_name}&nbsp;<span>|</span>&nbsp;${c.emp_name}</div>    
+    </div>
+   </a>
+    </c:forEach>
+    </div>
+    </c:if>
+    
+    </div>
    </div>
+   
+
  </div>
  
  <%@include file="/WEB-INF/include/footer.jsp" %>
@@ -583,12 +666,66 @@ cursor: pointer;
 		});
 	
 	
+	
 	$(".apply-val").attr("href","Apply?post_idx=${vo.post_idx}&resume_idx=0")
 		$(".resume-input").click(function(e){
 			console.log(e.target.value)
 			$(".apply-val").attr("href","Apply?post_idx=${vo.post_idx}&resume_idx="+e.target.value)
 			
 		})
+		
+	
+		
+      const total = ${pcount.total_count};
+	  const malePercentage = (${pcount.male_count} / total) * 100;
+      const femalePercentage = (${pcount.female_count}  / total) * 100;	
+		
+	  const pieChart = document.querySelector('.pie-chart');
+	  pieChart.style.background = 'conic-gradient(' +
+	    '#4876EF 0% ' + malePercentage + '%, ' +    
+	    '#FFD700 ' + malePercentage + '% 100%' +
+	    ')';
+	
+	  
+	  /*시간 타이머 */
+	  const dday = "${vo.post_ddate}";
+
+	  let ddayDate = dday.replace(/[^\d]/g, '-').replace(/--+/g, '-').replace(/-$/, '');
+	  const DDate = new Date(ddayDate + "T23:59:59");
+      
+	    // 타이머 업데이트 함수
+	    function updateTimer() {
+	      const cTime = new Date();
+	      const timeRemaining = DDate - cTime; // 목표 날짜와 현재 시간의 차이
+            
+	      // 남은 시간이 0보다 크면 타이머를 갱신
+	      if (timeRemaining > 0) {
+	        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24)); 
+	        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
+	        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60)); 
+	        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+	       
+	        
+	        const fHours = hours < 10 ? '0' + hours : hours;
+	        const fMinutes = minutes < 10 ? '0' + minutes : minutes;
+	        const fSeconds = seconds < 10 ? '0' + seconds : seconds;
+	        
+	        const ddayText = days + '일 ' +fHours +':'+fMinutes+':'+fSeconds
+	        document.querySelector('.apply-dday').textContent = ddayText;
+	   
+	      } else {
+	        // 타이머가 끝나면 "D-Day"라고 표시
+	    	  document.querySelector('.apply-dday').textContent = "마감된 공고입니다";
+	      }
+	    }
+
+	    // 1초마다 타이머 업데이트
+	    setInterval(updateTimer, 1000);
+
+	    // 초기 실행
+	    updateTimer();
+	  
+	  
 	
   })
 

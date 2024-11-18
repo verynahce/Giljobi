@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.prj.main.mapper.MainMapper;
+import com.prj.main.service.PostClickService;
 import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
+import com.prj.main.vo.PostClickListVo;
+import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
@@ -31,7 +34,8 @@ public class JopsController {
 	
 	@Autowired
 	private MainMapper mainMapper;
-	
+	@Autowired
+	private PostClickService postClickService;
 	/* Jobs 관련 */
 	/*================================================================================*/
 	@RequestMapping("/Jobs/List")
@@ -82,11 +86,23 @@ public class JopsController {
 		System.out.println(totPoint);
 		HttpSession session = request.getSession();
 		Object userObject = session.getAttribute("login");
+		
+		/*추가*/
+		PostCountVo pcvo = mainMapper.getPostCount(post_idx);				
 		ModelAndView mv = new ModelAndView();
 		if (userObject instanceof UserVo) {
 			UserVo userVo = (UserVo) session.getAttribute("login");
 			System.out.println("userlogin : " + userVo);
-			if(userVo != null ) {			
+			
+			/*추가*/
+			List<PostClickListVo> list =	mainMapper.getPostClickList(userVo.getUser_idx(),post_idx);
+			postClickService.insertPostClick(userVo.getUser_idx(),Integer.parseInt(post_idx));
+			
+			mv.addObject("clickList",list);
+			System.out.println("clickList : " + list);
+            
+			if(userVo != null ) {	
+				
 				List<ResumeListVo> resumeVo = mainMapper.getUserResume(userVo.getUser_idx());
 				System.out.println(resumeVo);
 				mv.addObject("resumeVo",resumeVo);
@@ -95,6 +111,7 @@ public class JopsController {
 		}
 		mv.addObject("vo",vo);
 		mv.addObject("totPoint",totPoint);
+		mv.addObject("pcount",pcvo);
 		mv.setViewName("main/jobs/view");
 		return mv;
 	}
