@@ -82,88 +82,58 @@
           <th>수정일</th>
         </tr>
       </thead>
-<<<<<<< HEAD
-<tbody class="resume-list">
-  <c:forEach var="resume" items="${resumeList}">
-    <tr>
-      <c:choose>
-        <c:when test="${resume.user_idx == 0 }">
-        <td>탈퇴회원</td>
-          <td>
-            <div><a href="View?resume_idx=${resume.resume_idx}">${resume.resume_title}</a></div>
-            <ul class="stack-list">
-              <c:if test="${not empty resume.skill_name}"><li>${resume.skill_name}</li></c:if>
-            </ul>
-          </td>
-          <td>
-            <c:choose>
-              <c:when test="${not empty resume.career_year and resume.career_year != 0}">${resume.career_year}년 ${resume.career_month}개월</c:when>
-              <c:when test="${not empty resume.career_month and resume.career_month != 0}">${resume.career_month}개월</c:when>
-              <c:otherwise>신입</c:otherwise>
-            </c:choose>
-          </td>
-          <td>${resume.duty_name}</td>
-          <td>${resume.city_name}</td>
-          <td>${resume.resume_fdate}</td>
-        </c:when>
-        <c:otherwise>
-                  <td>${resume.user_name}<span>(${resume.user_gender},${resume.user_age}세)</span></td>
-          <td>
-            <div><a href="View?resume_idx=${resume.resume_idx}">${resume.resume_title}</a></div>
-            <ul class="stack-list">
-              <c:if test="${not empty resume.skill_name}"><li>${resume.skill_name}</li></c:if>
-            </ul>
-          </td>
-          <td>
-            <c:choose>
-              <c:when test="${not empty resume.career_year and resume.career_year != 0}">${resume.career_year}년 ${resume.career_month}개월</c:when>
-              <c:when test="${not empty resume.career_month and resume.career_month != 0}">${resume.career_month}개월</c:when>
-              <c:otherwise>신입</c:otherwise>
-            </c:choose>
-          </td>
-          <td>${resume.duty_name}</td>
-          <td>${resume.city_name}</td>
-          <td>${resume.resume_fdate}</td>
-
-        </c:otherwise>
-      </c:choose>
-    </tr>
-  </c:forEach>
-</tbody>
-=======
-      <tbody class="resume-list">
-        <c:forEach var="resume" items="${resumeList}">
-          <tr>
-            <td>${resume.user_name}<span>(${resume.user_gender},${resume.user_age}세)</span></td>
-            <td>
-              <div><a href="View?resume_idx=${resume.resume_idx}">${resume.resume_title}</a></div>
-              <ul class="stack-list">
-                <c:if test="${not empty resume.skill_name}"><li>${resume.skill_name}</li></c:if>
-              </ul>
-            </td>
-            <td>
-              <c:choose>
-                <c:when test="${not empty resume.career_year and resume.career_year != 0}">${resume.career_year}년 ${resume.career_month}개월</c:when>
-                <c:when test="${not empty resume.career_month and resume.career_month != 0}">${resume.career_month}개월</c:when>
-                <c:otherwise>신입</c:otherwise>
-              </c:choose>
-            </td>
-            <td>${resume.duty_name}</td>
-            <td>${resume.city_name}</td>
-            <td>${resume.resume_fdate}</td>
-          </tr>
-        </c:forEach>
-      </tbody>
->>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
+		<tbody class="resume-list">
+		  <c:forEach var="resume" items="${resumeList}">
+		    <tr>
+		      <c:choose>
+		        <c:when test="${resume.user_idx == 0 }">
+		        <td>탈퇴회원</td>
+		          <td>
+		            <div><a href="View?resume_idx=${resume.resume_idx}">${resume.resume_title}</a></div>
+		            <ul class="stack-list">
+		              <c:if test="${not empty resume.skill_name}"><li>${resume.skill_name}</li></c:if>
+		            </ul>
+		          </td>
+		          <td>
+		            <c:choose>
+		              <c:when test="${not empty resume.career_year and resume.career_year != 0}">${resume.career_year}년 ${resume.career_month}개월</c:when>
+		              <c:when test="${not empty resume.career_month and resume.career_month != 0}">${resume.career_month}개월</c:when>
+		              <c:otherwise>신입</c:otherwise>
+		            </c:choose>
+		          </td>
+		          <td>${resume.duty_name}</td>
+		          <td>${resume.city_name}</td>
+		          <td>${resume.resume_fdate}</td>
+		        </c:when>
+		        <c:otherwise>
+		         <td>${resume.user_name}<span>(${resume.user_gender},${resume.user_age}세)</span></td>
+		          <td>
+		            <div><a href="View?resume_idx=${resume.resume_idx}">${resume.resume_title}</a></div>
+		            <ul class="stack-list">
+		              <c:if test="${not empty resume.skill_name}"><li>${resume.skill_name}</li></c:if>
+		            </ul>
+		          </td>
+		          <td>
+		            <c:choose>
+		              <c:when test="${not empty resume.career_year and resume.career_year != 0}">${resume.career_year}년 ${resume.career_month}개월</c:when>
+		              <c:when test="${not empty resume.career_month and resume.career_month != 0}">${resume.career_month}개월</c:when>
+		              <c:otherwise>신입</c:otherwise>
+		            </c:choose>
+		          </td>
+		          <td>${resume.duty_name}</td>
+		          <td>${resume.city_name}</td>
+		          <td>${resume.resume_fdate}</td>
+		
+		        </c:otherwise>
+		      </c:choose>
+		    </tr>
+		  </c:forEach>
+		</tbody>
     </table>
   </div>
 </main>
 	<%@include file="/WEB-INF/include/footer.jsp" %>
    <script>
-<<<<<<< HEAD
-=======
-  
->>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
 	// 스택 검색을 위한 element
   const $skillInput = document.querySelector(".skill-input");
   const $skillUl    = document.querySelector(".skill-div ul");
@@ -223,11 +193,7 @@ $("main").on('click', function(e) {
 
 
 
-<<<<<<< HEAD
 
-
-=======
->>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
 // 스택에 스킬 추가
 function addSkillToStack(skillName, skillId) {
     const html = "<li>" + skillName + 
@@ -281,15 +247,10 @@ document.addEventListener('keydown', function(event) {
 	                    html += "</ul>";
 	                    html += "</td>";
 	                    html += "<td>";
-<<<<<<< HEAD
 	                    if (a.career_year !== "0" && a.career_year != null) {html += a.career_year + "년"} 
 	                    if (a.career_month !== "0" && a.career_year != null) {html += a.career_month + "개월";} else {
 	                    if (a.career_year == null && a.career_month == null){html += "신입"};
-=======
-	                    if (a.career_year !== "0") {html += a.career_year + "년"} 
-	                    if (a.career_month !== "0") {html += a.career_month + "개월";} else {
-	                    if (a.career_year == "0" && a.career_month == "0"){html += "신입"};
->>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
+
 	                    }
 	                    html += "</td>";
 	                    html += "<td>" + a.duty_name + "</td>";
@@ -298,10 +259,8 @@ document.addEventListener('keydown', function(event) {
 	                    html += "</tr>";
 	                });
 	                $('.resume-list').append(html);
-<<<<<<< HEAD
 	                console.log(response.resumeList)
-=======
->>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
+
 	            },
 	            error: function(jqXHR, textStatus, errorThrown) {
 	                console.error(textStatus, errorThrown);

@@ -145,11 +145,7 @@
       </div>
       <div class="container">
         <div class="content">
-<<<<<<< HEAD
   		    <img class="profile-image"src="/images/icon/company-profile.png" alt="${companyVo.company_name}이미지"/>
-=======
-  		    <img class="profile-image"src="/images/icon/company-profile.png" alt="${userVo.user_name}이미지"/>
->>>>>>> 7ee7827b63be2e6d849e0b25b2626760503e31c2
   		  <div class="text-box">
            	<span class="highlight">${companyVo.company_name }</span><br>
            	<span><img src="/images/star.png">&nbsp;(${score})</span><br>

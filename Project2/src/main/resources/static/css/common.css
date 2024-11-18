@@ -122,7 +122,7 @@ header {
     font-size: 18px;
     font-weight: 500;
      & li{
-     	transition : all .4s;
+     	transition : color .4s;
      }
     
      & li:hover{
@@ -286,7 +286,6 @@ header.menu-btn-active {
     position: absolute;
     top: 20%;
     font-size : 24px;
-
   }
 }
 
@@ -896,10 +895,7 @@ footer {
 
 .company-list .company-card button.book-on{
     	 background: url("/images/star1.png") no-repeat right 12px center;
-
-
- };
-
+ }
 
 .paging-container{
 	display: flex;
