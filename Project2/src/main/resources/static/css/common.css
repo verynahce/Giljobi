@@ -842,6 +842,63 @@ footer {
     }
   }
 }
+
+/* community/list */
+.review-banner2 {
+  height: 250px;
+  background-color: #779AF6;
+  position: relative;
+  margin-bottom: 60px;
+
+  & .banner-inner {
+    width: 1200px;
+    height : 250px;
+    position: absolute;
+    left : 50%;
+    transform : translateX(-50%);
+    & .phone{
+    	position:absolute;
+    	right: 100px;
+    	bottom : 0;
+    	
+    & img{
+    	height : 100%;
+    	display: block;
+    }
+    };
+    
+    & .banner-title{
+    	position : absolute;
+      padding-left : 100px;
+      top : 50%;
+      transform : translateY(-50%);
+    
+    & .myreview{
+    	color : #555;
+    	font-weight : 500;
+    	font-size : 20px;
+    	border-bottom: solid 1px #555;
+    	};
+    
+     & h2 {
+      font-size: 36px;
+      margin-bottom: 6px;
+
+      & span {
+        font-size: 40px;
+      }
+   	 }
+    };
+   
+
+    & p {
+      font-size: 24px;
+      color: #b4a981;
+      font-weight: 500;
+      margin-bottom : 24px;
+    }
+  }
+}
 .company-list {
   display: flex;
   flex-direction: column;
@@ -875,6 +932,59 @@ footer {
         justify-content: space-between;
 
         & .company-info{
+          & h3{
+            font-size: 20px;
+            font-weight: 500;
+          };
+
+          & p{
+            font-size: 14px;
+            color: #767676;
+          }
+        }
+      }
+      & .company-text>p{
+        color: #767676;
+      }
+    }
+  }
+}
+
+.company-list2 {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  & .company-card2 {
+    display: flex;
+    align-items: center;
+    border: solid 1px #ccc;
+    padding: 20px 40px 10px 40px;
+    border-radius: 16px;
+
+    & .bookmark {
+      padding: 12px 40px 12px 16px;
+      border: solid 1px #ccc;
+       color: #767676;
+       border-radius: 8px;
+       background: url("/images/icon/bookmark.png") no-repeat right 12px center;
+    };
+
+    & .company-content2 {
+      display: flex; gap: 50px;
+      & .company-img{
+        width: 120px; height: 120px; background: #F8F8F8;
+        text-align: center; line-height: 120px;
+        border-radius: 16px;
+      }
+      & .company-text2{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        & .company-info2 {
+           display:flex;
+           flex-direction:column;
           & h3{
             font-size: 20px;
             font-weight: 500;
@@ -1272,166 +1382,3 @@ footer {
 .book-off{
 	cursor: pointer
 }
-/**/
-/* post 접수방법/사이드 추천공고 =====================================*/
-.sub-applyinfo {
-  table-layout: fixed;
-  width: 100%;
-   border-bottom:1px solid #cccccc;
-  border-collapse:collapse;
- tr {
- width: 770px; 
- height: 240px;
- td:nth-child(2) {
- background-color: #EBECF1;
-
- }
- td {
- width: 33.33%; 
-
- .apply-layout1 {
- display:flex;
- justify-content:center;
- align-items: center;
- flex-direction: column;
- }
-  .apply-layout2 {
-  padding-left:35px;
- display:flex;
- justify-content:flex-start;
-margin-bottom: 10px;
-  gap:20px;
-
-
- }
- .apply-title {
-  color: #333333; font-size: 16px; font-family: Pretendard; font-weight: 600; line-height: 22.40px; 
- }
- .apply-dday {
- color: #2D65F2; font-size: 24px; font-family: Pretendard; font-weight: 600; line-height: 33.60px; 
- margin : 7.6px 0 7.6px 0;
- }
- .apply-date {
-  color: #333333; font-size: 14px; font-family: Pretendard; font-weight: 400; line-height: 19.60px;
-    
- }
- .apply-paper{
-    display: block; /* 이미지를 블록 요소로 설정 */
-    margin: 0 auto 54px auto; 
-    
- }
-  } 
- }
-
-}
-    .side-recommend{
-    margin-top:15px;
-    padding :0 24px 20px 24px;  
-    width: 280px; 
-    min-height: 222px;
-    max-height: 400px;
-    background: white; 
-    border-radius: 16px; 
-    border: 1px #EBEDF1 solid;    
-    position: sticky; 
-    top: 257px; 
-     
-    p{    
-    color: #767676; 
-    font-size: 14px; 
-    font-weight: 400; 
-    line-height: 19.60px;
-    margin-bottom: 8px;
-
-    }
-    #side-hit {    
-    color: #767676; 
-    font-size: 12px; 
-    font-weight: 400; 
-    line-height: 16.80px; 
-    padding-bottom: 22px;
- 
-    }
-    
-   h4 {
-   color: #333333; 
-   font-size: 20px; 
-   font-weight: 600; 
-   line-height: 28px;
-    padding-top: 20px ;
-    padding-bottom: 2px;
-       white-space: nowrap;
-      overflow: hidden; 
-   text-overflow: ellipsis;  
-   }
-    }
-    
-   .side-post {
-     border: 1px #cccccc solid;  
-     padding:10px 12px ;
-      border-radius: 16px; 
-      margin:12px 0 6px 0;  
-    .side-ptitle {
-    color: black; font-size: 15px; font-family: Pretendard; font-weight: 500; line-height: 21px;
-    
-    }  
-    .side-pcontent{
-     color: #767676; font-size: 13px; font-family: Pretendard; font-weight: 400; line-height: 16.80px; 
-     display:flex;
-     justify-content: space-between;
-     gap:5px;
-            
-     }
-     .side-pcontent2{
-     color: #767676; font-size: 13px; font-family: Pretendard; font-weight: 400; line-height: 16.80px; 
-     }
-    } 
-    
-  .side-hover {
-  
-  :hover {
-background-color:#cccccc;
-
-}
-  }
-/* 원그래프 (파이 차트) */
-.pie-chart {
-margin:10px 0 8px 0;
-  width: 140px;
-  height: 140px;
-
-  border-radius: 50%;
-  position: relative;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  
-   background: conic-gradient(
-    #CCCCCC 0% 70%,   /* 70% 까지 파란색 */
-    #CCCCCC 70% 100%  /* 나머지 30%는 금색 */
-  );
-}
-
-/* 원그래프 중간을 비워두기 */
-.pie-chart-inner {
-  position: absolute;
-  top: 17.5%;  /* 150px의 17.5% = 26.25px */
-  left: 17.5%; /* 150px의 17.5% = 26.25px */
-  width: 65%;  /* 150px의 65% = 97.5px */
-  height: 65%; /* 150px의 65% = 97.5px */
-  background-color: white;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-   /* 배경에 사람 이모티콘 이미지 추가 */
-  background-image: url('/images/post/people.png'); /* 실제 이미지 경로로 수정 */
-  background-size: 70%; /* 이미지 크기를 80%로 설정하여 배경보다 작게 만들기 */
-  background-position: center; /* 이미지를 중앙에 배치 */
-  background-repeat: no-repeat; /* 이미지 반복 안 함 */
-}
-
-/* 중앙 텍스트 스타일 */
-.chart-text {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-}    
