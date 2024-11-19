@@ -1,6 +1,7 @@
 package com.prj.users.controller;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.prj.companys.vo.CompanyVo;
+import com.prj.main.service.PdsService;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
+import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
@@ -39,6 +43,9 @@ public class MyPageController {
 	
 	@Autowired
 	private UserMapper userMapper;
+	
+	@Autowired
+	private PdsService pdsService;
 	
 	@RequestMapping("/Home/View")
 	public ModelAndView homeview(HttpServletRequest request, HttpServletResponse responese) {		
@@ -267,9 +274,14 @@ public class MyPageController {
 	//경로설정을 위한 user_idx 구하기
 	ResumeVo rvo = userMapper.getResume(resume_idx);
 	
+	//이미지 정보
+	ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+	String imagePath = ifvo.getImage_path().replace("\\", "/");
 	ModelAndView mv = new ModelAndView();	
 	mv.addObject("resumeVo",vo);
 	mv.addObject("user_idx",rvo.getUser_idx());
+	mv.addObject("ifvo",ifvo);
+	mv.addObject("imagePath",imagePath);
 	mv.setViewName("user/mypage/resume/view");
 	return mv;
 	}
@@ -411,10 +423,23 @@ public class MyPageController {
             						@RequestParam(value="career_cname",required = false) String career_cname,
             						@RequestParam(value="career_description",required = false) String career_description,
             						@RequestParam(value="career_sdate",required = false) String career_sdate,
-            						@RequestParam(value="career_edate",required = false) String career_edate) {
-        
+            						@RequestParam(value="career_edate",required = false) String career_edate,
+            						@RequestParam(value="upfile",required = false) MultipartFile[] uploadfiles,
+            						HashMap<String, Object> map,
+            						@RequestParam(value="upimage",required = false) MultipartFile uploadimage) {
+		
+	   //uploadfiles null 오류 처리
+		if (uploadfiles == null) {
+	        uploadfiles = new MultipartFile[0]; 
+	    }
+		
 		//유저 변수 
-		int user_idx =resumeVo.getUser_idx(); 
+		int user_idx =resumeVo.getUser_idx();
+		
+		//이미지 인서트
+		 String type ="RESUME";
+         map.put("type", type );
+		 pdsService.setimageWrite(map,uploadimage);		  		
 		
 		// 이력서 , 스킬, 경력 인서트
 		userMapper.insertResume(resumeVo);		
@@ -427,6 +452,11 @@ public class MyPageController {
 		//입력한 이력서 idx 도출하기
 		ResumeVo rvo = userMapper.getResumeIdx(user_idx);
 		
+		//파일 인서트
+		int resume_idx = rvo.getResume_idx();
+        map.put("resume_idx", resume_idx );
+		pdsService.serWrite(map,uploadfiles);
+				
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/User/MyPage/Resume/View?resume_idx="+ rvo.getResume_idx());
 		return mv;

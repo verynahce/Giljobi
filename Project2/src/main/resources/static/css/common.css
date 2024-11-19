@@ -1394,6 +1394,36 @@ background-color:#cccccc;
 
 }
   }
+
+/* 말풍선 스타일 */
+.bubble {
+
+       border: 1px solid #cccccc;
+       background-color: #FFFCEA;
+       border-radius: 15px;
+       padding: 7px 16px;
+       display: inline-block;
+       max-width: 300px;
+       word-wrap: break-word;
+       font-size: 16px;
+       font-weight:500;
+       margin: 10px 5px 0px 20px; 
+       color: #333333 
+   }
+ .bubble2 {
+       border: 1px solid #cccccc;
+       background-color: #F1F4FE;
+       border-radius: 15px;
+       padding: 7px 16px;
+       display: inline-block;
+       max-width: 300px;
+       word-wrap: break-word;
+       font-weight:400;
+       font-size: 16px;
+       margin: 0px 5px 10px 5px;
+        color: #333333 
+       
+   }
 /* 원그래프 (파이 차트) */
 .pie-chart {
 margin:10px 0 8px 0;
@@ -1435,3 +1465,26 @@ margin:10px 0 8px 0;
   font-weight: 600;
   color: #333;
 }    
+/*talk*/
+.talk {
+border-bottom: 1px solid #cccccc;
+background-color: #FAFAFA;
+width: 100%;
+
+tr:nth-child(even) {
+border-bottom: 1px solid #cccccc;
+td {
+    text-align: right; /* 오른쪽 정렬 */
+    border-bottom: 1px dashed  #cccccc;
+    img {
+    margin: 0px 20px -15px 5px;
+    padding: 0;
+    }
+    
+    }
+}
+tr:nth-child(6) td{
+border-bottom: none;
+
+}
+}
