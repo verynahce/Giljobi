@@ -15,6 +15,7 @@ import com.prj.main.mapper.MainMapper;
 import com.prj.main.service.PostClickService;
 import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
+import com.prj.main.vo.ClarificationVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
 import com.prj.main.vo.PostClickListVo;
@@ -88,7 +89,10 @@ public class JopsController {
 		Object userObject = session.getAttribute("login");
 		
 		/*추가*/
-		PostCountVo pcvo = mainMapper.getPostCount(post_idx);				
+		PostCountVo pcvo = mainMapper.getPostCount(post_idx);
+		ClarificationVo cfvo = mainMapper.getClarification(Integer.parseInt(post_idx));
+		/* 여기 까지*/
+		
 		ModelAndView mv = new ModelAndView();
 		if (userObject instanceof UserVo) {
 			UserVo userVo = (UserVo) session.getAttribute("login");
@@ -97,6 +101,7 @@ public class JopsController {
 			/*추가*/
 			List<PostClickListVo> list =	mainMapper.getPostClickList(userVo.getUser_idx(),post_idx);
 			postClickService.insertPostClick(userVo.getUser_idx(),Integer.parseInt(post_idx));
+			/* 여기 까지*/
 			
 			mv.addObject("clickList",list);
 			System.out.println("clickList : " + list);
@@ -112,6 +117,7 @@ public class JopsController {
 		mv.addObject("vo",vo);
 		mv.addObject("totPoint",totPoint);
 		mv.addObject("pcount",pcvo);
+		mv.addObject("cfvo",cfvo);
 		mv.setViewName("main/jobs/view");
 		return mv;
 	}

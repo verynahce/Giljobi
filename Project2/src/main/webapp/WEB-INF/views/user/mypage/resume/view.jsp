@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%> 
 <!DOCTYpE html>
 <html>
 <head>
@@ -18,8 +19,6 @@ main {
    display:flex;
      gap:30px;
     font-family: pretendard; 
-  
-
     padding-top:30px; 
     padding-bottom:60px; 
  }
@@ -29,11 +28,9 @@ main {
    height:378px;
    border-radius:15px;
    overflow:hidden;
-   margin:0;
-   
-    position: sticky; 
-    top: 124px; 
-   
+   margin:0; 
+   position: sticky; 
+   top: 124px;    
   
  }
  
@@ -77,13 +74,11 @@ main {
    
  }
 
-
-
  .container {
 
      width:  100%;
      display:flex;
-      flex-direction: column; 
+     flex-direction: column; 
     justify-content: center;
  }
  
@@ -304,7 +299,8 @@ p {
       <h2 class="main-title">${resumeVo.resume_title}</h2>
       <hr>
       <div id="info">
-        <img src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지"/>
+
+        <img src="<spring:url value='/idphoto/${imagePath}'/>" alt="${userVo.user_name}이미지"/>
         <div id="info-content">
            <h3 id="info-title">${resumeVo.user_name}</h3>
            <p>${resumeVo.user_gender},${resumeVo.user_age}세 (${resumeVo.user_year}년)</p>
@@ -432,8 +428,7 @@ p {
      });
  });	 
 	 
- 
- 
+       imagePath1 ='${ifvo.image_path}';
  </script>
  
 </body>
