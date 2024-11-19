@@ -842,6 +842,63 @@ footer {
     }
   }
 }
+
+/* community/list */
+.review-banner2 {
+  height: 250px;
+  background-color: #779AF6;
+  position: relative;
+  margin-bottom: 60px;
+
+  & .banner-inner {
+    width: 1200px;
+    height : 250px;
+    position: absolute;
+    left : 50%;
+    transform : translateX(-50%);
+    & .phone{
+    	position:absolute;
+    	right: 100px;
+    	bottom : 0;
+    	
+    & img{
+    	height : 100%;
+    	display: block;
+    }
+    };
+    
+    & .banner-title{
+    	position : absolute;
+      padding-left : 100px;
+      top : 50%;
+      transform : translateY(-50%);
+    
+    & .myreview{
+    	color : #555;
+    	font-weight : 500;
+    	font-size : 20px;
+    	border-bottom: solid 1px #555;
+    	};
+    
+     & h2 {
+      font-size: 36px;
+      margin-bottom: 6px;
+
+      & span {
+        font-size: 40px;
+      }
+   	 }
+    };
+   
+
+    & p {
+      font-size: 24px;
+      color: #b4a981;
+      font-weight: 500;
+      margin-bottom : 24px;
+    }
+  }
+}
 .company-list {
   display: flex;
   flex-direction: column;
@@ -875,6 +932,59 @@ footer {
         justify-content: space-between;
 
         & .company-info{
+          & h3{
+            font-size: 20px;
+            font-weight: 500;
+          };
+
+          & p{
+            font-size: 14px;
+            color: #767676;
+          }
+        }
+      }
+      & .company-text>p{
+        color: #767676;
+      }
+    }
+  }
+}
+
+.company-list2 {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  & .company-card2 {
+    display: flex;
+    align-items: center;
+    border: solid 1px #ccc;
+    padding: 20px 40px 10px 40px;
+    border-radius: 16px;
+
+    & .bookmark {
+      padding: 12px 40px 12px 16px;
+      border: solid 1px #ccc;
+       color: #767676;
+       border-radius: 8px;
+       background: url("/images/icon/bookmark.png") no-repeat right 12px center;
+    };
+
+    & .company-content2 {
+      display: flex; gap: 50px;
+      & .company-img{
+        width: 120px; height: 120px; background: #F8F8F8;
+        text-align: center; line-height: 120px;
+        border-radius: 16px;
+      }
+      & .company-text2{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        & .company-info2 {
+           display:flex;
+           flex-direction:column;
           & h3{
             font-size: 20px;
             font-weight: 500;
@@ -1272,6 +1382,7 @@ footer {
 .book-off{
 	cursor: pointer
 }
+
 /**/
 /* post 접수방법/사이드 추천공고 =====================================*/
 .sub-applyinfo {
@@ -1488,3 +1599,5 @@ border-bottom: none;
 
 }
 }
+
+
