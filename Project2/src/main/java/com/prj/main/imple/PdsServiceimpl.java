@@ -51,6 +51,12 @@ public class PdsServiceimpl implements PdsService {
 	public ImagefileVo getImagefile(int image_idx) {
 		ImagefileVo ifvo = pdsMapper.getImagefile(image_idx);
 		return ifvo;
+	}
+
+	@Override
+	public List<PortfolioVo> getPortfolio(int resume_idx) {
+		List<PortfolioVo> pfvoList = pdsMapper.getPortfolio(resume_idx);
+		return pfvoList;
 	}		
 		
 	

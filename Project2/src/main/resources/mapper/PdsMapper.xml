@@ -22,14 +22,19 @@
    VALUES (IMAGEFILE_SEQ.NEXTVAL,#{imagename},#{imageext},#{image_path},#{image_type})
   </insert>
   
-  
+  <!-- 이미지 조회 get-->
   <select id="getImagefile">
   SELECT *
   FROM IMAGEFILE
   WHERE IMAGE_IDX = #{image_idx}
   </select>
-
-
+  
+<!-- 첨부파일 조회 list -->
+<select id="getPortfolio">
+  SELECT *
+  FROM PORTFOLIO
+  WHERE RESUME_IDX = #{resume_idx}
+  </select>
 </mapper>
 
 

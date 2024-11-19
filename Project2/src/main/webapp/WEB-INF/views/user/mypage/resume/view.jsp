@@ -275,6 +275,10 @@ p {
     font-weight: 400;
 }
 
+.sub-filedown {
+margin:10px;
+}
+
 </style>
 
 </head>
@@ -299,13 +303,26 @@ p {
       <h2 class="main-title">${resumeVo.resume_title}</h2>
       <hr>
       <div id="info">
-
-        <img src="<spring:url value='/idphoto/${imagePath}'/>" alt="${userVo.user_name}이미지"/>
+      <c:choose>
+      <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image">
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/user-profile.png" alt="User Image">
+       </c:otherwise>
+       </c:choose> 
         <div id="info-content">
            <h3 id="info-title">${resumeVo.user_name}</h3>
            <p>${resumeVo.user_gender},${resumeVo.user_age}세 (${resumeVo.user_year}년)</p>
-           <p>${resumeVo.user_email}</p>
-           <p>${resumeVo.user_tel}</p>
+           <p>${resumeVo.user_tel} &nbsp; &nbsp;|&nbsp; &nbsp; ${resumeVo.user_email}</p>
+        <c:choose> 
+        <c:when test="${not empty resumeVo.user_address}">
+           <p>${resumeVo.user_address}<p/>
+        </c:when>
+        <c:otherwise>
+        <p>주소미기입<p/>
+        </c:otherwise>
+        </c:choose> 
         </div>
       </div>
 
@@ -393,7 +410,16 @@ p {
 	    <hr> 
 	    <div class ="sub-content">${resumeVo.cover_letter}</div>
 	  </div>     
-     
+	  
+	  <c:if test="${not empty pfvoList}">
+      <div class="sub-filed">
+	    <h4 class="sub-title" >파일업로드</h4>
+	    <hr> 
+	    <c:forEach var="p" items="${pfvoList}">
+       <div class="sub-filedown"><img src="/images/resume/link1.png"/>&nbsp;&nbsp;&nbsp;${p.filename}</div>
+       </c:forEach>
+	  </div>     
+     </c:if>
     
           </div>
           <div class="btn-layout">

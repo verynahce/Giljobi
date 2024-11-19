@@ -377,8 +377,15 @@ textarea {
         <div id="info-content">
            <h3 id="info-title">${resumeVo.user_name}</h3>
            <p>${resumeVo.user_gender},${resumeVo.user_age}세 (${resumeVo.user_year}년)</p>
-           <p>${resumeVo.user_email}</p>
-           <p>${resumeVo.user_tel}<p/>
+           <p>${resumeVo.user_tel} &nbsp; &nbsp;|&nbsp; &nbsp; ${resumeVo.user_email}</p>
+          <c:choose> 
+        <c:when test="${not empty resumeVo.user_address}">
+           <p>${resumeVo.user_address}<p/>
+        </c:when>
+        <c:otherwise>
+        <p>주소미기입<p/>
+        </c:otherwise>
+        </c:choose> 
         </div>
       </div>
       

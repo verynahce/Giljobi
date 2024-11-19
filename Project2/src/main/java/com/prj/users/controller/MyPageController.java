@@ -18,6 +18,7 @@ import com.prj.main.vo.CityVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
 import com.prj.main.vo.ImagefileVo;
+import com.prj.main.vo.PortfolioVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
@@ -274,14 +275,23 @@ public class MyPageController {
 	//경로설정을 위한 user_idx 구하기
 	ResumeVo rvo = userMapper.getResume(resume_idx);
 	
+	//파일 정보
+	List<PortfolioVo> pfvoList = pdsService.getPortfolio(resume_idx);
+
 	//이미지 정보
 	ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
-	String imagePath = ifvo.getImage_path().replace("\\", "/");
+	String imagePath = "";
+	if(ifvo==null) {
+		 imagePath = "0";
+	}else {
+		imagePath = ifvo.getImage_path().replace("\\", "/");
+	}
+	
 	ModelAndView mv = new ModelAndView();	
 	mv.addObject("resumeVo",vo);
 	mv.addObject("user_idx",rvo.getUser_idx());
-	mv.addObject("ifvo",ifvo);
 	mv.addObject("imagePath",imagePath);
+	mv.addObject("pfvoList",pfvoList);
 	mv.setViewName("user/mypage/resume/view");
 	return mv;
 	}

@@ -425,7 +425,14 @@ padding: 4px 0px;
            <h3 id="info-title">${userVo.user_name}</h3>
            <p>${userVo.user_gender},${age}세 (${year}년)</p>
            <p>${userVo.user_tel} &nbsp; &nbsp;|&nbsp; &nbsp; ${userVo.user_email}</p>
-           <p>${userVo.user_tel}<p/>
+          <c:choose> 
+        <c:when test="${not empty userVo.user_address}">
+           <p>${userVo.user_address}<p/>
+        </c:when>
+        <c:otherwise>
+        <p>주소미기입<p/>
+        </c:otherwise>
+        </c:choose> 
         </div>
       </div>
         <input id="idPhoto" type="file" name="upimage" class="upimage" style="display:none"accept=".jpg, .jpeg, .png"/>
