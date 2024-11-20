@@ -285,9 +285,24 @@
          EDU_ID = #{edu_id},
          EB_NAME = #{eb_name},
          COVER_LETTER = #{cover_letter},
+         IMAGE_IDX = (SELECT MAX(IMAGE_IDX) FROM IMAGEFILE),
+         RESUME_TITLE = #{resume_title},
          RESUME_FDATE = SYSDATE    
      WHERE  RESUME_IDX=#{resume_idx}
      </update>
+     
+     <update id="updateResumeximage">
+     UPDATE RESUME
+     SET DUTY_ID = #{duty_id}, 
+         CITY_ID =#{city_id},
+         EMP_ID = #{emp_id},
+         EDU_ID = #{edu_id},
+         EB_NAME = #{eb_name},
+         COVER_LETTER = #{cover_letter},
+         RESUME_TITLE = #{resume_title},
+         RESUME_FDATE = SYSDATE    
+     WHERE  RESUME_IDX=#{resume_idx}
+     </update>  
      
      <update id="updateSkill">
 		UPDATE RESUME_SKILL

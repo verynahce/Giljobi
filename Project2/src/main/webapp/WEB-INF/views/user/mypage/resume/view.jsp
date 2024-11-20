@@ -275,9 +275,6 @@ p {
     font-weight: 400;
 }
 
-.sub-filedown {
-margin:10px;
-}
 
 </style>
 
@@ -305,10 +302,10 @@ margin:10px;
       <div id="info">
       <c:choose>
       <c:when test="${imagePath != '0'}">
-         <img src="/image/read?path=${imagePath}" alt="User Image">
+         <img src="/image/read?path=${imagePath}" alt="User Image" >
        </c:when> 
        <c:otherwise>
-         <img src="/images/icon/user-profile.png" alt="User Image">
+         <img src="/images/icon/user-profile.png" alt="User Image" >
        </c:otherwise>
        </c:choose> 
         <div id="info-content">
@@ -326,6 +323,7 @@ margin:10px;
         </div>
       </div>
 
+        
       <div class="sub-filed">
         <h4 class="sub-title">학력</h4>
         <hr>
@@ -416,7 +414,12 @@ margin:10px;
 	    <h4 class="sub-title" >파일업로드</h4>
 	    <hr> 
 	    <c:forEach var="p" items="${pfvoList}">
-       <div class="sub-filedown"><img src="/images/resume/link1.png"/>&nbsp;&nbsp;&nbsp;${p.filename}</div>
+       <div class="sub-filedown">
+         <a href="/filedownload/${p.portfolio_idx}">
+       <img src="/images/resume/link1.png"/>&nbsp;&nbsp;&nbsp;
+       ${p.filename}
+       </a>
+       </div>
        </c:forEach>
 	  </div>     
      </c:if>

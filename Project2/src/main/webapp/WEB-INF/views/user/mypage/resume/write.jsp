@@ -338,58 +338,8 @@ textarea {
     border: 2px solid #ccc;
 }   
 
-.file-title {
-display:flex;
-justify-content: space-between;
-align-items: baseline;
-}
 
-#btnAddFile {
-width: 180px;
-height: 30px;
-padding: 0;
-background-color: #FFFCEA;
-border: 1px solid #CCCCCC;
-border-radius: 4px;
- cursor: pointer;
-}
 
-.input-file-button {
-display:inline;
-background-color: #FFFCEA;
-border: 1px solid #CCCCCC;
-border-radius: 4px;
-margin-right:5px;
- cursor: pointer;
- padding: 7px 7px 5.4px 7px;
- width: 63px;
- color:#333333;
- font-size: 14px;
- font-weight: 400;
-}
-
-.file-output {
-display:block;
-margin:15px;
-}
-.file-name{
- display:inline;
- padding: 7px 10px 5.4px 10px;
- border: 1px solid #CCCCCC;
- border-radius: 4px;
- background-color: #ffffff;
-  font-size: 14px;
- font-weight: 400;
- color:#333333;
-}
-
-.idPhto2 {
-display:block;
-margin: 7px 18px;
-padding: 4px 0px;
- width: 85px;
- text-align: center;
- }
 </style>
 
 </head>
@@ -547,8 +497,7 @@ padding: 4px 0px;
       
 	    <h4 class="sub-title" >파일업로드 </h4><input type="button" id="btnAddFile" value="파일추가(최대 100M Byte)"/>
 	      </div> 
-	    <hr> 
-	 
+	    <hr> 	 
 	    <div class="file">
        </div>
 	  </div>     
@@ -595,20 +544,43 @@ padding: 4px 0px;
 		  $('.file').append(tag);
 		  
 		  num++
+		  console.log(num);
 		})
-		
+
 		$(document).on('change', 'input[type="file"]', function () { 
        var files = $(this)[0].files;
        var fileArr = [];
        for (var i = 0; i < files.length; i++) {
-        fileArr.push(files[i].name);
+    	   
+    	   let num2 = num-1;
+ 		  console.log(num2);
+    	   let deleteX = '<span class="deleteX'+num2
+    	   + '"><img src="/images/resume/deletex.png"/>&nbsp;<span>&nbsp;&nbsp;&nbsp;'
+ 
+    	   
+        fileArr.push( deleteX  + files[i].name );
     }
      
     var fileList = fileArr.join(', ');
     $(this).closest('.file1').find('.file-name').html(fileList);
     
-});
+});     	 //파일삭제
+		for (var i = 1; i < 21; i++) {
+		    (function(index) {
+		        $(document).on('click', '.deleteX' + index, function () { 
+		            $(this).closest('.file-name').html('선택된 파일이 없습니다.');
+		            console.log($('#input-file' + index).val());
+		            $('#input-file' + index).val(''); // index에 맞는 파일 입력 필드 초기화
+		            console.log($('#input-file' + index).val());
+		        });
+		    })(i);
+		}
+	
 
+
+
+	
+		
 //변수
 const formEl = document.getElementsByTagName('form')[0];	 
 const links = document.querySelectorAll(".link");
