@@ -227,7 +227,8 @@
     U.USER_GENDER,
     SUBSTR(U.USER_BIRTHDATE, 1, 4) AS USER_YEAR,
     U.USER_TEL,
-    U.USER_EMAIL,              
+    U.USER_EMAIL, 
+    U.USER_ADDRESS,             
     RESUME_TITLE,
     EB_NAME,
     ED.EDU_NAME,
@@ -242,7 +243,8 @@
     COVER_LETTER, 
     RESUME_HIT, 
     RESUME_CDATE, 
-    RESUME_FDATE
+    RESUME_FDATE,
+    IMAGE_IDX
 	FROM
 	    RESUME R LEFT JOIN DUTY D ON R.DUTY_ID = D.DUTY_ID
 	           LEFT JOIN CITY C ON R.CITY_ID = C.CITY_ID
@@ -318,11 +320,11 @@
      
      <insert id="insertResume">
      INSERT INTO RESUME (RESUME_IDX,USER_IDX,DUTY_ID,CITY_ID,EMP_ID,EDU_ID,
-		RESUME_TITLE,EB_NAME,COVER_LETTER)
+		RESUME_TITLE,EB_NAME,COVER_LETTER,IMAGE_IDX)
 		VALUES 
 		(
 		(SELECT NVL(MAX(RESUME_IDX), 0) + 1 FROM RESUME),
-		#{user_idx},#{duty_id},#{city_id},#{emp_id},#{edu_id},#{resume_title},#{eb_name},#{cover_letter}
+		#{user_idx},#{duty_id},#{city_id},#{emp_id},#{edu_id},#{resume_title},#{eb_name},#{cover_letter},(SELECT NVL(MAX(IMAGE_IDX), 0) FROM IMAGEFILE)
 		)    
      </insert>
      

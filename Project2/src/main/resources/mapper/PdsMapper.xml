@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prj.main.mapper.PdsMapper">  
+
+   <!-- 파일 저장 -->
+  <insert id="setFileWriter">
+  <foreach collection="fileList" item="file" index="i" 
+         open="INSERT ALL" 
+         close="SELECT * FROM DUAL" 
+         separator="">
+    INTO PORTFOLIO VALUES (
+        (SELECT NVL(MAX(PORTFOLIO_IDX), 0) FROM PORTFOLIO) + #{i} + 1,
+        #{file.filename},
+        #{file.fileext},
+        #{file.file_path},
+        #{file.resume_idx} )
+  </foreach>
+  </insert>
+  
+  <insert id="setimageWriter">
+   INSERT INTO IMAGEFILE
+   VALUES (IMAGEFILE_SEQ.NEXTVAL,#{imagename},#{imageext},#{image_path},#{image_type})
+  </insert>
+  
+  <!-- 이미지 조회 get-->
+  <select id="getImagefile">
+  SELECT *
+  FROM IMAGEFILE
+  WHERE IMAGE_IDX = #{image_idx}
+  </select>
+  
+<!-- 첨부파일 조회 list -->
+<select id="getPortfolio">
+  SELECT *
+  FROM PORTFOLIO
+  WHERE RESUME_IDX = #{resume_idx}
+  </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

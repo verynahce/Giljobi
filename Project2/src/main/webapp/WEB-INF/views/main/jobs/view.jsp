@@ -373,56 +373,7 @@ cursor: pointer;
 	font-weight: 500;
 	
 }
-.talk {
-border-bottom: 1px solid #cccccc;
-background-color: #FAFAFA;
-width: 100%;
 
-tr:nth-child(even) {
-border-bottom: 1px solid #cccccc;
-td {
-    text-align: right; /* 오른쪽 정렬 */
-    border-bottom: 1px dashed  #cccccc;
-    img {
-    margin: 0px 20px -15px 5px;
-    padding: 0;
-    }
-    
-    }
-}
-tr:nth-child(6) td{
-border-bottom: none;
-
-}
-}
-     .bubble {
-     
-            border: 1px solid #cccccc;
-            background-color: #FFFCEA;
-            border-radius: 15px;
-            padding: 7px 16px;
-            display: inline-block;
-            max-width: 300px;
-            word-wrap: break-word;
-            font-size: 16px;
-            font-weight:500;
-            margin: 10px 5px 0px 20px; 
-            color: #333333 
-        }
-      .bubble2 {
-            border: 1px solid #cccccc;
-            background-color: #F1F4FE;
-            border-radius: 15px;
-            padding: 7px 16px;
-            display: inline-block;
-            max-width: 300px;
-            word-wrap: break-word;
-            font-weight:400;
-            font-size: 16px;
-            margin: 0px 10px 10px 5px;
-             color: #333333 
-            
-        }
 
 </style>
 
@@ -583,32 +534,46 @@ border-bottom: none;
       
        </table>
      </div>
-     
+      <c:if test="${not empty cfvo}">
            <div class="sub-filed">
 	    <h4 class="sub-title">인사담당자 TALK</h4>
 	    <hr> 
 	      </div>
 	    <table class="talk">
 		<tr>
-	      <td><div class="bubble">1. 근무환경은 어떤가요?</div></td>
+	      <td>
+	      <div class="bubble">1. 근무환경은 어떤가요?</div>
+	      </td>
 	    </tr>
 	    <tr>
-	     <td><div class="bubble2">자율복장</div><div class="bubble2">대부분 2030대</div><img src="/images/post/notebook.png" alt="면접관"></td>
+	     <td>    
+	     <div class="bubble2">${cfvo.cloth}</div>  
+	     <div class="bubble2">${cfvo.age}</div>
+	     <c:if test="${not empty cfvo.situation_etc}">
+	     <div class="bubble2">${cfvo.situation_etc}</div>
+	     </c:if>
+	     <img src="/images/post/notebook.png" alt="면접관"></td>
 	    </tr>
 	    <tr>
 	      <td><div class="bubble">2.복지 및 처우는 어떻게 되나요?</div></td>
 	    </tr>
 	    <tr>
-	     <td><div class="bubble2">생일반차사용</div><div class="bubble2">리프레쉬휴가</div><img src="/images/post/notebook.png" alt="면접관"></td>
+	     <td>
+	     <div class="bubble2">${cfvo.prek}</div>
+	     <div class="bubble2">${cfvo.pto}</div>
+	    <c:if test="${not empty cfvo.prek_etc}">
+	     <div class="bubble2">${cfvo.prek_etc}</div>
+	     </c:if>
+	     <img src="/images/post/notebook.png" alt="면접관"></td>
 	    </tr>
 	    <tr>
 	      <td><div class="bubble">3.면접은 어떻게 진행되나요?</div></td>
 	    </tr>
 	    <tr>
-	     <td><div class="bubble2">수시면접</div><div class="bubble2">면접자1명 대 다수</div><img src="/images/post/notebook.png" alt="면접관"></td>
+	     <td><div class="bubble2">${cfvo.meeting_num}</div><div class="bubble2">${cfvo.meeting_count}</div><img src="/images/post/notebook.png" alt="면접관"></td>
 	    </tr>
 	   </table>
-	
+	</c:if>
 	  
      <div class="sub-filed">
         <h4 class="sub-title" >유의사항</h4>
@@ -667,8 +632,7 @@ border-bottom: none;
   $(function(){
 
 	$('#btn-apply').on('click', function(){
-		$('.overlay').show();
-		
+		$('.overlay').show();		
 				
 	})
 	$('.s-delete').on('click', function(){
@@ -682,10 +646,8 @@ border-bottom: none;
 	$(".overlay").on('click', function(e) {
      if($(e.target).closest('.support').length == 0) { 
           $(".overlay").hide();
-     }
-	
-	})
-	
+     }	
+	})	
 	
 	
 	  window.addEventListener('wheel', e => {
@@ -698,16 +660,12 @@ border-bottom: none;
 		});
 	
 	
-	
 	$(".apply-val").attr("href","Apply?post_idx=${vo.post_idx}&resume_idx=0")
 		$(".resume-input").click(function(e){
 			console.log(e.target.value)
-			$(".apply-val").attr("href","Apply?post_idx=${vo.post_idx}&resume_idx="+e.target.value)
-			
+			$(".apply-val").attr("href","Apply?post_idx=${vo.post_idx}&resume_idx="+e.target.value)			
 		})
-		
-	
-		
+
       const total = ${pcount.total_count};
 	  const malePercentage = (${pcount.male_count} / total) * 100;
       const femalePercentage = (${pcount.female_count}  / total) * 100;	
@@ -757,8 +715,6 @@ border-bottom: none;
 	    // 초기 실행
 	    updateTimer();
 	  
-	  
-	
   })
 
   </script>

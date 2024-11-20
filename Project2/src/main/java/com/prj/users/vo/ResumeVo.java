@@ -20,5 +20,7 @@ public class ResumeVo {
 	private int resume_hit;
 	private String resume_cdate;
 	private String resume_fdate;
+	
+	private int image_idx;
 
 }
