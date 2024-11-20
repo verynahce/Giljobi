@@ -709,6 +709,13 @@
    INSERT INTO POST_CLICK (PC_IDX,USER_IDX,POST_IDX) 
    VALUES ( POST_CLICK_SEQ.NEXTVAL,#{arg0},#{arg1})
    </insert>
+   
+   
+   <select id="getClarification">
+   SELECT *
+   FROM CLARIFICATION
+   WHERE POST_IDX = #{post_idx}
+   </select>
 </mapper>
 
 

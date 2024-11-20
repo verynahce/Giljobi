@@ -16,6 +16,7 @@ public class ResumeListVo {
 	private String 	user_year;
 	private String 	user_tel;
 	private String 	user_email;
+	private String 	user_address;
 	private String 	resume_title;
 	private String 	eb_name;
 	private String 	edu_name;
@@ -33,4 +34,5 @@ public class ResumeListVo {
 	private int 	resume_hit; 
     private String 	resume_cdate; 
     private String 	resume_fdate;
+    private int image_idx;
 }
