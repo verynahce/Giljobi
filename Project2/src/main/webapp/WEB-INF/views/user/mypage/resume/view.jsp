@@ -406,7 +406,7 @@ p {
       <div class="sub-filed">
 	    <h4 class="sub-title" >자기소개서</h4>
 	    <hr> 
-	    <div class ="sub-content">${resumeVo.cover_letter}</div>
+	    <div class ="sub-content"><pre>${resumeVo.cover_letter}</pre>    </div>
 	  </div>     
 	  
 	  <c:if test="${not empty pfvoList}">

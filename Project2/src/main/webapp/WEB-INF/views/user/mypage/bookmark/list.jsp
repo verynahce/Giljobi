@@ -376,7 +376,7 @@
         <c:forEach var="item" items="${BookmarkList}">
          <table class="post-box">
          <tr>
-          <td id="postname"><a href="#">${item.company_name}</a></td>
+          <td id="postname"><a href="/Main/Review/View?company_idx=${item.company_idx}">${item.company_name}</a></td>
           <td class="postbook"><input type="image" src="/images/bookmark/staron.png" class="star" alt="${item.ub_idx}"data-co="${item.company_idx}" data-user="${item.user_idx}"/></td>
          </tr>
          <tr>
@@ -403,7 +403,7 @@
        	   <td><span id="coname">${item.company_name}</span><br>
        	   <span class="posttitle"><a href="/User/MyPage/BookMark/View?post_idx=${item.post_idx}&user_idx=${item.user_idx}">${item.post_title}</a></span></td>
        	   <td>${item.post_ddate}</td>
-       	   <td><a href="" class="link"><img src="/images/applybtn.png" class="img2 resume" data-hover="/images/applybtn2.png" data-idx="${item.post_idx}" data-scout="${item.scout_idx}"></a></td>
+       	   <td><a href="" class="link"><img src="/images/applybtn.png" class="img2 resume" data-hover="/images/applybtn2.png" data-date="${item.post_ddate}"data-idx="${item.post_idx}" data-scout="${item.scout_idx}"></a></td>
        	  </tr>
        	  </c:forEach>
        	 </table>
@@ -487,14 +487,27 @@ $(function(){
     for (var i = 0; i < abtns.length; i++) {
  	 $(abtns[i]).on('click', function(event){
  	  		event.preventDefault();
- 	 		$('.overlay').fadeIn();  
- 	 		
+ 	  		
+ 	 	  const dday = $(this).data('date');
+ 		  let ddayDate = dday.replace(/[^\d]/g, '-').replace(/--+/g, '-').replace(/-$/, '');
+ 		  const DDate = new Date(ddayDate + "T23:59:59")
+ 		  const cTime = new Date();
+ 		  
+ 		 if (cTime < DDate) {
+
+ 	 		$('.overlay').fadeIn();  	 		
  	 const post_idx = $(this).data('idx');	
  	 const scout_idx = $(this).data('scout');	
  	 console.log(scout_idx);
  	 
  	 $('[name="post_idx"]').val(post_idx);   	
  	 $('[name="scout_idx"]').val(scout_idx);
+ 		}else {
+ 			alert('마감된 공고입니다 ')
+ 			
+ 			//에이젝스 디비부분
+ 			
+ 		}
  	 	});
   }
            $('.btn').on('click', function() {

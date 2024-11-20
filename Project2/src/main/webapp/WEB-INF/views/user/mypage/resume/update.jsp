@@ -799,9 +799,12 @@ $('#techList').on('click', '.skillDelete', function() {
 //폼 제출 시 Enter 키 입력방치처리
 $(formEl).on('keydown', function(event) {
    if (event.keyCode === 13) {
-       event.preventDefault(); 
+	   const textarea = document.querySelector('#cover'); // textarea의 id를 사용하여 선택
+	    if (event.key === 'Enter' && document.activeElement !== textarea) {
+	        event.preventDefault(); // textarea가 아닌 경우에만 기본 동작 방지
+	    }
    }
-});
+});;
  
 
  //폼 제출시 null값 방지
