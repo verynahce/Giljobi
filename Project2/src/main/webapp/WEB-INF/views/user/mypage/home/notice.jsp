@@ -159,6 +159,80 @@
    font-weight:500;
    font-size:17px;
  }
+  /* 메시지 리스트 */
+ .notice-list {
+     list-style: none;
+     padding: 0;
+     margin: 0;
+ }
+
+ .notice-item {
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     border-bottom: 1px solid #ddd;
+     padding: 15px 10px;
+     transition: background-color 0.3s ease;
+ }
+
+ .notice-item:last-child {
+     border-bottom: none;
+ }
+
+ .notice-item:hover {
+     background-color: #f5f5f5;
+ }
+
+ /* 메시지 내용 */
+ .notice-info {
+     display: flex;
+     align-items: center;
+     gap: 15px;
+ }
+
+ .notice-icon {
+     width: 20px;
+     height: 20px;
+     color: #007bff;
+ }
+
+ .notice-title {
+     font-size: 16px;
+     font-weight: bold;
+     color: #333;
+     margin: 0;
+ }
+
+ .notice-desc {
+     font-size: 14px;
+     color: #666;
+ }
+
+ .notice-date {
+     font-size: 12px;
+     color: #999;
+     text-align: right;
+ }
+
+ /* 버튼 스타일 */
+ .notice-actions {
+     display: flex;
+     align-items: center;
+     gap: 10px;
+ }
+
+ .delete-btn {
+     background: none;
+     border: none;
+     color: #ff6b6b;
+     font-size: 18px;
+     cursor: pointer;
+     transition: color 0.3s ease;
+ }
+
+ .delete-btn:hover {
+     color: #d63a3a;
+ }
  
 </style>
 </head>
@@ -174,50 +248,39 @@
          <tr><td><a href="/User/MyPage/Resume/List?user_idx=${user_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">이력서</a></td></tr>
          <tr><td><a href="/User/MyPage/BookMark/List?user_idx=${user_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심기업 / 받은제의</a></td></tr>
          <tr><td><a href="/User/MyPage/ApplyList/List?user_idx=${user_idx}" class="active-color"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
-         <tr><td><a href="/User/MyPage/Notice/List">수신함</a></td></tr>
+         <tr><td><a href="/User/MyPage/Notice/List?user_idx=${user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/Mail.svg">수신함</a></td></tr>
         </table>
       </div>
       <div class="container">
        <div>
-     	<h2 id="title">지원내역</h2>
+     	<h2 id="title">수신함</h2>
        </div>
        <div class="content">
        	<div class="subtitles">
-       	 <table class="subtitle">
-       	  <tr>
-       	   <th>지원일</th>
-       	   <th>회사명/공고제목</th>
-       	   <th>모집마감일</th>
-       	   <th colspan="2">지원현황</th>
-       	  </tr>
-       	  
-       	  <c:forEach var="item" items="${applyList}">
-       	  <tr>
-       	  <c:choose>    
-       	  <c:when test="${item.company_idx == 0}">
-       	   <td>${item.appli_date}</td>
-       	   <td ><a href="/User/MyPage/ApplyList/View?post_idx=${item.post_idx}&user_idx=${user_idx}"><span id="coname">탈퇴회원</span><br><span class="posttitle">${item.post_title}</span></a></td>
-       	   <td>~${item.post_ddate}</td>
-       	   <td>${item.appli_status}</td>
-       	   <td><a href="/User/MyPage/ApplyList/Delete?appli_idx=${item.appli_idx}" class="link"><img src="/images/cancel.png" class="img2" data-hover="/images/cancel2.png"></a></td>
-       	  </c:when> 
-       	  <c:otherwise>
-       	   <td>${item.appli_date}</td>
-       	   <td ><a href="/User/MyPage/ApplyList/View?post_idx=${item.post_idx}&user_idx=${user_idx}"><span id="coname">${item.company_name}</span><br><span class="posttitle">${item.post_title}</span></a></td>
-       	   
-       	   <td>~${item.post_ddate}</td>
-       	   <td>${item.appli_status}</td>
-       	   <td><a href="/User/MyPage/ApplyList/Delete?appli_idx=${item.appli_idx}" class="link"><img src="/images/cancel.png" class="img2" data-hover="/images/cancel2.png"></a></td>
-       	  </c:otherwise>
-       	  </c:choose> 	  
-       	  </tr>
-       	  </c:forEach>
-         </table>
+	        <ul class="notice-list">
+	            <%-- 메시지 항목 반복 렌더링 --%>
+	                <li class="notice-item">
+	                    <div class="notice-info">
+	                        <input type="checkbox" class="notice-checkbox" />
+	                        <div>
+	                            <p class="notice-title">${notice.notification}제목</p>
+	                            <p class="notice-desc">${notice.subnoti}부제목</p>
+	                        </div>
+	                    </div>
+	                    <div class="notice-actions">
+	                        <span class="notice-date">${notice.recieveddate}수신일</span>
+	                        <button class="delete-btn" onclick="deleteNotice(${notice.notice_idx})">
+	                            🗑️
+	                        </button>
+	                    </div>
+	                </li>
+	        </ul>
        	</div>
        </div>
       </div>
    </div>
  </div>
+
 
 </main>
    <%@include file="/WEB-INF/include/footer.jsp" %>
@@ -250,9 +313,32 @@ $(function(){
         }
     });
     
-})         
-    
+})   
 </script>
 
+
+
+<script>
+    function deleteNotice(notice_idx) {
+        if (confirm("삭제하시겠습니까?")) {
+            // REST API DELETE 요청 보내기
+            fetch(`/api/Notice/${notice_idx}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("삭제되었습니다.");
+                    location.reload();
+                } else {
+                    alert("삭제 실패!");
+                }
+            })
+            .catch(error => {
+                console.error("에러 발생:", error);
+                alert("에러가 발생했습니다.");
+            });
+        }
+    }
+</script>
 </body>
 </html>
