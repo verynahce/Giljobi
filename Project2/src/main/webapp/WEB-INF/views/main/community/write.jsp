@@ -14,7 +14,6 @@
 <style>
 /*오버레이*/
 .overlay {
-  
   position: fixed;
   top: 0;
   left: 0;
@@ -23,85 +22,73 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   display:none;
-    transition: all 0.3s  ease-in;
+  transition: all 0.3s  ease-in;
  }
 
  /*body*/
 .inner {
-display:flex;
-justify-content: space-between;
-
+  display:flex;
+  justify-content: space-between;
 }
+
 main {
-   background-color:#F0F2F5;
-
+  background-color:#F0F2F5;
 }
+
  .innercontents {
-    display:flex;
-    gap:30px;
-    font-family: pretendard; 
-  
-    padding-top:30px; 
-    padding-bottom:60px; 
- }
+  display:flex;
+  gap:30px;
+  font-family: pretendard; 
+  padding-top:30px; 
+  padding-bottom:60px; 
+}
 
  .container {
-
-     width:  100%;
-     display:flex;
-      flex-direction: column; 
-    justify-content: center;
- }
+  width:  100%;
+  display:flex;
+  flex-direction: column; 
+  justify-content: center;
+}
  
-  .contain-body {
-    width:940px;
-    min-height: 1200px;
-    background-color: white;
-    border-radius: 20px;
-    margin: 0px auto 60px  auto  ;
-    padding: 0 60px 50px 60px;
-  }
+.contain-body {
+  width:940px;
+  min-height: 1200px;
+  background-color: white;
+  border-radius: 20px;
+  margin: 0px auto 60px  auto  ;
+  padding: 0 60px 50px 60px;
+}
 
 .main-title {
-    color: #ccc;
-    font-size: 36px; 
-    font-weight: 600; 
-    line-height: 50.40px;
-    padding-bottom: 14px; 
-    padding-top: 30px;
-     }
+  color: #ccc;
+  font-size: 36px; 
+  font-weight: 600; 
+  line-height: 15.40px;
+  height:70px;
+}
+
+.title-text {
+  width:100%;
+  border:none;
+  resize:none;
+  font-size:30px;
+  outline:none;
+  padding-left:10px;
+  padding-top:15px;
+  max-height:70px;
+}
+
+.title-text::placeholder {
+  font-size:30px;
+  font-weight:500;
+}
  
  #info {
-     display: flex; 
-     padding-top:23px;
-
-    #info-content {
-    padding-left:23px;
-    #star-size1 {
-      width: 15px;
-    height: 15px;
-    }    
-   }    
-#info-title {
-    
-    color: #333333; 
-    font-size: 28px; 
-    font-weight: 600; 
-    line-height: 39.20px; 
-}        
-p {
-    color: #555555; 
-    font-size: 16px; 
-    font-weight: 400; 
-    line-height: 22.40px;
-    margin-top: 4px;
-    margin-bottom: 3px;
-}   
- img {
-     width: 120px;
-    height: 120px;
-    }  
-    }
+  display: flex; 
+  padding-top:23px;
+  padding-left:10px;
+  gap:15px;
+}
 
  /*서브 분야들*/ 
  .sub-filed{    
@@ -210,6 +197,13 @@ p {
   font-size:20px;
 }
 
+.upload {
+  display:block;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
 </style>
 
 </head>
@@ -249,10 +243,11 @@ p {
       <div class="innercontents">
       <div class="container" >
       <div class="contain-body">       
-      <h2 class="main-title"><!-- ${resumeVo.resume_title} -->제목을 입력해주세요.</h2>
+      <h2 class="main-title"><textarea class="title-text" placeholder="제목을 입력하세요."></textarea></h2>
       <hr class="divider">
       <div id="info">
-        <a class="upload" href="">링크</a>&nbsp;<a class="upload" href="">사진</a>
+        <span><a class="upload" href=""><img src="/images/community/link.png">링크</a></span>&nbsp;
+        <span><a class="upload" href=""><img src="/images/community/photo.png">사진</a></span>
       </div>
       <hr class="divider">
       <div class="sub-filed">
