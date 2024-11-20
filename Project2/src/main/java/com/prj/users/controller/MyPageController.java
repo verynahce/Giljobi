@@ -18,6 +18,7 @@ import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
 import com.prj.users.mapper.UserMapper;
+import com.prj.users.notice.service.NoticeService;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.EduVo;
 import com.prj.users.vo.ResumeCareerVo;
@@ -40,6 +41,7 @@ public class MyPageController {
 	@Autowired
 	private UserMapper userMapper;
 	
+    
 	@RequestMapping("/Home/View")
 	public ModelAndView homeview(HttpServletRequest request, HttpServletResponse responese) {		
 		
@@ -468,7 +470,4 @@ public class MyPageController {
 		
 	}
 
-	
-	
-	
 }
