@@ -304,7 +304,19 @@ public class MyPageController {
 	
 	//경로 설정을 위한 user_idx 구하기
 	ResumeVo rvo = userMapper.getResume(resume_idx);
+    
+	//이미지 정보
+	ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+	String imagePath = "";
+	if(ifvo==null) {
+		 imagePath = "0";
+	}else {
+		imagePath = ifvo.getImage_path().replace("\\", "/");
+	}
 
+	//파일 정보
+	List<PortfolioVo> pfvoList = pdsService.getPortfolio(resume_idx);
+	
 	//필터 정보
 	List<EduVo> edVo =userMapper.getEduList();
 	List<CityVo> cVo =userMapper.getCityList();
@@ -337,7 +349,9 @@ public class MyPageController {
 	mv.addObject("Duty",dVo);
 	mv.addObject("Emp",epVo);
 	mv.addObject("Skill",sVo);
-
+	mv.addObject("imagePath",imagePath);
+	mv.addObject("pfvoList",pfvoList);
+	mv.addObject("ifvo",ifvo);
 	
 	mv.setViewName("user/mypage/resume/update");
 	return mv;
@@ -350,18 +364,35 @@ public class MyPageController {
 			                         @RequestParam(value="career_cname",required = false) String career_cname,
 			                         @RequestParam(value="career_description",required = false) String career_description,
 			                         @RequestParam(value="career_sdate",required = false) String career_sdate,
-			                         @RequestParam(value="career_edate",required = false) String career_edate) {
-		
-	//이력서 정보 업데이트	
-	userMapper.updateResume(resumeVo);	
+			                         @RequestParam(value="career_edate",required = false) String career_edate,
+			                         HashMap<String, Object> map,
+	            				     @RequestParam(value="upimage",required = false) MultipartFile uploadimage,
+	            				     @RequestParam(value="upfile",required = false) MultipartFile[] uploadfiles) {
+
+    // null값 처리 파일 ,이미지
+    if (uploadfiles == null) {
+    uploadfiles = new MultipartFile[0];  }	 
+   
+     //이미지 업데이트	
+	if(uploadimage != null && !uploadimage.isEmpty()) {	
+		 String type ="RESUME";
+         map.put("type", type );	
+		pdsService.updateimage(uploadimage,resumeVo.getImage_idx(),map,resumeVo);
+	 }else {
+		//이력서 정보 업데이트
+	userMapper.updateResumeximage(resumeVo);		 
+		 
+	 }
 	
-	
+	//파일 인서트 
+	int resume_idx = resumeVo.getResume_idx();
+    map.put("resume_idx", resume_idx );
+	pdsService.serWrite(map,uploadfiles);
+
     //기술 정보 업데이트   	
 	  //기술이 이미 INSERT 되있는지 확인-> skill_name 값이 존재할때 : 있으면 UPDATE / 없으면 INSERT 진행
 	  //                              -> 값이추가 되지 않은경우(null) : 원래 값이 있다면 DELETE 진행
-	ResumeSkillVo svo = userMapper.getSkill(resumeVo);
-	 
-	
+	ResumeSkillVo svo = userMapper.getSkill(resumeVo);	 	
 	if(skill_name != null ) {
 	  if(svo != null) {
 	     userMapper.updateSkill(skill_name,resumeVo.getResume_idx()); 
@@ -484,9 +515,10 @@ public class MyPageController {
 		userMapper.deleteSkill(resume_idx);
 		userMapper.deleteApplyR(resume_idx);
 		userMapper.deleteBookmarkR(resume_idx);
-		userMapper.deleteResume(resume_idx);
-		
-		
+		pdsService.deletefile(resume_idx);	
+		pdsService.deleteImage(rvo.getImage_idx());	
+		userMapper.deleteResume(resume_idx);		
+
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/User/MyPage/Resume/List?user_idx="+ user_idx);
 		return mv;

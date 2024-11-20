@@ -1599,5 +1599,66 @@ border-bottom: none;
 
 }
 }
+/* resume  파일   =====================================*/
+.sub-filedown {
+margin:10px;
+}
+.sub-filedown a:hover {
+background-color:#E3E3E3;
+}
+.file-title {
+display:flex;
+justify-content: space-between;
+align-items: baseline;
+}
 
+#btnAddFile {
+width: 180px;
+height: 30px;
+padding: 0;
+background-color: #FFFCEA;
+border: 1px solid #CCCCCC;
+border-radius: 4px;
+ cursor: pointer;
+}
 
+.input-file-button {
+display:inline;
+background-color: #FFFCEA;
+border: 1px solid #CCCCCC;
+border-radius: 4px;
+margin-right:5px;
+ cursor: pointer;
+ padding: 7px 7px 5.4px 7px;
+ width: 63px;
+ color:#333333;
+ font-size: 14px;
+ font-weight: 400;
+}
+
+.file-output {
+display:block;
+margin:15px;
+}
+.file-name{
+ display:inline;
+ padding: 7px 10px 5.4px 10px;
+ border: 1px solid #CCCCCC;
+ border-radius: 4px;
+ background-color: #ffffff;
+  font-size: 14px;
+ font-weight: 400;
+ color:#333333;
+}
+
+.idPhto2 {
+display:block;
+margin: 7px 18px;
+padding: 4px 0px;
+ width: 85px;
+ text-align: center;
+ }
+ 
+ .deleteX {
+cursor: pointer;
+}

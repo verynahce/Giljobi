@@ -19,6 +19,14 @@ public interface PdsMapper {
 
 	List<PortfolioVo> getPortfolio(int resume_idx);
 
+	PortfolioVo getPortfolioinfo(int portfolio_idx);
+
+	void deleteImagefile(int image_idx);
+
+	void deleteportfolivo(int portfolio_idx);
+
+	void deleteportresume(int resume_idx);
+
 
 	
 }

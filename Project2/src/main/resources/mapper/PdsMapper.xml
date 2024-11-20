@@ -35,6 +35,35 @@
   FROM PORTFOLIO
   WHERE RESUME_IDX = #{resume_idx}
   </select>
+  
+  <!-- 첨부파일 조회 GET -->
+  <select id="getPortfolioinfo">
+    SELECT *
+  FROM PORTFOLIO
+  WHERE PORTFOLIO_IDX = #{portfolio_idx}
+  
+  </select>
+    <!-- 이미지 삭제 GET -->
+  <delete id="deleteImagefile">
+  DELETE
+  FROM IMAGEFILE
+  WHERE IMAGE_IDX = #{image_idx} 
+  </delete>
+     <!-- 첨부파일 삭제 GET -->
+  <delete id="deleteportfolivo">
+  DELETE
+  FROM PORTFOLIO
+  WHERE PORTFOLIO_IDX = #{portfolio_idx} 
+  </delete>
+  
+  
+  <delete id="deleteportresume">
+   DELETE
+  FROM PORTFOLIO
+  WHERE RESUME_IDX = #{resume_idx} 
+  
+  </delete>
+  
 </mapper>
 
 
