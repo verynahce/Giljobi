@@ -84,28 +84,8 @@
       </thead>
 		<tbody class="resume-list">
 		  <c:forEach var="resume" items="${resumeList}">
+		        <c:if test="${resume.user_idx != 0 }">
 		    <tr>
-		      <c:choose>
-		        <c:when test="${resume.user_idx == 0 }">
-		        <td>탈퇴회원</td>
-		          <td>
-		            <div><a href="View?resume_idx=${resume.resume_idx}">${resume.resume_title}</a></div>
-		            <ul class="stack-list">
-		              <c:if test="${not empty resume.skill_name}"><li>${resume.skill_name}</li></c:if>
-		            </ul>
-		          </td>
-		          <td>
-		            <c:choose>
-		              <c:when test="${not empty resume.career_year and resume.career_year != 0}">${resume.career_year}년 ${resume.career_month}개월</c:when>
-		              <c:when test="${not empty resume.career_month and resume.career_month != 0}">${resume.career_month}개월</c:when>
-		              <c:otherwise>신입</c:otherwise>
-		            </c:choose>
-		          </td>
-		          <td>${resume.duty_name}</td>
-		          <td>${resume.city_name}</td>
-		          <td>${resume.resume_fdate}</td>
-		        </c:when>
-		        <c:otherwise>
 		         <td>${resume.user_name}<span>(${resume.user_gender},${resume.user_age}세)</span></td>
 		          <td>
 		            <div><a href="View?resume_idx=${resume.resume_idx}">${resume.resume_title}</a></div>
@@ -123,10 +103,8 @@
 		          <td>${resume.duty_name}</td>
 		          <td>${resume.city_name}</td>
 		          <td>${resume.resume_fdate}</td>
-		
-		        </c:otherwise>
-		      </c:choose>
 		    </tr>
+		      </c:if>
 		  </c:forEach>
 		</tbody>
     </table>

@@ -1,29 +1,40 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
-<!DOCTYPE html>
+<!DOCTYpE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>잡덕</title>
 <link rel="stylesheet" href="/css/common.css" />
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/browser-scss@1.0.3/dist/browser-scss.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer></script>
+<script src="/js/header.js" defer></script>
+
 <style>
+main {
+   background-color:#F0F2F5;
+
+}
  .innercontents {
    display:flex;
-   gap:30px;
+     gap:30px;
+    font-family: pretendard; 
+    padding-top:30px; 
+    padding-bottom:60px; 
  }
  
  .sidebar {
-   border :1px solid #ccc;
-   width:300px;
-   height:378px;
+
+   width:400px;
+   height:auto;
    border-radius:15px;
    overflow:hidden;
    margin:0;
-   position:sticky;
-   top:123px;
+    position: sticky; 
+    top: 124px; 
+
+  
  }
  
  .sidebar table {
@@ -42,7 +53,7 @@
  .sidebar td {
    padding:15px 15px;;
    margin:0;
-   
+   background-color:white;
  }
  
  .sidebar a {
@@ -67,300 +78,932 @@
  }
 
  .container {
-   margin-top:25px;
-   padding-left:35px;
-   display :flex;
-   flex-direction:column;
-   width:100%;
-   gap:30px;
- }
- .titlezone h2 {
-   display:flex;
-   align-items: center;
- }
- #title {
-   font-weight:550;
-   font-size:36px;
-   padding-left:20px;
-   padding-bottom:5px;
+
+     width:  100%;
+     display:flex;
+      flex-direction: column; 
+    justify-content: center;
  }
  
- .arrow {
-   width:33px;
-   height:33px; 
- }
+  .contain-body {
+    width:940px;
+    min-height: 1400px;
+    background-color: white;
+    border-radius: 20px;
+    margin: 0px auto 60px  auto  ;
+    padding: 0 60px 50px 60px;
+  }
+
+.main-title {
+    color: #333333;
+    font-size: 36px; 
+    font-weight: 600; 
+    line-height: 50.40px;
+    padding-bottom: 14px; 
+    padding-top: 30px;
+     }
  
- .subtitles {
-   padding-left:10px;
-   margin-top:12px;
-   margin-bottom:12px;
- }
- .subtitle {
-   width:750px;
-   border-collapse:collapse;
- }
- .subtitle tr{
-   border-top:1px solid #E0DEDE;
-   border-bottom:1px solid #E0DEDE;
- }
- 
- .subtitle th{
-   font-weight:400;
-   color:gray;
-   padding-top:10px;
-   padding-bottom:10px;
-   font-size:12px;
- }
- .subtitle th:nth-child(1) {
-   width:110px;
-   text-align:center;
- }
- 
- .subtitle th:nth-child(2) {
-   width:380px;
- }
- 
- .subtitle th:nth-child(3) {
-   width:240px;
-   text-align:left;
-   padding-left:25px;
- }
- 
- .subtitle td {
-   padding-top:15px;
-   padding-bottom:10px;
-   font-size:15px;
-   font-weight:300;
-   line-height:0.9;
- }
- 
- .subtitle td:nth-child(1) {
-   text-align:center;
- }
- 
- .subtitle td:nth-child(2) {
-   padding-left:22px;
- }
- 
- .subtitle td:nth-child(3) {
-   padding-left:18px;
- }
- 
- .subtitle td:nth-child(4) {
-   padding-right:24px;
-   text-align:right;
- }
- .subtitle td:nth-child(5) {
-   padding-right:14px;
-   text-align:right;
+ #info {
+     display: flex; 
+     padding-top:23px;
+
+    #info-content {
+    padding-left:23px;
+    #star-size1 {
+      width: 15px;
+    height: 15px;
+    }    
+    }    
+#info-title {
+    
+    color: #333333; 
+    font-size: 28px; 
+    font-weight: 600; 
+    line-height: 39.20px; 
+}        
+p {
+    color: #555555; 
+    font-size: 16px; 
+    font-weight: 400; 
+    line-height: 22.40px;
+    margin-top: 4px;
+    margin-bottom: 3px;
+}   
+ img {
+     width: 120px;
+    height: 120px;
+    }  
+    }
+
+ /*서브 분야들*/ 
+ .sub-filed{    
+  .sub-topic {
+      width:100%;
+       border-collapse: collapse;      
+    tr {
+      border-bottom:1px solid #CCCCCC; 
+    td {
+      order-bottom:1px solid #CCCCCC; 
+      padding-bottom:30px; 
+      padding-top: 30px;  
+            }   
+   .sub-skill {
+      padding-bottom:15px; 
+      padding-top: 15px;      
+              }             
+   td:nth-child(1) {                   
+      color: #333333; 
+      font-size: 16px; 
+      font-weight: 500; 
+      line-height: 22.40px; 
+      width:80px;   
+}
+   td:nth-child(2) {
+      color: #333333; 
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 22.40px; 
+      padding-left: 180px;
+      border-bottom:                       
+           }
+          }                    
+     }      
+    
+
+     p {
+      padding-top: 10px;
+    color: #767676;
+     }         
+}
+
+
+/*서브 - 긴글*/
+.sub-content {   
+    width:100%;
+    min-height: 250px;
+    padding-top: 10px;
+    color: #767676;
+    border-bottom: 1px solid #CCCCCC;
+}
+/*서브 - 소제목*/
+.sub-title {
+    color: #333333;
+    font-size: 20px; 
+    font-weight: 500; 
+    line-height: 28px;
+    margin-top:63px;
+    margin-bottom:16px;
+}
+
+/*서브 - 경력긴글*/    
+#sub-duty {
+ td:nth-child(1) > div {
+	width:100%;
+	min-height: 100px;
+      					}   
+ td:nth-child(2) > div {
+	width:100%;
+	min-height: 100px;
+	color: #767676;
+      					}
  } 
- .namebot {
-   font-size:10px;
-   color:#AEACAC;
- }
- 
- .stacks {
-   font-size:11px;
-   color:#7585D8;
-   background-color:#F1F3F5;
-   padding:4px;
-   border-radius:3px;
-   line-height:2.5;
- }
- 
- .img {
-   width:24px;
-   height:24px;
- }
- 
- .select{
-   border:1px solid #AEACAC;
-   border-radius:7px;
-   color:#AEACAC;
-   padding:10px 7px 10px 5px;
- }
- 
-.restoreDeleted {
-   border:1px solid #C7C6C6;
-   border-radius:7px;
-   padding:10px 7px 10px 5px;
-   cursor: pointer;
-   background-color: white;
+  
+  
+     
+   /*기술스택 */   
+.sub-skill-layout {
+     display:flex;
+     
+     div {
+     padding:12px;
+     margin:6px;
+     background-color:#EBECF1; 
+     border-radius: 8px;
+     color:#555555px;
+     font-size: 12px;
+     font-weight: 400;
+     }
+     
+     div:nth-child(1) {
+      margin-left: 0px;
+     }
+} 
+
+/*버튼*/
+
+.btn-layout {   margin: 0 auto;
 }
-.restoreDeleted:hover {
-	background-color: #F2F2F2;
+ .btn {
+   display: inline-block;
+    width: 200px; 
+    height: 60px;   
+    border-radius: 8px;
+ 
+    a {
+    display: block;
+    text-decoration: none; 
+    width: 100%; 
+    height: 100%;
+    text-align: center;
+    line-height: 60px;
+ }
+ }
+  .btn-back {
+  background: #585766; 
+   color: white;
+     &:hover {
+     background-color:#666577;
+     color:white;
+     
+   }
+ }
+.noob{
+	padding:20px 0 0 5px;
+	color: #333333; 
+    font-size: 16px;
+    font-weight: 400;
 }
 
+/*왼쪽 평가하기, 알림보내기 메뉴*/ 
+#side-menu{
+   width: 100%; /* 사이드 메뉴 너비 */
+   background: white;
+   border-radius: 16px;
+   border: 1px #EBEDF1 solid;
+   margin-top: 20px; /* 사이드 바와 간격 조정 */
+   padding:20px;
+   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+   
+    p:nth-child(1) {
+    
+    color: #767676; 
+    font-size: 14px; 
+    font-weight: 400; 
+    line-height: 19.60px;
+    padding-top: 10px ;
+    padding-bottom: 12px;
+    }
+    #side-hit {    
+    color: #767676; 
+    font-size: 12px; 
+    font-weight: 400; 
+    line-height: 16.80px; 
+    padding-bottom: 22px;
+ 
+    }
+    
+   h4 {
+   color: #333333; 
+   font-size: 20px; 
+   font-weight: 600; 
+   line-height: 28px;
+    padding-top: 10px ;
+    padding-bottom: 12px ;
+     white-space: nowrap;
+      overflow: hidden; 
+   text-overflow: ellipsis; 
+   }
+    }
+    #side-bottom {
+    display:flex;
+    justify-content: space-between;
+     align-items: center; 
+    }
+    .btn{
+    width: 100px; 
+   height: 50px; 
+   padding: 10px; 
+   background: #333333; 
+   border: none;
+   border-radius: 8px;
+   color:white;
+    cursor: pointer;
+   &:hover {
+    background-color: #4A4A4A;
+   }
+   }
+   #btn-evaluate{
+   	background-color: #ffffff;
+   	border: 1px solid #333333;
+   	margin-right: 10px;
+   	color: #333333;
+   }
+   #btn-notify{
+   	background-color: #585766;
+   	&:hover{
+   		background-color: #666577;
+   	}
+   }
+   
+    
+    #btn-scrape{
+    width: 40px; 
+   height: 40px;
+   border-radius: 4px;
+   border: 1px solid #cccccc;
+   text-align: center;
+   padding-top:3px;
+   
+   &:hover
+    }
+    .image {
+    width: 28px; 
+    height: 28px;
+    font-size: 16px; 
+    border-radius: 8px;
+    line-height: 14px;
+ 
+ }
+ 
+ /* 평가지 */
+.evaluation {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%); 
+   width: 700px; 
+   background-color: white; 
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+   z-index: 3 
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 8px;
+   padding: 30px 51px 15px 51px;
+}
+.s-header {
 
+display:flex;
+justify-content: space-between;
+}
+.s-title {
+color: #333333;
+    font-size: 36px; 
+    font-weight: 600; 
+    line-height: 50.40px;
+    margin-bottom: 30px;
+    }
+
+.s-btn {
+width: 170px; 
+   height: 50px; 
+   padding: 10px; 
+   background: #333333; 
+   border-radius: 8px;
+   color:white;
+   margin:0 auto;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    
+   &:hover {
+    background-color: #4A4A4A;
+   }
+   a{ display: block;
+    text-decoration: none; 
+    color: white; 
+    width: 100%; 
+    height: 100%;
+    text-align: center;
+    line-height: 33px;
+   }   
+   }
+.s-delete {
+ color: #767676;
+font-weight: 300;
+font-size: 36px;  
+cursor: pointer;
+}
+
+.noob{
+	padding-top :20px;
+	font-size: 20px;
+}
+
+.s-list{
+  border-collapse: collapse;
+  width:100%;
+   & tr {
+	   & td {padding:18px 0 18px;};
+	   & td:nth-child(1){
+		   width:80%;
+		   text-align: left;
+		   input{
+		   width: 17px;
+		   height: 17px;
+		   border-bottom: #cccccc;
+	      };
+	   & label{
+	   margin-left:8px;
+	   font-size: 20px;
+	   color: #333333;
+	     }
+	   }
+	   & td:nth-child(2){
+	   width:20%;
+	   text-align: right;
+	   color: #767676;
+	   }
+   }
+}
+
+.evaluation-container {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total {
+            font-weight: bold;
+            text-align: right;
+        }
+        textarea {
+		    width: 100%; /* 텍스트 영역 너비 조정 */
+		    height: 60px; /* 높이 조정 */
+		    margin-top: 10px; /* 여백 조정 */
+		}
+		.dotted {
+		    border-top: 1px dotted #ddd; /* 점선 */
+		}
+		.no-border {
+		    border: none; /* 선 없음 */
+		}
+
+
+}
+
+ /* 알람보내기 */
+.notice {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%); 
+   width: 700px; 
+   background-color: white; 
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+   z-index: 3 
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 8px;
+   padding: 30px 51px 15px 51px;
+}
+.s-header {
+
+display:flex;
+justify-content: space-between;
+}
+.s-title {
+color: #333333;
+    font-size: 36px; 
+    font-weight: 600; 
+    line-height: 50.40px;
+    margin-bottom: 30px;
+    }
+
+.s-btn {
+width: 170px; 
+   height: 50px; 
+   padding: 10px; 
+   background: #333333; 
+   border-radius: 8px;
+   color:white;
+   margin:0 auto;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    
+   &:hover {
+    background-color: #4A4A4A;
+   }
+   a{ display: block;
+    text-decoration: none; 
+    color: white; 
+    width: 100%; 
+    height: 100%;
+    text-align: center;
+    line-height: 33px;
+   }   
+   }
+.s-delete {
+ color: #767676;
+font-weight: 300;
+font-size: 36px;  
+cursor: pointer;
+}
+
+.noob{
+	padding-top :20px;
+	font-size: 20px;
+}
+
+.s-list{
+  border-collapse: collapse;
+  width:100%;
+   & tr {
+	   & td {padding:18px 0 18px;};
+	   & td:nth-child(1){
+		   width:80%;
+		   text-align: left;
+		   input{
+		   width: 17px;
+		   height: 17px;
+		   border-bottom: #cccccc;
+	      };
+	   & label{
+	   margin-left:8px;
+	   font-size: 20px;
+	   color: #333333;
+	     }
+	   }
+	   & td:nth-child(2){
+	   width:20%;
+	   text-align: right;
+	   color: #767676;
+	   }
+   }
+}
+ .notice-container {
+     max-width: 600px;
+     margin: auto;
+     background: white;
+     padding: 20px;
+     border-radius: 8px;
+     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	 h1 {
+	     text-align: center;
+	     color: #333;
+	 }
+	 .info {
+	     margin: 20px 0;
+	     font-size: 18px;
+	     line-height: 1.6;
+	 }
+	 .button {
+	     display: block;
+	     width: 100%;
+	     padding: 10px;
+	     background-color: #007bff;
+	     color: white;
+	     text-align: center;
+	     border: none;
+	     border-radius: 5px;
+	     cursor: pointer;
+	     text-decoration: none;
+	     font-size: 16px;
+	 }
+	 .button:hover {
+	     background-color: #0056b3;
+	 }
+	 select {
+	     width: 100%;
+	     padding: 10px;
+	     margin-bottom: 20px;
+	     border-radius: 5px;
+	     border: 1px solid #ccc;
+	 }
+ }
 </style>
+
 </head>
 <body>
-   <%@include file="/WEB-INF/include/header.jsp" %>
- <main>
-  <div class="inner">
+
+<%@include file="/WEB-INF/include/header.jsp" %>
+	
+	<!-- 평가창 -->
+	<div class="overlay-evaluate">  
+	<c:choose>
+		<c:when test="${not empty company_idx}">
+			 <div class="evaluation"> 
+			   <div class="s-header">
+			      <h2 class="s-title">평가지</h2>
+			      <span class="s-delete">x</span>
+			   </div>
+        <table class="evaluation-container">
+            <thead>
+                <tr>
+                    <th>항목</th>
+                    <th>평가기준</th>
+                    <th>점수</th>
+                    <th>비고</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="5">학력</td>
+                    <td>고졸이하:1</td>
+                    <td rowspan="5"><input type="number" name="score1" min="0" max="5" required></td>
+                    <td rowspan="5" class="no-border"></td>
+                </tr>
+                <tr class="dotted">
+                    <td class="dotted">전문학사:2</td>
+                </tr>
+                <tr class="dotted">
+                    <td>학사:3</td>
+                </tr>
+                <tr class="dotted">
+                    <td>석사:4</td>
+                </tr>
+                <tr class="dotted">
+                    <td>박사:5</td>
+                </tr>
+                <tr>
+                    <td>자격증 또는 기술</td>
+                    <td>인사담당자 재량</td>
+                    <td><input type="number" name="score2" min="0" max="5" required></td>
+                    <td class="no-border"><input type="text"></td>
+                <tr>
+                    <td rowspan="5">경력</td>
+                    <td>1년이상:1</td>
+                    <td rowspan="5"><input type="number" name="score3" min="0" max="5" required></td>
+                    <td rowspan="5" class="no-border"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>3년이상:2</td>
+                </tr>
+                <tr>
+                    <td>5년이상:3</td>
+                </tr>
+                <tr>
+                    <td>7년이상:4</td>
+                </tr>
+                <tr>
+                    <td>10년이상:5</td>
+                </tr>
+                <tr>
+                    <td rowspan="5">자기소개서</td>
+                    <td>직무관련 경험</td>
+                    <td><input type="number" name="score4" min="0" max="5" required></td>
+                    <td rowspan="5" class="no-border"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>성격 및 장단점</td>
+                    <td><input type="number" name="score5" min="0" max="5" required></td>
+                </tr>
+                <tr>
+                    <td>가치관</td>
+                    <td><input type="number" name="score6" min="0" max="5" required></td>
+                </tr>
+                <tr>
+                    <td>목표 달성 경험</td>
+                    <td><input type="number" name="score7" min="0" max="5" required></td>
+                </tr>
+                <tr>
+                    <td>실패 및 위기 극복 경험</td>
+                    <td><input type="number" name="score8" min="0" max="5" required></td>
+                </tr>
+                <tr>
+                    <td>포트폴리오</td>
+                    <td>인사담당자 재량</td>
+                    <td><input type="number" name="score9" min="0" max="5" required></td>
+                    <td class="no-border"><input type="text"></td>
+                </tr>
+                <tr>
+                    <td>가점</td>
+                    <td>인사담당자 재량</td>
+                    <td><input type="number" name="score10" min="0" max="5" required></td>
+                    <td class="no-border"><input type="text"></td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <span class="total">총평</span>
+            <textarea></textarea>
+            <span class="totalscore">총점</span>
+            <input type="text" name="totalScore" readonly value="3.8">
+        </div>
+        <br>
+			   <div class="s-btn" ><a onclick="alert('채용제의를 완료했습니다.')" class="apply-val" href ="">평가등록</a></div> 
+			</div>
+		</c:when>
+		  <c:otherwise>
+		  	<div class="support login-alter">
+		      <h2 class="s-title">기업회원 로그인이 필요합니다.</h2>
+			  <a href ="/Company/LoginForm">로그인</a>
+		   </div>
+		  </c:otherwise>
+	</c:choose>
+	</div>
+	
+	<!-- 알림창 -->
+	<div class="overlay-notice">  
+	<c:choose>
+		<c:when test="${not empty company_idx}">
+			 <div class="notice"> 
+			   <div class="s-header">
+			      <h2 class="s-title">알림보내기</h2><span class="s-delete">x</span>
+			   </div>
+				<div class="notice-container">
+				    <h1>제목을 선택해주세요</h1>
+				    <select>
+				        <option>제목 1</option>
+				        <option>제목 2</option>
+				        <option>제목 3</option>
+				    </select>
+				
+				    <div class="noti">
+				        <p>서류에 합격하였습니다.</p>
+				        <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
+				        <p>일시: 2024/12/21 10:00 AM</p>
+				        <p>장소: 그린아카데미 402호</p>
+				        <p>안내사항: 이력서, 포트폴리오 지참, 말씀한 복장 준수</p>
+				    </div>
+				</div>
+			   <div class="s-btn" ><a onclick="alert('채용제의를 완료했습니다.')" class="apply-val" href ="">알림 전송</a></div> 
+			</div>
+		</c:when>
+		  <c:otherwise>
+		  	<div class="support login-alter">
+		      <h2 class="s-title">기업회원 로그인이 필요합니다.</h2>
+			  <a href ="/Company/LoginForm">로그인</a>
+		   </div>
+		  </c:otherwise>
+	</c:choose>	
+	</div>
+<main>
+  <div class="inner">  
       <div class="innercontents">
       <div class="sidebar">
-         <table>
+        <table>
          <tr><th>기업서비스</th></tr>
          <tr><td><a href="/Company/Mypage/Home/View?company_idx=${company_idx}" class="link"><img src="/images/myhome2.svg" class="img" data-hover="/images/myhome.svg">MY홈</a></td></tr>
          <tr><td><a href="/Company/Mypage/Post/List?company_idx=${company_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">채용공고</a></td></tr>
          <tr><td><a href="/Company/Mypage/Bookmark/List?company_idx=${company_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심인재</a></td></tr>
          <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${company_idx}" class="active-color"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
         </table>
+	      <div id="side-menu">
+	       <div id ="side-frame">
+	         <p>최종수정일 : ${resumeVo.resume_fdate}<p>
+	         <hr>
+	         <h4>${resumeVo.resume_title}</h4>
+	         <p id="side-hit">조회수 ${resumeVo.resume_hit}<p>
+	         <div id="side-bottom">
+	           <button class="btn" id="btn-evaluate">평가하기</button>
+	           <button class="btn" id="btn-notice">알림보내기</button>
+	         </div>
+	       </div>
+	    </div>
       </div>
-      <div class="container">
-       <div class="titlezone">
-     	<h2><a href=""><img src="/images/back.png" class="arrow"></a><span id="title">공고제목</span></h2>
-       </div>
-       <div class="content">
-       	<div class="subtitles">
-       	 <table class="subtitle">
-       	  <tr>
-       	   <th>이름</th>
-       	   <th>이력서 요약</th>
-       	   <th colspan="2">경력</th>
-       	  </tr>
-       	  <c:forEach var="a" items="${applyList}">
-       	  
-       	  <tr class="Dcontent"  data-idx="${a.appli_idx}">
-       	   <c:choose>
-	        <c:when test="${a.user_idx == 0}">
-	           <td>탈퇴회원</td>
-	        </c:when>
-	        <c:otherwise>
-	       	   <td>${a.user_name}<br><span class="namebot">(${a.user_gender},${a.age}세)</span></td>
-       	    </c:otherwise>
-       	   </c:choose>
-       	   <td><a href="/Company/Mypage/ApplyList/View?resume_idx=${a.resume_idx}&company_idx=${company_idx}&post_idx=${post_idx}">${a.resume_title}</a>
-       	   <br>
-       	   <c:choose>      	    
-			<c:when test="${not empty a.skill_name}">
-			    <span class="stacks">${a.skill_name}</span>&nbsp;
-			</c:when>
-			<c:otherwise>
-			     <span class="stacks">미기입</span>&nbsp;
-			</c:otherwise>
-			</c:choose>			
-       	    </td>
-       	    
-       	    <td>
-       	    <c:choose>
-       	    <c:when test="${not empty a.cyears and not empty a.cmonths}">
-       	   ${a.cyears}년 ${a.cmonths}개월
-       	   </c:when>
-       	   <c:otherwise>
-       	   신입</td>
-       	   </c:otherwise>
-       	   </c:choose>
-       	   </td>
-       	   <td>
-       	     <select class="select" data-idx="${a.appli_idx}">
-       	       <option <c:if test="${a.appli_status == '면접대기'}">selected</c:if>>면접대기</option>
-       	       <option <c:if test="${a.appli_status == '불합격'}">selected</c:if>>불합격</option>
-       	       <option <c:if test="${a.appli_status == '합격'}">selected</c:if>>합격</option>
-       	      </select>
-       	    </td>
-       	    <td><a href="" class="link nolink"><img src="/images/trashcan.png" class="img2 delete" data-hover="/images/trashcan2.png"></a></td>
-       	  </tr>
-       	  
-       	   </c:forEach>  
-       	 </table>
-       	</div>
-       	<input type="button" class="restoreDeleted" value="전체지원자 다시보기"/>
-       	
-       </div>
+      
+      <div class="container" >
+      <div class="contain-body">       
+      <h2 class="main-title">${resumeVo.resume_title}</h2>
+      <hr>
+      <div id="info">
+       <c:choose>
+        <c:when test="${resumeVo.user_idx == 0}">
+        <img src="/images/icon/user-profile.png" alt="이미지"/>
+        <div id="info-content">
+           <h3 id="info-title">탈퇴회원</h3>
+           </div>
+        </c:when>
+        <c:otherwise>
+        <img src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지"/>
+        <div id="info-content">
+           <h3 id="info-title">${resumeVo.user_name}</h3>
+           <p>${resumeVo.user_gender},${resumeVo.user_age}세 (${resumeVo.user_year}년)</p>
+           <p>${resumeVo.user_email}</p>
+           <p>${resumeVo.user_tel}</p>
+        </div>
+        </c:otherwise>
+        </c:choose>
+      </div>
+
+      <div class="sub-filed">
+        <h4 class="sub-title">학력</h4>
+        <hr>
+        <table class="sub-topic">
+        <tr>
+          <td>최종학력</td>
+          <td>${resumeVo.eb_name} &nbsp;${resumeVo.edu_name} </td>
+        </tr>		
+        </table>
+      </div>
+     
+    <c:if test="${not empty resumeVo.skill_name}">
+      <div class="sub-filed">
+        <h4 class="sub-title">업무 및 스킬</h4>
+        <hr>
+        <table class="sub-topic"> 
+         <tr>
+		   <td colspan="2" class="sub-skill">
+           <div class="sub-skill-layout">
+     
+              <div>${resumeVo.skill_name}</div> 
+          
+           </div> 
+         </td>
+		</tr>
+        </table>
+      </div>
+    </c:if>
+
+      <div class="sub-filed">
+	    <h4 class="sub-title">희망 근무조건</h4>
+	    <hr> 
+	    <table class="sub-topic">
+		<tr>
+	      <td>희망근무지</td>
+	      <td>${resumeVo.city_name}</td>
+	    </tr>
+	    <tr>
+	      <td>희망직무</td>
+	      <td>${resumeVo.duty_name}</td>
+	    </tr>
+	    <tr>
+	      <td>희망고용형태</td>
+	      <td>${resumeVo.emp_name}</td>
+	    </tr>
+	   </table>
+	  </div>	  
+	  
+       <div class="sub-filed">
+	    <h4 class="sub-title">경력</h4>
+	    <hr> 
+       <c:choose>
+		  <c:when test="${not empty resumeVo.career_cname}">
+	    <table class="sub-topic">
+	     <tr>
+	       <td>회사명</td>
+	       <td>${resumeVo.career_cname}</td>
+	     </tr>
+   
+        <tr>
+          <td>근무기간</td>
+          <td>${resumeVo.career_sdate} ~ ${resumeVo.career_edate}</td>
+        </tr>
+        <tr id="sub-duty">
+           <td><div>담당업무</div></td>
+           <td><div>${resumeVo.career_description}</div></td>
+        </tr>
+       </table>
+         </c:when>
+	  	<c:otherwise>
+	  		<div class="noob">신입</div>
+	  	</c:otherwise>
+	  </c:choose>
+     </div>
+	
+      <div class="sub-filed">
+	    <h4 class="sub-title" >자기소개서</h4>
+	    <hr> 
+        <div class ="sub-content">${resumeVo.cover_letter}</div>
+	  </div>     
+     
+    
+          </div>
+          <div class="btn-layout">
+              <div class="btn btn-back"><a href ="/Company/Mypage/ApplyList/ApplyList?post_idx=${post_idx}&company_idx=${company_idx}">돌아가기</a></div>
+         </div>
       </div>
    </div>
  </div>
 
 </main>
-   <%@include file="/WEB-INF/include/footer.jsp" %>
-   
-<script>
-$(function(){
-    const links = document.querySelectorAll(".link");
 
-    links.forEach(link => {
-        const img = link.querySelector(".img, .img2");
-        const originalSrc = img.src;
-        const hoverSrc = img.getAttribute("data-hover");
-
-        link.addEventListener("mouseover", () => {
-            img.src = hoverSrc;
-        });
-
-        link.addEventListener("mouseout", () => {
-            img.src = originalSrc;
-        });
-    });
-
-   $('.select').each(function(){
-	    
-	    $(this).change(function(){
-		   
-		   let state = $(this).val();  
-		   let applyidx = $(this).data('idx')
-		   
-           $.ajax({
-               url: '/Company/Mypage/ApplyList/State', 
-               data: {appli_idx: applyidx,
-            	      appli_status: state}
-           }).done(function(data){           			
-   		   }).fail(function(err){
-   			    console.log(err)
-
-   		    })
-		   
-		   
-	   })
-	   
-   })
-   $('.nolink').on('click',function(event) {
-	   event.preventDefault();
-	   
-   })
-   
-   
-   //리스트만 안보이는 삭제 구현
-   
-    // 초기 체크
-   function checkDeletedItems() {
-       if (localStorage.getItem('deletedItems')) {
-           var deletedItems = JSON.parse(localStorage.getItem('deletedItems'));
-           deletedItems.forEach(function(idx) {
-               $('tr.Dcontent[data-idx="' + idx + '"]').hide();
-           });
-       }
-   }
-
-   checkDeletedItems();
-    
  
-   // 삭제 버튼 클릭 이벤트 (이벤트 위임 사용)
-   $(document).on('click', '.delete', function() {
-       var $row = $(this).closest('tr.Dcontent'); 
-       var appliIdx = $row.data('idx'); 
+ <%@include file="/WEB-INF/include/footer.jsp" %>
+ 
+ <script>
+ const links = document.querySelectorAll(".link");
 
-       // localStorage에 삭제된 항목 추가
-       var deletedItems = localStorage.getItem('deletedItems') ? JSON.parse(localStorage.getItem('deletedItems')) : [];
-       deletedItems.push(appliIdx); 
-       localStorage.setItem('deletedItems', JSON.stringify(deletedItems)); 
-     
-       $row.hide(); 
-   });
+//사이드 바 클릭시
 
-   // 삭제된 항목 복원 버튼 클릭
-   $('.restoreDeleted').on('click', function() {
+ links.forEach(link => {
+     const img = link.querySelector(".img");
+     const originalSrc = img.src;
+     const hoverSrc = img.getAttribute("data-hover");
 
-       localStorage.removeItem('deletedItems');
-       $('tr.Dcontent').show(); 
-   });
-   
-   
-   
-    
-})   
+     link.addEventListener("mouseover", () => {
+         img.src = hoverSrc;
+     });
+
+     link.addEventListener("mouseout", () => {
+         img.src = originalSrc;
+     });
+ });	 
+	 
+ 
+ 
+ </script>
+ <script>
+ $(function(){
+	 //평가하기
+		$('#btn-evaluate').on('click', function(e){
+			$('.overlay-evaluate').show();
+			
+					
+		})
+		$('.s-delete').on('click', function(){
+			$('.overlay-evaluate').hide();				
+		})
+		$('.s-btn').on('click', function(){
+			$('.overlay-evaluate').hide();				
+		})
+			$(".overlay-evaluate").on('click', function(e) {
+			  if($(e.target).closest('.support').length == 0) { 
+			       $(".overlay-evaluate").hide();
+			  }
+	
+		})
+	
+	//알림보내기
+		$('#btn-notice').on('click', function(e){
+			$('.overlay-notice').show();
+		})
+		$('.s-delete').on('click', function(){
+			$('.overlay-notice').hide();				
+		})
+		$('.s-btn').on('click', function(){
+			$('.overlay-notice').hide();				
+		})
+			$(".overlay-notice").on('click', function(e) {
+		  		if($(e.target).closest('.support').length == 0) { 
+		       		$(".overlay-notice").hide();
+		  	}
+		});
+	
+
+  window.addEventListener('wheel', e => {
+	  const scrollUp = e.deltaY <= 0;
+	  if ( window.scrollY > 100 &&  scrollUp ||  scrollUp != 0) {
+		  $("header").slideDown();	
+	  } else {
+		  $("header").slideUp();	
+	  }
+	});
+ })
+ 
+ 
+		
+  $(".apply-val").attr("href","Scout?resume_idx=${vo.resume_idx}&post_idx=0")
+	
+  $(".resume-input").click(function(e){
+			console.log(e.target.value)
+			$(".apply-val").attr("href","Scout?resume_idx=${vo.resume_idx}&post_idx="+e.target.value)
+		})
+  
+ </script>
+ <script>
+/* 평점 */
+function calculateTotal() {
+    let total = 0;
+    const inputs = document.querySelectorAll('input[type="number"]');
+    inputs.forEach(input => {
+        total += parseInt(input.value) || 0;
+    });
+    document.getElementById('total-score').innerText = total;
+}
 </script>
-
+ 
 </body>
 </html>

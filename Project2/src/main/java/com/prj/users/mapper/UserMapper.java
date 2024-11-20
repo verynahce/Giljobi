@@ -124,6 +124,9 @@ public interface UserMapper {
 
 	void deleteUser(UserVo vo);
 
+	UserVo getUserById(String user_id);
+
+
 
 
 

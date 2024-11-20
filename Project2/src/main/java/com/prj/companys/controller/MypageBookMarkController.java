@@ -134,10 +134,10 @@ public class MypageBookMarkController {
 		ResumeListVo vo  =userMapper.getResumeLong(resume_idx);	
 		
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("/company/mypage/applyList/view");
 		mv.addObject("resumeVo",vo);
 		mv.addObject("company_idx",company_idx);
 		mv.addObject("post_idx",post_idx);
+		mv.setViewName("/company/mypage/applyList/view");
 		return mv;
 	}
 	

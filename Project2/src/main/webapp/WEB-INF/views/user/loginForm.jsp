@@ -15,7 +15,7 @@
 </head>
       	 <%
 	    String clientId = "iP_8Cv0UhC7RyPImeUL2";//애플리케이션 클라이언트 아이디값";
-	    String redirectURI = URLEncoder.encode("http://localhost:8080/User/LoginForm", "UTF-8");
+	    String redirectURI = URLEncoder.encode("http://localhost:9090/User/LoginForm", "UTF-8");
 	    SecureRandom random = new SecureRandom();
 	    String state = new BigInteger(130, random).toString();
 	    String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code";
@@ -38,7 +38,7 @@
           <form action="/User/Login" method="POST">
 	          <ul class="login-input">
 	            <li><input type="text" name="user_id" placeholder="아이디"></li>
-	            <li><input type="text" name="user_pw" placeholder="비밀번호"></li>
+	            <li><input type="password" name="user_pw" placeholder="비밀번호"></li>
 	          </ul>
 	          <p>
 	            <input type="checkbox" id="keepId">
@@ -49,20 +49,35 @@
 	            <li><a href="/User/RegisterForm">회원가입</a></li>
 	          </ul>
           </form>
-	  <a href="<%=apiURL%>"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
+	  <a href="<%= apiURL%>"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
             <!-- 네이버 로그인 버튼 노출 영역 -->
+    <div id="naver_id_login"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></div>
+    
+    
+    
+    <!-- 네이버 로그인 버튼 노출 영역 -->
     <div id="naver_id_login"></div>
     <!-- //네이버 로그인 버튼 노출 영역 -->
     <script type="text/javascript">
-        var naver_id_login = new naver_id_login("iP_8Cv0UhC7RyPImeUL2", "http://localhost:8080/User/LoginForm");
+        var naver_id_login = new naver_id_login("iP_8Cv0UhC7RyPImeUL2", "http://localhost:9090/User/LoginForm");
         var state = naver_id_login.getUniqState();
         naver_id_login.setButton("white", 2,40);
-        naver_id_login.setDomain("http://localhost:8080/");
+        naver_id_login.setDomain("http://localhost:9090/");
         naver_id_login.setState(state);
         naver_id_login.setPopup();
         naver_id_login.init_naver_id_login();
     </script>
         </div>
       </main>
+          <%
+        String loginError = (String) request.getAttribute("loginError");
+        if (loginError != null) {
+    %>
+        <script>
+            alert("<%= loginError %>"); // 알림창 표시
+        </script>
+    <%
+        }
+    %>
 </body>
 </html>

@@ -367,6 +367,12 @@ DELETE FROM COMPANYS
 WHERE COMPANY_IDX=#{company_idx}
 </delete>
 
+    <select id="getCompanyById">
+         SELECT COMPANY_ID
+     FROM COMPANYS
+     WHERE COMPANY_ID=#{company_id}
+     </select>
+
 
 </mapper>
 
