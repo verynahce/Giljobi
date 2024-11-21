@@ -768,7 +768,7 @@ cursor: pointer;
             <input type="text" name="totalScore" readonly value="3.8">
         </div>
         <br>
-			   <div class="e-btn" ><a onclick="alert('평기를 완료했습니다.')" class="apply-val" href ="">평가등록</a></div> 
+			   <div class="e-btn" ><a onclick="alert('평기를 완료했습니다.')" class="evaluation-val" href ="/Compayn">평가등록</a></div> 
 			</div>
 		</c:when>
 		  <c:otherwise>
@@ -804,7 +804,7 @@ cursor: pointer;
 				        <p>안내사항: 이력서, 포트폴리오 지참, 말씀한 복장 준수</p>
 				    </div>
 				</div>
-			   <div class="n-btn" ><a onclick="alert('알림보내기를 완료했습니다.')" class="apply-val" href ="">알림 전송<img src="/images/SendMessage.svg" class="img"></a></div> 
+			   <div class="n-btn" ><a onclick="alert('알림보내기를 완료했습니다.')" class="notice-val" href ="">알림 전송<img src="/images/SendMessage.svg" class="img"></a></div> 
 			</div>
 		</c:when>
 		  <c:otherwise>
