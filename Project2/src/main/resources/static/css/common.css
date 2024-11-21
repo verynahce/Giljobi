@@ -1382,3 +1382,283 @@ footer {
 .book-off{
 	cursor: pointer
 }
+
+/**/
+/* post 접수방법/사이드 추천공고 =====================================*/
+.sub-applyinfo {
+  table-layout: fixed;
+  width: 100%;
+   border-bottom:1px solid #cccccc;
+  border-collapse:collapse;
+ tr {
+ width: 770px; 
+ height: 240px;
+ td:nth-child(2) {
+ background-color: #EBECF1;
+
+ }
+ td {
+ width: 33.33%; 
+
+ .apply-layout1 {
+ display:flex;
+ justify-content:center;
+ align-items: center;
+ flex-direction: column;
+ }
+  .apply-layout2 {
+  padding-left:35px;
+ display:flex;
+ justify-content:flex-start;
+margin-bottom: 10px;
+  gap:20px;
+
+
+ }
+ .apply-title {
+  color: #333333; font-size: 16px; font-family: Pretendard; font-weight: 600; line-height: 22.40px; 
+ }
+ .apply-dday {
+ color: #2D65F2; font-size: 24px; font-family: Pretendard; font-weight: 600; line-height: 33.60px; 
+ margin : 7.6px 0 7.6px 0;
+ }
+ .apply-date {
+  color: #333333; font-size: 14px; font-family: Pretendard; font-weight: 400; line-height: 19.60px;
+    
+ }
+ .apply-paper{
+    display: block; /* 이미지를 블록 요소로 설정 */
+    margin: 0 auto 54px auto; 
+    
+ }
+  } 
+ }
+
+}
+    .side-recommend{
+    margin-top:15px;
+    padding :0 24px 20px 24px;  
+    width: 280px; 
+    min-height: 222px;
+    max-height: 400px;
+    background: white; 
+    border-radius: 16px; 
+    border: 1px #EBEDF1 solid;    
+    position: sticky; 
+    top: 257px; 
+     
+    p{    
+    color: #767676; 
+    font-size: 14px; 
+    font-weight: 400; 
+    line-height: 19.60px;
+    margin-bottom: 8px;
+
+    }
+    #side-hit {    
+    color: #767676; 
+    font-size: 12px; 
+    font-weight: 400; 
+    line-height: 16.80px; 
+    padding-bottom: 22px;
+ 
+    }
+    
+   h4 {
+   color: #333333; 
+   font-size: 20px; 
+   font-weight: 600; 
+   line-height: 28px;
+    padding-top: 20px ;
+    padding-bottom: 2px;
+       white-space: nowrap;
+      overflow: hidden; 
+   text-overflow: ellipsis;  
+   }
+    }
+    
+   .side-post {
+     border: 1px #cccccc solid;  
+     padding:10px 12px ;
+      border-radius: 16px; 
+      margin:12px 0 6px 0;  
+    .side-ptitle {
+    color: black; font-size: 15px; font-family: Pretendard; font-weight: 500; line-height: 21px;
+    
+    }  
+    .side-pcontent{
+     color: #767676; font-size: 13px; font-family: Pretendard; font-weight: 400; line-height: 16.80px; 
+     display:flex;
+     justify-content: space-between;
+     gap:5px;
+            
+     }
+     .side-pcontent2{
+     color: #767676; font-size: 13px; font-family: Pretendard; font-weight: 400; line-height: 16.80px; 
+     }
+    } 
+    
+  .side-hover {
+  
+  :hover {
+background-color:#cccccc;
+
+}
+  }
+
+/* 말풍선 스타일 */
+.bubble {
+
+       border: 1px solid #cccccc;
+       background-color: #FFFCEA;
+       border-radius: 15px;
+       padding: 7px 16px;
+       display: inline-block;
+       max-width: 300px;
+       word-wrap: break-word;
+       font-size: 16px;
+       font-weight:500;
+       margin: 10px 5px 0px 20px; 
+       color: #333333 
+   }
+ .bubble2 {
+       border: 1px solid #cccccc;
+       background-color: #F1F4FE;
+       border-radius: 15px;
+       padding: 7px 16px;
+       display: inline-block;
+       max-width: 300px;
+       word-wrap: break-word;
+       font-weight:400;
+       font-size: 16px;
+       margin: 0px 5px 10px 5px;
+        color: #333333 
+       
+   }
+/* 원그래프 (파이 차트) */
+.pie-chart {
+margin:10px 0 8px 0;
+  width: 140px;
+  height: 140px;
+
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+   background: conic-gradient(
+    #CCCCCC 0% 70%,   /* 70% 까지 파란색 */
+    #CCCCCC 70% 100%  /* 나머지 30%는 금색 */
+  );
+}
+
+/* 원그래프 중간을 비워두기 */
+.pie-chart-inner {
+  position: absolute;
+  top: 17.5%;  /* 150px의 17.5% = 26.25px */
+  left: 17.5%; /* 150px의 17.5% = 26.25px */
+  width: 65%;  /* 150px의 65% = 97.5px */
+  height: 65%; /* 150px의 65% = 97.5px */
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+   /* 배경에 사람 이모티콘 이미지 추가 */
+  background-image: url('/images/post/people.png'); /* 실제 이미지 경로로 수정 */
+  background-size: 70%; /* 이미지 크기를 80%로 설정하여 배경보다 작게 만들기 */
+  background-position: center; /* 이미지를 중앙에 배치 */
+  background-repeat: no-repeat; /* 이미지 반복 안 함 */
+}
+
+/* 중앙 텍스트 스타일 */
+.chart-text {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}    
+/*talk*/
+.talk {
+border-bottom: 1px solid #cccccc;
+background-color: #FAFAFA;
+width: 100%;
+
+tr:nth-child(even) {
+border-bottom: 1px solid #cccccc;
+td {
+    text-align: right; /* 오른쪽 정렬 */
+    border-bottom: 1px dashed  #cccccc;
+    img {
+    margin: 0px 20px -15px 5px;
+    padding: 0;
+    }
+    
+    }
+}
+tr:nth-child(6) td{
+border-bottom: none;
+
+}
+}
+/* resume  파일   =====================================*/
+.sub-filedown {
+margin:10px;
+}
+.sub-filedown a:hover {
+background-color:#E3E3E3;
+}
+.file-title {
+display:flex;
+justify-content: space-between;
+align-items: baseline;
+}
+
+#btnAddFile {
+width: 180px;
+height: 30px;
+padding: 0;
+background-color: #FFFCEA;
+border: 1px solid #CCCCCC;
+border-radius: 4px;
+ cursor: pointer;
+}
+
+.input-file-button {
+display:inline;
+background-color: #FFFCEA;
+border: 1px solid #CCCCCC;
+border-radius: 4px;
+margin-right:5px;
+ cursor: pointer;
+ padding: 7px 7px 5.4px 7px;
+ width: 63px;
+ color:#333333;
+ font-size: 14px;
+ font-weight: 400;
+}
+
+.file-output {
+display:block;
+margin:15px;
+}
+.file-name{
+ display:inline;
+ padding: 7px 10px 5.4px 10px;
+ border: 1px solid #CCCCCC;
+ border-radius: 4px;
+ background-color: #ffffff;
+  font-size: 14px;
+ font-weight: 400;
+ color:#333333;
+}
+
+.idPhto2 {
+display:block;
+margin: 7px 18px;
+padding: 4px 0px;
+ width: 85px;
+ text-align: center;
+ }
+ 
+ .deleteX {
+cursor: pointer;
+}

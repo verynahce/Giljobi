@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
+import com.prj.main.vo.ClarificationVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
 import com.prj.main.vo.PostClickListVo;
@@ -73,11 +74,13 @@ public interface MainMapper {
 	void deleteBookC(int company_idx, int resume_idx);
 	String getBookC(int company_idx, String resume_idx);
 	
-	//지원자수 및 추천공고리스트
+	//지원자수 ,추천공고리스트 , 인담자 톡
 	PostCountVo getPostCount(String post_idx);
 	List<PostClickListVo> getPostClickList(int user_idx, String post_idx);
 	PostClickVo getPostclick(int user_idx, int post_idx);
 	void insertPostClick(int user_idx, int post_idx);
+	ClarificationVo getClarification(String post_idx);
+	ClarificationVo getClarification(int post_idx);
 
 
 	

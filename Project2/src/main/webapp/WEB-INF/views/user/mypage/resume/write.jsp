@@ -339,6 +339,7 @@ textarea {
 }   
 
 
+
 </style>
 
 </head>
@@ -359,7 +360,7 @@ textarea {
       </div>
       
       <div class="container" >
-    <form action="/User/MyPage/Resume/Write" method="POST">
+    <form action="/User/MyPage/Resume/Write" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="user_idx" value="${userVo.user_idx}"/>      
       <div class="contain-body">  
        
@@ -369,22 +370,30 @@ textarea {
       <h4 class="sub-title">기본정보</h4>
       <hr>
       <div id="info">
-         <img src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지"/>
+         <img src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지" class="preview"/>
         <div id="info-content">
            <h3 id="info-title">${userVo.user_name}</h3>
            <p>${userVo.user_gender},${age}세 (${year}년)</p>
-           <p>${userVo.user_email}</p>
-           <p>${userVo.user_tel}<p/>
+           <p>${userVo.user_tel} &nbsp; &nbsp;|&nbsp; &nbsp; ${userVo.user_email}</p>
+          <c:choose> 
+        <c:when test="${not empty userVo.user_address}">
+           <p>${userVo.user_address}<p/>
+        </c:when>
+        <c:otherwise>
+        <p>주소미기입<p/>
+        </c:otherwise>
+        </c:choose> 
         </div>
       </div>
+        <input id="idPhoto" type="file" name="upimage" class="upimage" style="display:none"accept=".jpg, .jpeg, .png"/>
+        <label class="input-file-button idPhto2" for="idPhoto">사진 업로드</label>
       
       <div class="sub-filed">
         <h4 class="sub-title">이력서 제목</h4>
         <hr>
         <input class="input-size2"  id="title"  name="resume_title" type="text" value="" placeholder="나를 표현할 한마디를 적어보세요"/>
       </div>
-      
-      
+           
 
       <div class="sub-filed">
         <h4 class="sub-title">학력</h4>
@@ -480,10 +489,20 @@ textarea {
 	    <h4 class="sub-title" >자기소개서</h4>
 	    <hr> 
 	    <textarea name="cover_letter"id="cover" placeholder="나에 대해 자유롭게 설명하고 채용기회의 확률을 높이세요"></textarea>
+	  </div> 
+	      
+      <div class="file-title">
+      <input type="hidden" value="test" name="text">
+      
+	    <h4 class="sub-title" >파일업로드 </h4><input type="button" id="btnAddFile" value="파일추가(최대 100M Byte)"/>
+	      </div> 
+	    <hr> 	 
+	    <div class="file">
+       </div>
 	  </div>     
-     
-    
-          </div>
+
+          
+          
           <div class="btn-layout">
                <input class="btn btn-submit" type="submit" value="이력서저장"/>
          </div>
@@ -502,6 +521,65 @@ textarea {
  
  $(function() {
 	 
+	 //이미지추가
+     $('.upimage').on('change', function() {
+                const file = this.files[0];
+                console.log(file)
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('.preview').attr('src', e.target.result).show(); // 미리보기 이미지 표시
+                    }
+                    reader.readAsDataURL(file); // 파일을 Data URL로 읽기
+                }
+            });
+	 
+	 //파일추가
+	 
+		let num =1;
+		$('#btnAddFile').on('click',function(){
+	  	  alert('파일추가');
+		  let tag ='<div class="file1"><input id="input-file'+num +'" type="file" name="upfile" class="upfile" multiple style="display:none"/> <div class="file-output" ><label class="input-file-button" for="input-file'+num +'">첨부파일</label><div class="file-name">선택된 파일이 없습니다.</div></div></div>';
+		  $('.file').append(tag);
+		  
+		  num++
+		  console.log(num);
+		})
+
+		$(document).on('change', 'input[type="file"]', function () { 
+       var files = $(this)[0].files;
+       var fileArr = [];
+       for (var i = 0; i < files.length; i++) {
+    	   
+    	   let num2 = num-1;
+ 		  console.log(num2);
+    	   let deleteX = '<span class="deleteX'+num2
+    	   + '"><img src="/images/resume/deletex.png"/>&nbsp;<span>&nbsp;&nbsp;&nbsp;'
+ 
+    	   
+        fileArr.push( deleteX  + files[i].name );
+    }
+     
+    var fileList = fileArr.join(', ');
+    $(this).closest('.file1').find('.file-name').html(fileList);
+    
+});     	 //파일삭제
+		for (var i = 1; i < 21; i++) {
+		    (function(index) {
+		        $(document).on('click', '.deleteX' + index, function () { 
+		            $(this).closest('.file-name').html('선택된 파일이 없습니다.');
+		            console.log($('#input-file' + index).val());
+		            $('#input-file' + index).val(''); // index에 맞는 파일 입력 필드 초기화
+		            console.log($('#input-file' + index).val());
+		        });
+		    })(i);
+		}
+	
+
+
+
+	
+		
 //변수
 const formEl = document.getElementsByTagName('form')[0];	 
 const links = document.querySelectorAll(".link");
@@ -676,7 +754,11 @@ $(formEl).on('keydown', function(event) {
          alert('제목을 입력하세요');
          $('#title').focus();
          return false;
-     } else if ($('#school').val().trim() == '') {
+     } else if ($('.upimage').get(0).files.length === 0) { 
+         alert('사진을 업로드하세요');
+         $('.upimage').focus(); 
+         return false;    
+     }else if ($('#school').val().trim() == '') {
          alert('학교를 입력하세요');
          $('#school').focus();
          return false;

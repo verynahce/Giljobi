@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%> 
 <!DOCTYpE html>
 <html>
 <head>
@@ -18,8 +19,6 @@ main {
    display:flex;
      gap:30px;
     font-family: pretendard; 
-  
-
     padding-top:30px; 
     padding-bottom:60px; 
  }
@@ -29,11 +28,9 @@ main {
    height:378px;
    border-radius:15px;
    overflow:hidden;
-   margin:0;
-   
-    position: sticky; 
-    top: 124px; 
-   
+   margin:0; 
+   position: sticky; 
+   top: 124px;    
   
  }
  
@@ -77,13 +74,11 @@ main {
    
  }
 
-
-
  .container {
 
      width:  100%;
      display:flex;
-      flex-direction: column; 
+     flex-direction: column; 
     justify-content: center;
  }
  
@@ -280,6 +275,7 @@ p {
     font-weight: 400;
 }
 
+
 </style>
 
 </head>
@@ -304,15 +300,30 @@ p {
       <h2 class="main-title">${resumeVo.resume_title}</h2>
       <hr>
       <div id="info">
-        <img src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지"/>
+      <c:choose>
+      <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" >
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/user-profile.png" alt="User Image" >
+       </c:otherwise>
+       </c:choose> 
         <div id="info-content">
            <h3 id="info-title">${resumeVo.user_name}</h3>
            <p>${resumeVo.user_gender},${resumeVo.user_age}세 (${resumeVo.user_year}년)</p>
-           <p>${resumeVo.user_email}</p>
-           <p>${resumeVo.user_tel}</p>
+           <p>${resumeVo.user_tel} &nbsp; &nbsp;|&nbsp; &nbsp; ${resumeVo.user_email}</p>
+        <c:choose> 
+        <c:when test="${not empty resumeVo.user_address}">
+           <p>${resumeVo.user_address}<p/>
+        </c:when>
+        <c:otherwise>
+        <p>주소미기입<p/>
+        </c:otherwise>
+        </c:choose> 
         </div>
       </div>
 
+        
       <div class="sub-filed">
         <h4 class="sub-title">학력</h4>
         <hr>
@@ -397,7 +408,21 @@ p {
 	    <hr> 
 	    <div class ="sub-content">${resumeVo.cover_letter}</div>
 	  </div>     
-     
+	  
+	  <c:if test="${not empty pfvoList}">
+      <div class="sub-filed">
+	    <h4 class="sub-title" >파일업로드</h4>
+	    <hr> 
+	    <c:forEach var="p" items="${pfvoList}">
+       <div class="sub-filedown">
+         <a href="/filedownload/${p.portfolio_idx}">
+       <img src="/images/resume/link1.png"/>&nbsp;&nbsp;&nbsp;
+       ${p.filename}
+       </a>
+       </div>
+       </c:forEach>
+	  </div>     
+     </c:if>
     
           </div>
           <div class="btn-layout">
@@ -432,8 +457,7 @@ p {
      });
  });	 
 	 
- 
- 
+       imagePath1 ='${ifvo.image_path}';
  </script>
  
 </body>

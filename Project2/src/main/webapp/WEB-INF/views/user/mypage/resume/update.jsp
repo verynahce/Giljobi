@@ -366,23 +366,42 @@ textarea {
       </div>
       
       <div class="container" >
-    <form action="/User/MyPage/Resume/Update" method="Post"> 
+    <form action="/User/MyPage/Resume/Update" method="Post"enctype="multipart/form-data"> 
     <input type="hidden" name="resume_idx" value="${resumeVo.resume_idx}"/>   
       <div class="contain-body">  
        
-      <h2 class="main-title"><input class="title-input"type="text" name="resume_title"value="${resumeVo.resume_title}" placeholder="제목을 입력하세요"/></h2>
+      <h2 class="main-title">
+      <input class="title-input"type="text" name="resume_title"value="${resumeVo.resume_title}" placeholder="제목을 입력하세요"/>
+      </h2>
       <hr>
       <div id="info">
-        <img src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지"/>
+       <c:choose>
+      <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" class="preview">
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/user-profile.png" alt="User Image" class="preview">
+       </c:otherwise>
+       </c:choose> 
         <div id="info-content">
            <h3 id="info-title">${resumeVo.user_name}</h3>
            <p>${resumeVo.user_gender},${resumeVo.user_age}세 (${resumeVo.user_year}년)</p>
-           <p>${resumeVo.user_email}</p>
-           <p>${resumeVo.user_tel}<p/>
+           <p>${resumeVo.user_tel} &nbsp; &nbsp;|&nbsp; &nbsp; ${resumeVo.user_email}</p>
+          <c:choose> 
+        <c:when test="${not empty resumeVo.user_address}">
+           <p>${resumeVo.user_address}<p/>
+        </c:when>
+        <c:otherwise>
+        <p>주소미기입<p/>
+        </c:otherwise>
+        </c:choose> 
         </div>
       </div>
-      
-
+        <input id="idPhoto" type="file" name="upimage" class="upimage" style="display:none"accept=".jpg, .jpeg, .png"/>
+        <label class="input-file-button idPhto2" for="idPhoto">사진 업로드</label>
+       <c:if test="${not empty ifvo.image_idx}">
+        <input type="hidden" value="${ifvo.image_idx}" name="image_idx"/>
+       </c:if>
       <div class="sub-filed">
         <h4 class="sub-title">학력</h4>
         <hr>
@@ -489,8 +508,28 @@ textarea {
 	    <textarea name="cover_letter"id="cover" placeholder="나에 대해 자유롭게 설명하고 채용기회의 확률을 높이세요">${resumeVo.cover_letter}</textarea>
 	  </div>     
      
+     	      
+      <div class="file-title">
+      <input type="hidden" value="test" name="text">
+      
+	    <h4 class="sub-title" >파일업로드 </h4><input type="button" id="btnAddFile" value="파일추가(최대 100M Byte)"/>
+	      </div> 
+	    <hr> 
+	     <c:forEach var="p" items="${pfvoList}">
+       <div class="sub-filedown">
+         <a class="aDelete" href="/deleteFile?portfolio_idx=${ p.portfolio_idx }">
+       <img src="/images/resume/deletex.png"/>&nbsp;&nbsp;&nbsp;
+       ${p.filename}
+       </a>
+       </div>
+       </c:forEach>	 
+	    <div class="file">
+       </div>
+    
     
           </div>
+          
+          
           <div class="btn-layout">
                <input class="btn btn-submit" type="submit" value="이력서수정"/>
          </div>
@@ -508,7 +547,82 @@ textarea {
  <script>
  
  $(function() {
+	 //이미지추가
+     $('.upimage').on('change', function() {
+                const file = this.files[0];
+                console.log(file)
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('.preview').attr('src', e.target.result).show(); // 미리보기 이미지 표시
+                    }
+                    reader.readAsDataURL(file); // 파일을 Data URL로 읽기
+                }
+            });
 	 
+	 //파일추가
+	 
+		let num =1;
+		$('#btnAddFile').on('click',function(){
+	  	  alert('파일추가');
+		  let tag ='<div class="file1"><input id="input-file'+num +'" type="file" name="upfile" class="upfile" multiple style="display:none"/> <div class="file-output" ><label class="input-file-button" for="input-file'+num +'">첨부파일</label><div class="file-name">선택된 파일이 없습니다.</div></div></div>';
+		  $('.file').append(tag);
+		  
+		  num++
+		  console.log(num);
+		})
+
+		$(document).on('change', 'input[type="file"]', function () { 
+       var files = $(this)[0].files;
+       var fileArr = [];
+       for (var i = 0; i < files.length; i++) {
+    	   
+    	   let num2 = num-1;
+ 		  console.log(num2);
+    	   let deleteX = '<span class="deleteX'+num2
+    	   + '"><img src="/images/resume/deletex.png"/>&nbsp;<span>&nbsp;&nbsp;&nbsp;'
+ 
+    	   
+        fileArr.push( deleteX  + files[i].name );
+    }
+     
+    var fileList = fileArr.join(', ');
+    $(this).closest('.file1').find('.file-name').html(fileList);
+    
+});     	 //파일삭제
+		for (var i = 1; i < 21; i++) {
+		    (function(index) {
+		        $(document).on('click', '.deleteX' + index, function () { 
+		            $(this).closest('.file-name').html('선택된 파일이 없습니다.');
+		            console.log($('#input-file' + index).val());
+		            $('#input-file' + index).val(''); // index에 맞는 파일 입력 필드 초기화
+		            console.log($('#input-file' + index).val());
+		        });
+		    })(i);
+		}
+		
+	//기존 파일 삭제	
+		//x 클릭
+  $('.aDelete').on('click',function(event){
+	
+	event.preventDefault();   // a tag의 기본 이벤트 취소	
+	event.stopPropagation();  // 이벤트 상위로 보낸다
+	let aDelete = this; // 현재클릭한 x a tag 
+	
+	//서버에서 파일과 Files table의 정보를 삭제하고 돌아온다
+	$.ajax({
+		url : this.href,
+		method:'GET'
+	}).done(function(result){
+		$(aDelete).parent().remove();
+	}).fail(function(error){
+		console.log(error);
+		alert('서버오류발생:' + error + '관리자에게문의하세요')
+	})
+	
+  })
+		
+		 
 //변수
 const formEl = document.getElementsByTagName('form')[0];	 
 const links = document.querySelectorAll(".link");

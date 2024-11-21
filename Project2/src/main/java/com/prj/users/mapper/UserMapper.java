@@ -124,6 +124,8 @@ public interface UserMapper {
 
 	void deleteUser(UserVo vo);
 
+	void updateResumeximage(ResumeVo resumeVo);
+
 
 
 
