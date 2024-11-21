@@ -109,6 +109,8 @@ public interface CompanyMapper {
 
 	int getpostC(int post_idx);
 
+	void updateRemove(int appli_idx);
+
 
 
 

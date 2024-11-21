@@ -15,10 +15,10 @@ public class ComApplyVo {
 	private String skill_name;
 	private String user_name;	
 	private String user_gender;
+	private int total_score;
 	private String age;	
 	private String cyears;
 	private String cmonths;
-	
 
 
 

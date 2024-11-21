@@ -337,6 +337,7 @@ WHERE PS.POST_IDX = #{post_idx}
          U.USER_IDX,
          U.USER_NAME,
          U.USER_GENDER,
+         EV.TOTAL_SCORE,
          FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(U.USER_BIRTHDATE, 'YYYYMMDD')) / 12) AS AGE,
          FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, CAREER_SDATE) / 12) AS CYEARS,         
          MOD(FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, CAREER_SDATE)), 12) AS CMONTHS  
@@ -345,7 +346,10 @@ WHERE PS.POST_IDX = #{post_idx}
                         LEFT JOIN SKILL SK ON RS.SKILL_ID = SK.SKILL_ID
                         LEFT JOIN USERS U ON RE.USER_IDX = U.USER_IDX 
                         LEFT JOIN RESUME_CAREER RC ON RE.RESUME_IDX = RC.RESUME_IDX
-  WHERE POST_IDX =#{post_idx}
+                        LEFT JOIN EVALUATE EV ON EV.RESUME_IDX = AP.RESUME_IDX                    
+  WHERE POST_IDX = #{post_idx} AND AP.REMOVE IS NULL
+  
+  
   </select>
 
 	 <update id="updateApply">
@@ -380,13 +384,13 @@ WHERE PS.POST_IDX = #{post_idx}
      </select>
 
 
-<delete id="deleteCompany">
-DELETE FROM COMPANYS
-WHERE COMPANY_IDX=#{company_idx}
-</delete>
+	<delete id="deleteCompany">
+	DELETE FROM COMPANYS
+	WHERE COMPANY_IDX=#{company_idx}
+	</delete>
 
     <select id="getCompanyById">
-         SELECT COMPANY_ID
+      SELECT COMPANY_ID
      FROM COMPANYS
      WHERE COMPANY_ID=#{company_id}
      </select>
@@ -396,6 +400,12 @@ WHERE COMPANY_IDX=#{company_idx}
 	   FROM POST
 	   WHERE POST_IDX = #{post_idx}
 	</delete>
+
+	<update id="updateRemove">
+	 UPDATE APPLICATION
+	 SET REMOVE ='X'
+	 WHERE APPLI_IDX =#{appli_idx}
+	</update>
 
 </mapper>
 

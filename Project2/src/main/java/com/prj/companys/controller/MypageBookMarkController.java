@@ -123,8 +123,8 @@ public class MypageBookMarkController {
 	public ModelAndView applyListapplyList(@RequestParam("company_idx") int company_idx,
 			                               @RequestParam("post_idx") int post_idx) {
 	
-   List<ComApplyVo> applyList = companyMapper.getapplyList(post_idx);
-		
+    List<ComApplyVo> applyList = companyMapper.getapplyList(post_idx);
+	
 	ModelAndView mv = new ModelAndView();
 	mv.addObject("company_idx",company_idx);
 	mv.addObject("post_idx",post_idx);
@@ -186,5 +186,15 @@ public class MypageBookMarkController {
 		mv.setViewName("redirect:/Company/Mypage/ApplyList/ApplyList?company_idx= "+company_idx +"&post_idx="+post_idx);
 		return mv;
 	}
+	
+	@RequestMapping(value="/ApplyList/Remove")
+	@ResponseBody
+	public void Remove(@RequestParam("appli_idx") int appli_idx) {
+		
+		companyMapper.updateRemove(appli_idx);	
+	
+		
+	}
+	
 
 }
