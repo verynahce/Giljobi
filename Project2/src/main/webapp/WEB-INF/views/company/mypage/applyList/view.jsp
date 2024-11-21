@@ -31,8 +31,8 @@ main {
    border-radius:15px;
    overflow:hidden;
    margin:0;
-    position: sticky; 
-    top: 124px; 
+   position: sticky; 
+   top: 124px; 
 
   
  }
@@ -826,6 +826,7 @@ cursor: pointer;
          <tr><td><a href="/Company/Mypage/Bookmark/List?company_idx=${company_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심인재</a></td></tr>
          <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${company_idx}" class="active-color"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
         </table>
+        
 	      <div id="side-menu">
 	       <div id ="side-frame">
 	         <p>최종수정일 : ${resumeVo.resume_fdate}<p>
@@ -853,7 +854,14 @@ cursor: pointer;
            </div>
         </c:when>
         <c:otherwise>
-        <img src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지"/>
+         <c:choose>
+       <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" >
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/user-profile.png" alt="User Image" >
+       </c:otherwise>
+      </c:choose> 
         <div id="info-content">
            <h3 id="info-title">${resumeVo.user_name}</h3>
            <p>${resumeVo.user_gender},${resumeVo.user_age}세 (${resumeVo.user_year}년)</p>
@@ -943,8 +951,22 @@ cursor: pointer;
 	    <h4 class="sub-title" >자기소개서</h4>
 	    <hr> 
         <div class ="sub-content">${resumeVo.cover_letter}</div>
+	  </div>  
+	     
+      <c:if test="${not empty pfvoList}">
+      <div class="sub-filed">
+	    <h4 class="sub-title" >파일업로드</h4>
+	    <hr> 
+	    <c:forEach var="p" items="${pfvoList}">
+       <div class="sub-filedown">
+         <a href="/filedownload/${p.portfolio_idx}">
+       <img src="/images/resume/link1.png"/>&nbsp;&nbsp;&nbsp;
+       ${p.filename}
+       </a>
+       </div>
+       </c:forEach>
 	  </div>     
-     
+     </c:if>
     
           </div>
           <div class="btn-layout">

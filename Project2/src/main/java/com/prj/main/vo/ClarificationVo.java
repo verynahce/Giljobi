@@ -20,5 +20,4 @@ public class ClarificationVo {
 	private String prek_etc;
 	private String meeting_num;
 	private String meeting_count;
-	private int post_idx;
 }

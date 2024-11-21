@@ -28,6 +28,7 @@ public class PostWriteVo {
 	private String  post_salary;
 	private String  post_ddate;
 	private String  skill_name;
+	private int  image_idx;
 
 	}
 	
