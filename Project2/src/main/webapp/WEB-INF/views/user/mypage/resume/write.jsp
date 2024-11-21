@@ -486,11 +486,22 @@ textarea {
        </table>
      </div>
 	
-      <div class="sub-filed">
-	    <h4 class="sub-title" >자기소개서</h4>
-	    <hr> 
-	    <textarea name="cover_letter"id="cover" placeholder="나에 대해 자유롭게 설명하고 채용기회의 확률을 높이세요"></textarea>
-	  </div> 
+	<div class="sub-field">
+	  <h4 class="sub-title">자기소개서</h4>
+	  <hr>
+	  <textarea name="cover_letter" id="cover" placeholder="나에 대해 자유롭게 설명하고 채용기회의 확률을 높이세요"></textarea>
+	  <button id="analyzeButton" type="button">분석하기</button>
+	
+	  <!-- 분석 결과 -->
+	  <div id="analysisResult" style="margin-top: 20px; display: none;">
+	    <h4>분석 결과</h4>
+	    <p id="overallFeedback"></p>
+	    <h5>문법 수정 권장 사항:</h5>
+	    <ul id="grammarCorrections"></ul>
+	    <h5>추천 키워드:</h5>
+	    <ul id="keywordSuggestions"></ul>
+	  </div>
+	</div>
 	      
       <div class="file-title">
       <input type="hidden" value="test" name="text">
@@ -816,6 +827,63 @@ $(formEl).on('keydown', function(event) {
  })
  </script>
  
+ <!-- 구글 NLAPI -->
+ <script>
+  document.getElementById('analyzeButton').addEventListener('click', function(event) {
+	event.preventDefault();
+	fetchData();
+  });
+    
+
+    // 분석 요청
+    function fetchData() {
+    const coverLetter = document.getElementById('cover').value;
+    if($('#cover').val().trim() == '') {
+        alert('자기소개서를 작성하세요');
+        $('#cover').focus();
+        return false;
+    }
+
+	    fetch('/api/resume/analyze', {
+	      method: 'POST',
+	      headers: {
+	        'Content-Type': 'application/json',
+	      },
+	      body: JSON.stringify({ text: coverLetter }),
+	    })
+	      .then((response) => {
+	        if (!response.ok) throw new Error('분석 요청 실패');
+	        return response.json();
+	      })
+	      .then((data) => {
+	        // 분석 결과 표시
+	        document.getElementById('analysisResult').style.display = 'block';
+	        document.getElementById('overallFeedback').innerText = data.overallFeedback;
+	
+	        // 문법 수정 사항
+	        const grammarList = document.getElementById('grammarCorrections');
+	        grammarList.innerHTML = ''; // 기존 리스트 초기화
+	        data.grammarCorrections.forEach((correction) => {
+	          const li = document.createElement('li');
+	          li.textContent = correction;
+	          grammarList.appendChild(li);
+	        });
+	
+	        // 키워드 추천
+	        const keywordList = document.getElementById('keywordSuggestions');
+	        keywordList.innerHTML = ''; // 기존 리스트 초기화
+	        data.keywordSuggestions.forEach((keyword) => {
+	          const li = document.createElement('li');
+	          li.textContent = keyword;
+	          keywordList.appendChild(li);
+	        });
+	      })
+	      .catch((error) => {
+	        console.error(error);
+	        alert('분석 중 오류가 발생했습니다.');
+	      });
+  }
+</script>
  
  
 </body>
