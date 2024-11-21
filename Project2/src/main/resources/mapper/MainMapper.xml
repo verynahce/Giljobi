@@ -716,6 +716,19 @@
    FROM CLARIFICATION
    WHERE POST_IDX = #{post_idx}
    </select>
+   
+   <select id="getResumeClickList">
+   SELECT *
+   FROM RESUME_CLICK
+   WHERE RESUME_IDX = #{resume_idx}
+   </select>
+  
+   <delete id="deleteResumeClickR">
+   DELETE 
+   FROM RESUME_CLICK
+   WHERE RESUME_IDX = #{resume_idx}
+   </delete>
+   
 </mapper>
 
 

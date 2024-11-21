@@ -10,6 +10,17 @@
 <title>잡덕</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="/js/common.js" defer></script>
+<style>
+.login-inner {
+  & .login-type li.active {
+    background: #4876EF;
+  }
+  & .login-btn{
+  	& button{
+  		background: #4876EF;
+  	}
+  }
+</style>
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>
@@ -25,7 +36,7 @@
           <form action="/Company/Login" method="POST">
           <ul class="login-input">
             <li><input type="text" name="company_id" placeholder="아이디"></li>
-            <li><input type="text" name="company_pw" placeholder="비밀번호"></li>
+            <li><input type="password" name="company_pw" placeholder="비밀번호"></li>
           </ul>
           <p>
             <input type="checkbox" id="keepId">
@@ -40,7 +51,7 @@
       </main>
 	 <%
 	    String clientId = "iP_8Cv0UhC7RyPImeUL2";//애플리케이션 클라이언트 아이디값";
-	    String redirectURI = URLEncoder.encode("http://localhost:8080/", "UTF-8");
+	    String redirectURI = URLEncoder.encode("http://localhost:9090/", "UTF-8");
 	    SecureRandom random = new SecureRandom();
 	    String state = new BigInteger(130, random).toString();
 	    String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code";

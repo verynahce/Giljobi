@@ -1,6 +1,7 @@
 package com.prj.users.vo;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 public class UserVo {
