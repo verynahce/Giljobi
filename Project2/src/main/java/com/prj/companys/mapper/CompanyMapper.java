@@ -103,6 +103,12 @@ public interface CompanyMapper {
 
 	void deleteCompany(CompanyVo companyvo);
 
+	CompanyVo getCompanyById(String company_id);
+
+	void updatePostimage(PostWriteVo vo);
+
+	int getpostC(int post_idx);
+
 
 
 

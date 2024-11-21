@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.prj.companys.mapper.CompanyMapper;
 import com.prj.companys.vo.CompanyVo;
 import com.prj.main.mapper.MainMapper;
 import com.prj.main.vo.PostListVo;
+import com.prj.users.vo.UserVo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -58,6 +61,20 @@ public class CompanyController {
 	public String registerForm() {
 		return "company/registerForm";
 	}
+   @RequestMapping( "/CheckDuplication" )
+   @ResponseBody
+   public String checkDuplication( @RequestParam( "company_id" ) String company_id ) {
+     
+      CompanyVo company = companyMapper.getCompanyById(company_id);
+       if (company == null) {
+           return "가능";  // 아이디가 존재하지 않으면 가능
+       }
+       return "불가능";  // 아이디가 존재하면 불가능
+   }
+	@RequestMapping("/SearchAddress")
+	public String searchAddress() {
+		return "company/popupaddress";
+	}	
 
 	
 	@RequestMapping("/Register")

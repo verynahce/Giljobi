@@ -356,6 +356,7 @@ textarea {
          <tr><td><a href="/User/MyPage/Resume/List?user_idx=${userVo.user_idx}" class="active-color"><img src="/images/icon22.svg" class="img">이력서</a></td></tr>
          <tr><td><a href="/User/MyPage/BookMark/List?user_idx=${userVo.user_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심기업 / 받은제의</a></td></tr>
          <tr><td><a href="/User/MyPage/ApplyList/List?user_idx=${userVo.user_idx}" class="link"><img src="/images/arrow.svg" class="img" data-hover="/images/arrow2.svg">지원내역</a></td></tr>
+         <tr><td><a href="/User/MyPage/Notice/List?user_idx=${userVo.user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/Mail.svg">수신함</a></td></tr>
         </table>
       </div>
       
@@ -488,7 +489,8 @@ textarea {
       <div class="sub-filed">
 	    <h4 class="sub-title" >자기소개서</h4>
 	    <hr> 
-	    <textarea name="cover_letter"id="cover" placeholder="나에 대해 자유롭게 설명하고 채용기회의 확률을 높이세요"></textarea>
+	    <textarea cols="100" wrap="hard" style="white-space: pre-wrap" 
+	    name="cover_letter"id="cover" placeholder="나에 대해 자유롭게 설명하고 채용기회의 확률을 높이세요"></textarea>
 	  </div> 
 	      
       <div class="file-title">
@@ -737,13 +739,14 @@ $('#techList').on('click', '.skillDelete', function() {
 });
 
 
-    
-
 
 //폼 제출 시 Enter 키 입력방치처리
 $(formEl).on('keydown', function(event) {
    if (event.keyCode === 13) {
-       event.preventDefault(); 
+	   const textarea = document.querySelector('#cover'); // textarea의 id를 사용하여 선택
+	    if (event.key === 'Enter' && document.activeElement !== textarea) {
+	        event.preventDefault(); // textarea가 아닌 경우에만 기본 동작 방지
+	    }
    }
 });
  

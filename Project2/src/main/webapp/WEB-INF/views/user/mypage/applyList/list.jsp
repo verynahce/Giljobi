@@ -174,6 +174,7 @@
          <tr><td><a href="/User/MyPage/Resume/List?user_idx=${user_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">이력서</a></td></tr>
          <tr><td><a href="/User/MyPage/BookMark/List?user_idx=${user_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심기업 / 받은제의</a></td></tr>
          <tr><td><a href="/User/MyPage/ApplyList/List?user_idx=${user_idx}" class="active-color"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
+         <tr><td><a href="/User/MyPage/Notice/List">수신함</a></td></tr>
         </table>
       </div>
       <div class="container">
@@ -190,14 +191,25 @@
        	   <th colspan="2">지원현황</th>
        	  </tr>
        	  
-       	  <c:forEach var="item" items="${applyList}">      	  
+       	  <c:forEach var="item" items="${applyList}">
        	  <tr>
+       	  <c:choose>    
+       	  <c:when test="${item.company_idx == 0}">
+       	   <td>${item.appli_date}</td>
+       	   <td ><a href="/User/MyPage/ApplyList/View?post_idx=${item.post_idx}&user_idx=${user_idx}"><span id="coname">탈퇴회원</span><br><span class="posttitle">${item.post_title}</span></a></td>
+       	   <td>~${item.post_ddate}</td>
+       	   <td>${item.appli_status}</td>
+       	   <td><a href="/User/MyPage/ApplyList/Delete?appli_idx=${item.appli_idx}" class="link"><img src="/images/cancel.png" class="img2" data-hover="/images/cancel2.png"></a></td>
+       	  </c:when> 
+       	  <c:otherwise>
        	   <td>${item.appli_date}</td>
        	   <td ><a href="/User/MyPage/ApplyList/View?post_idx=${item.post_idx}&user_idx=${user_idx}"><span id="coname">${item.company_name}</span><br><span class="posttitle">${item.post_title}</span></a></td>
        	   
        	   <td>~${item.post_ddate}</td>
        	   <td>${item.appli_status}</td>
        	   <td><a href="/User/MyPage/ApplyList/Delete?appli_idx=${item.appli_idx}" class="link"><img src="/images/cancel.png" class="img2" data-hover="/images/cancel2.png"></a></td>
+       	  </c:otherwise>
+       	  </c:choose> 	  
        	  </tr>
        	  </c:forEach>
          </table>

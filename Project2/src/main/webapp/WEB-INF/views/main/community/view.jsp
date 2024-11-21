@@ -72,7 +72,9 @@ main {
  
  #info {
   display: flex;
-  font-size:18px; 
+  font-size:18px;
+  align-items:center;
+  height:30px;
 }
 
  /*서브 분야들*/ 
@@ -152,7 +154,12 @@ main {
   text-align:center;
   font-size:20px;
   padding-top:10px;
+  display:flex;
+  flex-direction:row;
+  justify-content:center;
 }
+
+
 
 /*댓글 div전체*/
 .replyarea {
@@ -308,12 +315,16 @@ main {
         <div class="contain-body">
          <div id="question-duty">IT</div>       
           <h2 class="main-title"><span id="question-mark">Q</span>&nbsp;&nbsp;<!-- ${resumeVo.resume_title} -->이력서는 쳐다도 안보는 건가요?</h2>
-           <div id="info">239,310&nbsp;&nbsp;2024-11-15작성</div>
+           <div id="info">239,310<img src="/images/community/divider2.png">2024-11-15작성</div>
             <div class="sub-filed">
 	         <div class="sub-content"><!-- ${resumeVo.cover_letter} -->ㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷ</div>
 	         <div class="nickname">닉네임 누구누구씨</div>
 	         <hr class="divider">
-	         <div class="likenshare"><a href="atags"><img src="/images/community/like.png"><span>좋아요 20</span></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="">공유하기</a></div>
+	         <div class="likenshare">
+	          <span><a class="atags" href=""><img src="/images/community/like.png">&nbsp;좋아요 20</a></span>
+	          &nbsp;&nbsp;&nbsp;&nbsp;
+	          <span><a class="atags" href=""><img src="/images/community/share.png">&nbsp;공유하기</a></span>
+	         </div>
 	        </div>     
 	        <div class="replyarea">
 	         <table class="replyfilter">
