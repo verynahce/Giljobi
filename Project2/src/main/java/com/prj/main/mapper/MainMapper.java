@@ -85,6 +85,11 @@ public interface MainMapper {
 	ClarificationVo getClarification(int post_idx);
 	List<ResumeClickVo> getResumeClickList(int resume_idx);
 	void deleteResumeClickR(int resume_idx);
+	void inserCarification(ClarificationVo carificationVo);
+	void updateClarification(ClarificationVo clarificationVo);
+	void deleteClarification(int post_idx);
+	void insertCarPost(String cloth, String age, String setc, String prek, String pto, String pect, String mm, String mc, int post_idx);
+	void deletePostClick(int post_idx);
 
 
 

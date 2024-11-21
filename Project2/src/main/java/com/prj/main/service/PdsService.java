@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.prj.companys.vo.PostWriteVo;
 import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PortfolioVo;
 import com.prj.users.vo.ResumeVo;
@@ -28,6 +29,8 @@ public interface PdsService {
 	void deletefile(int resume_idx);
 
 	void deleteImage(int image_idx);
+
+	void updateimagePost(MultipartFile uploadimage, int image_idx, HashMap<String, Object> map, PostWriteVo vo);
 
 
 

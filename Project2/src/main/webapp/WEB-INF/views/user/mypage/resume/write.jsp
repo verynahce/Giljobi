@@ -739,8 +739,6 @@ $('#techList').on('click', '.skillDelete', function() {
 });
 
 
-    
-
 
 //폼 제출 시 Enter 키 입력방치처리
 $(formEl).on('keydown', function(event) {
