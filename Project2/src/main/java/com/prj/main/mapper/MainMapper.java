@@ -14,6 +14,7 @@ import com.prj.main.vo.PostClickListVo;
 import com.prj.main.vo.PostClickVo;
 import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
+import com.prj.main.vo.ResumeClickVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.ReviewCompanyInfoVo;
 import com.prj.main.vo.ReviewCompanyListVo;
@@ -70,17 +71,26 @@ public interface MainMapper {
 	void bookMarkOff(String user_idx,String company_idx);
 	
 	//북마크
-	void insertBookC(int company_idx, int resume_idx);
 	void deleteBookC(int company_idx, int resume_idx);
 	String getBookC(int company_idx, String resume_idx);
+	void insertBookC(int company_idx, int resume_idx);
 	
-	//지원자수 ,추천공고리스트 , 인담자 톡
+	
+	//지원자수 ,클릭 , 클릭추천공고리스트 , 인담자 톡 ,
 	PostCountVo getPostCount(String post_idx);
 	List<PostClickListVo> getPostClickList(int user_idx, String post_idx);
 	PostClickVo getPostclick(int user_idx, int post_idx);
 	void insertPostClick(int user_idx, int post_idx);
 	ClarificationVo getClarification(String post_idx);
 	ClarificationVo getClarification(int post_idx);
+	List<ResumeClickVo> getResumeClickList(int resume_idx);
+	void deleteResumeClickR(int resume_idx);
+	void inserCarification(ClarificationVo carificationVo);
+	void updateClarification(ClarificationVo clarificationVo);
+	void deleteClarification(int post_idx);
+	void insertCarPost(String cloth, String age, String setc, String prek, String pto, String pect, String mm, String mc, int post_idx);
+	void deletePostClick(int post_idx);
+
 
 
 	

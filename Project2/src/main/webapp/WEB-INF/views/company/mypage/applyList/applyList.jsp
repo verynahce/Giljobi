@@ -117,15 +117,15 @@
  }
  
  .subtitle th:nth-child(2) {
-   width:380px;
+   width:280px;
  }
  
  .subtitle th:nth-child(3) {
-   width:240px;
+   width:140px;
    text-align:left;
-   padding-left:25px;
+   padding-left:35px;
  }
- 
+
  .subtitle td {
    padding-top:15px;
    padding-bottom:10px;
@@ -147,8 +147,8 @@
  }
  
  .subtitle td:nth-child(4) {
-   padding-right:24px;
-   text-align:right;
+   padding-right:3px;
+   text-align:center;
  }
  .subtitle td:nth-child(5) {
    padding-right:14px;
@@ -190,7 +190,17 @@
 .restoreDeleted:hover {
 	background-color: #F2F2F2;
 }
+.statusFilter {
+padding:7px 5px;
+   border:1px solid #C7C6C6;
+   border-radius:7px;
+   margin:0px 150px 7px 0px;
+}
+#filterlayout{
+display:flex;
+justify-content: flex-end;
 
+}
 
 </style>
 </head>
@@ -214,15 +224,30 @@
        </div>
        <div class="content">
        	<div class="subtitles">
+       	
+      <div id="filterlayout">
+         <select class="statusFilter" >
+  	       <option >전체보기</option>
+  	       <option >서류 심사중</option>
+  	       <option >서류합격</option>
+  	       <option >서류 탈락</option>
+  	       <option >최종합격</option>
+  	       <option >면접 탈락</option>
+  	       <option >면접대기</option>    	
+       	</select>
+       </div>	
        	 <table class="subtitle">
        	  <tr>
        	   <th>이름</th>
        	   <th>이력서 요약</th>
-       	   <th colspan="2">경력</th>
+       	   <th>경력</th>
+       	   <th >평점</th>
+
        	  </tr>
        	  <c:forEach var="a" items="${applyList}">
        	  
        	  <tr class="Dcontent"  data-idx="${a.appli_idx}">
+       	  
        	   <c:choose>
 	        <c:when test="${a.user_idx == 0}">
 	           <td>탈퇴회원</td>
@@ -249,24 +274,37 @@
        	   ${a.cyears}년 ${a.cmonths}개월
        	   </c:when>
        	   <c:otherwise>
-       	   신입</td>
+       	   신입
        	   </c:otherwise>
        	   </c:choose>
        	   </td>
+       	      
+       	      <c:choose>
+       	      <c:when test="${a.total_score != 0}">
+       	       <td>${a.total_score}</td>
+       	      </c:when>
+       	      <c:otherwise>
+       	       <td>미기입</td>
+       	      </c:otherwise>
+       	      </c:choose>
+       	       	   
        	   <td>
        	     <select class="select" data-idx="${a.appli_idx}">
+       	       <option <c:if test="${a.appli_status == '서류 심사중'}">selected</c:if>>서류 심사중</option>
+       	       <option <c:if test="${a.appli_status == '서류합격'}">selected</c:if>>서류합격</option>
+       	       <option <c:if test="${a.appli_status == '서류 탈락'}">selected</c:if>>서류 탈락</option>
+       	       <option <c:if test="${a.appli_status == '최종합격'}">selected</c:if>>최종합격</option>
+       	       <option <c:if test="${a.appli_status == '면접 탈락'}">selected</c:if>>면접 탈락</option>
        	       <option <c:if test="${a.appli_status == '면접대기'}">selected</c:if>>면접대기</option>
-       	       <option <c:if test="${a.appli_status == '불합격'}">selected</c:if>>불합격</option>
-       	       <option <c:if test="${a.appli_status == '합격'}">selected</c:if>>합격</option>
        	      </select>
        	    </td>
-       	    <td><a href="" class="link nolink"><img src="/images/trashcan.png" class="img2 delete" data-hover="/images/trashcan2.png"></a></td>
+   
+       	    <td><a href="" class="link nolink"><img src="/images/trashcan.png" class="img2 delete" data-idx="${a.appli_idx}"data-hover="/images/trashcan2.png"></a></td>
        	  </tr>
        	  
        	   </c:forEach>  
        	 </table>
        	</div>
-       	<input type="button" class="restoreDeleted" value="전체지원자 다시보기"/>
        	
        </div>
       </div>
@@ -278,6 +316,24 @@
    
 <script>
 $(function(){
+	//필터
+	$('.statusFilter').on('change', function () {
+	    //필터의 값을 가져오기
+	    let filterValue = $(this).val(); 
+	    
+	    if (filterValue === '전체보기') {
+	        $('.Dcontent').css('display', ''); 
+	    } else {        
+	        $('.Dcontent').each(function () {           
+	            let selectValue = $(this).find('.select').val(); 
+	            // .select의 값과 filterValue가 같으면 표시, 다르면 숨기기
+	            $(this).css('display', (selectValue === filterValue) ? '' : 'none');
+	        });
+	    }
+	});
+        
+	
+	
     const links = document.querySelectorAll(".link");
 
     links.forEach(link => {
@@ -320,44 +376,30 @@ $(function(){
 	   
    })
    
-   
-   //리스트만 안보이는 삭제 구현
-   
-    // 초기 체크
-   function checkDeletedItems() {
-       if (localStorage.getItem('deletedItems')) {
-           var deletedItems = JSON.parse(localStorage.getItem('deletedItems'));
-           deletedItems.forEach(function(idx) {
-               $('tr.Dcontent[data-idx="' + idx + '"]').hide();
-           });
-       }
-   }
+  
+   	        $('.Dcontent').each(function () {           
+	            let remove = $(this).find('.delete')
+	            let remove9 = $(this).find('.delete').data('idx')
+	            let trorgin = $(this)
+	            console.log(remove9);
+	            remove.on('click',function(){
+	     		let applyidx = remove.data('idx')
+	                $.ajax({
+	                    url: '/Company/Mypage/ApplyList/Remove', 
+	                    data: {appli_idx: applyidx}
+	                }).done(function(trr){ 
+	                	console.log(trorgin)
+	                	trorgin.remove();
+	        		   }).fail(function(err){
+	        			    console.log(err)
 
-   checkDeletedItems();
-    
- 
-   // 삭제 버튼 클릭 이벤트 (이벤트 위임 사용)
-   $(document).on('click', '.delete', function() {
-       var $row = $(this).closest('tr.Dcontent'); 
-       var appliIdx = $row.data('idx'); 
+	        		    })
+	            	
+	        		    
+	            })
 
-       // localStorage에 삭제된 항목 추가
-       var deletedItems = localStorage.getItem('deletedItems') ? JSON.parse(localStorage.getItem('deletedItems')) : [];
-       deletedItems.push(appliIdx); 
-       localStorage.setItem('deletedItems', JSON.stringify(deletedItems)); 
-     
-       $row.hide(); 
-   });
+	        });
 
-   // 삭제된 항목 복원 버튼 클릭
-   $('.restoreDeleted').on('click', function() {
-
-       localStorage.removeItem('deletedItems');
-       $('tr.Dcontent').show(); 
-   });
-   
-   
-   
     
 })   
 </script>

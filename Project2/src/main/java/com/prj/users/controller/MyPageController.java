@@ -13,12 +13,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.prj.companys.vo.CompanyVo;
+import com.prj.main.mapper.MainMapper;
+import com.prj.main.service.ClickService;
 import com.prj.main.service.PdsService;
 import com.prj.main.vo.CityVo;
+import com.prj.main.vo.ClarificationVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
 import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PortfolioVo;
+import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
@@ -44,11 +48,12 @@ public class MyPageController {
 	
 	@Autowired
 	private UserMapper userMapper;
-	
-
+	@Autowired
+    private MainMapper mainMapper;
 	@Autowired
 	private PdsService pdsService;
-	
+	@Autowired
+	private ClickService clickService;
 	@RequestMapping("/Home/View")
 	public ModelAndView homeview(HttpServletRequest request, HttpServletResponse responese) {		
 		
@@ -152,22 +157,38 @@ public class MyPageController {
 	@RequestMapping("/ApplyList/View")
 	public ModelAndView applylistview(@RequestParam("post_idx") int post_idx,
                                       @RequestParam("user_idx") int user_idx) {
-		
 		//view 내릴 정보
 		PostListVo vo = userMapper.getPost(post_idx);
-		CompanyVo cvo= userMapper.getCompany(post_idx);		
-		ScoreVo score = userMapper.getReviewScore(post_idx);		
+		CompanyVo cvo= userMapper.getCompany(post_idx);
+		ScoreVo score = userMapper.getReviewScore(post_idx);
 		
-
+	    //공고수 , 인사담당자톡
+		PostCountVo pcvo = mainMapper.getPostCount(String.valueOf(post_idx));
+		ClarificationVo cfvo = mainMapper.getClarification(post_idx);
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}				
+		
+		//이력서 도출
+		List<ResumeVo> SRList = userMapper.getSRList(user_idx);
+		
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("user/mypage/applyList/view");
 		mv.addObject("postVo",vo);	
 		mv.addObject("companyVo",cvo);	
-		mv.addObject("user_idx",user_idx);			
-		mv.addObject("score",score.getScore());
-		
-		return mv;
-	}
+		mv.addObject("resumeList",SRList);	
+		mv.addObject("user_idx",user_idx);	
+		mv.addObject("pcount",pcvo);
+		mv.addObject("cfvo",cfvo);
+		mv.addObject("imagePath",imagePath);
+		mv.addObject("score",score.getScore());	
+			return mv;
+}
 	
 	@RequestMapping("/BookMark/List")
 	public ModelAndView bookmarklist(UserVo uservo) {
@@ -199,6 +220,18 @@ public class MyPageController {
 		CompanyVo cvo= userMapper.getCompany(post_idx);
 		ScoreVo score = userMapper.getReviewScore(post_idx);
 		
+	    //공고수 , 인사담당자톡
+		PostCountVo pcvo = mainMapper.getPostCount(String.valueOf(post_idx));
+		ClarificationVo cfvo = mainMapper.getClarification(post_idx);
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}				
+		
 		//이력서 도출
 		List<ResumeVo> SRList = userMapper.getSRList(user_idx);
 		
@@ -208,6 +241,9 @@ public class MyPageController {
 		mv.addObject("companyVo",cvo);	
 		mv.addObject("resumeList",SRList);	
 		mv.addObject("user_idx",user_idx);	
+		mv.addObject("pcount",pcvo);
+		mv.addObject("cfvo",cfvo);
+		mv.addObject("imagePath",imagePath);
 		mv.addObject("score",score.getScore());	
 		return mv;
 	}
@@ -517,8 +553,10 @@ public class MyPageController {
 		userMapper.deleteApplyR(resume_idx);
 		userMapper.deleteBookmarkR(resume_idx);
 		pdsService.deletefile(resume_idx);	
-		pdsService.deleteImage(rvo.getImage_idx());	
+		clickService.deleteResumeClickR(resume_idx);
+		//삭제 문제시 이 두개 위치 바꾸기
 		userMapper.deleteResume(resume_idx);		
+		pdsService.deleteImage(rvo.getImage_idx());	
 
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/User/MyPage/Resume/List?user_idx="+ user_idx);
