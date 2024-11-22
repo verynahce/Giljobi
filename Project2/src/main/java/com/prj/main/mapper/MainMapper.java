@@ -14,6 +14,7 @@ import com.prj.main.vo.PostClickListVo;
 import com.prj.main.vo.PostClickVo;
 import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
+import com.prj.main.vo.PostVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.ReviewCompanyInfoVo;
 import com.prj.main.vo.ReviewCompanyListVo;
@@ -81,7 +82,7 @@ public interface MainMapper {
 	void insertPostClick(int user_idx, int post_idx);
 	ClarificationVo getClarification(String post_idx);
 	ClarificationVo getClarification(int post_idx);
-
+	int countP(String company_idx);
 
 	
 }

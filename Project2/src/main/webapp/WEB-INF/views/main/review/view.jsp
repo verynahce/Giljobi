@@ -7,6 +7,32 @@
 <meta charset="UTF-8">
 <title>잡덕</title>
 <link rel="stylesheet" href="/css/common.css" />
+<style>
+.company-info {
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  width:100%;
+  padding-right:20px;
+}
+ 
+.company-history {
+  margin-top:15px;
+  display:flex;
+  gap:10px;
+  flex-direction:column;
+}
+
+.company-history p {
+  display:flex;
+  align-items:center;
+  justify-content:left;
+  gap:10px;
+  font-size:18px;
+  font-weight:500;
+}
+
+</style>
 <script src="/js/common.js" defer></script>
 </head>
 <body>
@@ -17,10 +43,17 @@
       <div class="review-company-profile">
         <div class="company-image"><img src="/images/icon/company-profile.png" alt="회사 이미지"/></div>
         <div class="company-info">
+         <div>
           <p class="company-name">${vo.company_name}</p>
           <p><span class="total">${vo.tot_point}</span> <span class="review-duty">${vo.company_area}</span></p>
 		  <p>${vo.company_tel }</p>
 		  <p>${vo.company_email }</p>
+		  </div>
+		 <div class="company-history">
+		  <p><img src="/images/review/location.png">${vo.company_address }</p>
+		  <p><img src="/images/review/Building.png">${vo.company_birthdate }</p>
+		  <p><img src="/images/review/Clipboard.png">공고수${countP}</p>
+		 </div>
         </div>
       </div>
       <table class="review-table">

@@ -103,6 +103,8 @@ public interface CompanyMapper {
 
 	void deleteCompany(CompanyVo companyvo);
 
+	
+
 
 
 
