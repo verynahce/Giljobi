@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.prj.companys.vo.CompanyVo;
+import com.prj.main.service.ClickService;
 import com.prj.main.service.PdsService;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.DutyVo;
@@ -23,6 +24,7 @@ import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
 import com.prj.users.mapper.UserMapper;
+import com.prj.users.notice.service.NoticeService;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.EduVo;
 import com.prj.users.vo.ResumeCareerVo;
@@ -45,9 +47,11 @@ public class MyPageController {
 	@Autowired
 	private UserMapper userMapper;
 	
+
 	@Autowired
 	private PdsService pdsService;
-	
+	@Autowired
+	private ClickService clickService;
 	@RequestMapping("/Home/View")
 	public ModelAndView homeview(HttpServletRequest request, HttpServletResponse responese) {		
 		
@@ -516,8 +520,10 @@ public class MyPageController {
 		userMapper.deleteApplyR(resume_idx);
 		userMapper.deleteBookmarkR(resume_idx);
 		pdsService.deletefile(resume_idx);	
-		pdsService.deleteImage(rvo.getImage_idx());	
+		clickService.deleteResumeClickR(resume_idx);
+		//삭제 문제시 이 두개 위치 바꾸기
 		userMapper.deleteResume(resume_idx);		
+		pdsService.deleteImage(rvo.getImage_idx());	
 
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:/User/MyPage/Resume/List?user_idx="+ user_idx);
@@ -540,7 +546,4 @@ public class MyPageController {
 		
 	}
 
-	
-	
-	
 }

@@ -12,6 +12,7 @@ public class UserApplicationListVo {
 	private String appli_status;
 	private String post_title;
 	private String post_ddate;
+	private int company_idx;
 	private String company_name;
 	
 }

@@ -103,7 +103,7 @@ public interface CompanyMapper {
 
 	void deleteCompany(CompanyVo companyvo);
 
-	
+	CompanyVo getCompanyById(String company_id);
 
 
 
