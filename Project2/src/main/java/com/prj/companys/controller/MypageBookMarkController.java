@@ -15,11 +15,11 @@ import com.prj.companys.vo.ComApplyVo;
 import com.prj.companys.vo.ComBookmarkVo;
 import com.prj.companys.vo.CompanyVo;
 import com.prj.companys.vo.RConutVo;
-import com.prj.main.service.PdsService;
 import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PortfolioVo;
 import com.prj.main.vo.PostVo;
 import com.prj.main.vo.ResumeListVo;
+import com.prj.service.PdsService;
 import com.prj.users.mapper.UserMapper;
 import com.prj.users.vo.ResumeVo;
 

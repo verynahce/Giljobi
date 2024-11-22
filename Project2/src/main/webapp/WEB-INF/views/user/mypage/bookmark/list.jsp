@@ -332,8 +332,7 @@
    </div>
    <hr>
    
-   <table class="s-list">
-   
+   <table class="s-list"> 
    <c:forEach var="item" items="${resumeList}">
      <tr>
      <td><input type="radio"name="resume_idx" id="${item.resume_idx}" value="${item.resume_idx}"> <label for="${item.resume_idx}">${item.resume_title}</label></td>
@@ -503,9 +502,10 @@ $(function(){
  	 $('[name="post_idx"]').val(post_idx);   	
  	 $('[name="scout_idx"]').val(scout_idx);
  		}else {
+ 			 const scout_idx = $(this).data('scout');	
  			alert('마감된 공고입니다 ')
+ 			 window.location.href = '/User/MyPage/BookMark/deadline?scout_idx='+scout_idx ;
  			
- 			//에이젝스 디비부분
  			
  		}
  	 	});

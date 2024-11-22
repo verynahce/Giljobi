@@ -1,9 +1,10 @@
-package com.green.entity;
+package com.prj.entity;
 
 import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,17 +30,17 @@ public class Community {
     @SequenceGenerator(name="COMMUNITY_SEQ", 
     sequenceName = "COMMUNITY_SEQ", allocationSize = 1)
 	 @Column(name = "COMMUNITY_IDX")
-	private Long community_idx;   
+	private Long communityIdx;   
 	
 	@ManyToOne
     @JoinColumn(name = "USER_IDX", referencedColumnName = "USER_IDX", nullable = false)
 	private Users users;	
 	@ManyToOne
-    @JoinColumn(name = "IMAGE_IDX", referencedColumnName = "IMAGE_IDX", nullable = false)
+    @JoinColumn(name = "IMAGE_IDX", referencedColumnName = "IMAGE_IDX")
     private Imagefile imagefile;
-
-    @Column(name = "DUTY_ID")
-    private String dutyId;
+	@ManyToOne
+    @JoinColumn(name = "DUTY_ID", referencedColumnName = "DUTY_ID")	
+    private Duty duty;
 
     @Column(name = "COM_TITLE", nullable = false)
     private String comTitle;

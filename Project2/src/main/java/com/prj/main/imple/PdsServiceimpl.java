@@ -12,9 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.prj.companys.mapper.CompanyMapper;
 import com.prj.companys.vo.PostWriteVo;
 import com.prj.main.mapper.PdsMapper;
-import com.prj.main.service.PdsService;
 import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PortfolioVo;
+import com.prj.service.PdsService;
 import com.prj.users.mapper.UserMapper;
 import com.prj.users.vo.ResumeVo;
 

@@ -12,6 +12,8 @@
 <script src="/js/header.js" defer></script>
 
 <style>
+
+
 /*오버레이*/
 .overlay {
   
@@ -42,7 +44,7 @@ justify-content: space-between;
     z-index: 1; 
     main{        
     width: 890px;
-    min-height: 1840px;
+    min-height: 1650px;
     background-color: white;
     border-radius: 20px;
     margin: 0px auto 60px  auto  ;
@@ -460,7 +462,15 @@ height: 28px;
       <h2 class="main-title">${vo.resume_title}</h2>
       <hr>
       <div id="info">
-        <img src="/images/icon/user-profile.png" alt="유저 이미지"/>
+      <c:choose>
+       <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" >
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/user-profile.png" alt="User Image" >
+       </c:otherwise>
+      </c:choose> 
+
         <div id="info-content">
         <c:choose>
         <c:when test="${vo.user_idx == 0}">
@@ -549,18 +559,29 @@ height: 28px;
 	  		<spna class="noob">신입</spna>
 	  	</c:otherwise>
 	  </c:choose>
-
+     </div>
 	
       <div class="sub-filed">
 	    <h4 class="sub-title" >자기소개서</h4>
 	    <hr> 
 	    <div class ="sub-content"> ${vo.cover_letter}</div>
 	  </div>
-	
+	 <c:if test="${not empty pfvoList}">
+      <div class="sub-filed">
+	    <h4 class="sub-title" >파일업로드</h4>
+	    <hr> 
+	    <c:forEach var="p" items="${pfvoList}">
+       <div class="sub-filedown">
+         <a href="/filedownload/${p.portfolio_idx}">
+       <img src="/images/resume/link1.png"/>&nbsp;&nbsp;&nbsp;
+       ${p.filename}
+       </a>
+       </div>
+       </c:forEach>
+       
+	  </div>     
+     </c:if>
 
-     
-     
-     
      
     </main>
     <div class="btn-back"><a href ="List">돌아가기</a></div>
@@ -581,10 +602,10 @@ height: 28px;
            <c:when test="${vo.user_idx == 0}">
            </c:when>
            <c:when test="${empty cb_idx}">
-            <input type="image" class="star"src="/images/bookmark/staroff.png" alt="Star Image"class="image" data-com="${login.company_idx}" data-re="${vo.resume_idx}">
+            <input type="image" class="star"src="/images/bookmark/staroff.png" alt="Star Image"class="image" data-com="${company_idx}" data-re="${vo.resume_idx}">
            </c:when>
            <c:otherwise>
-            <input type="image" class="rats"src="/images/bookmark/staron.png" alt="Star Image"class="image" data-com="${login.company_idx}" data-re="${vo.resume_idx}">          
+            <input type="image" class="rats"src="/images/bookmark/staron.png" alt="Star Image"class="image" data-com="${company_idx}" data-re="${vo.resume_idx}">          
            </c:otherwise>
            </c:choose>
            
@@ -676,13 +697,9 @@ height: 28px;
      			console.log()
      		}).fail(function(err){
      			console.log(err)
-     		})
-			 
-			count = 0; 
-			
+     		})			 
+			count = 0;			
 		} 
-			
-			
 		})	
 		
 

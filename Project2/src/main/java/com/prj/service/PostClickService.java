@@ -1,11 +1,10 @@
-package com.green.service;
+package com.prj.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.green.repository.PostClickRepository;
 import com.prj.entity.PostClick;
-
+import com.prj.repository.PostClickRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
