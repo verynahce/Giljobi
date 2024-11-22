@@ -13,6 +13,8 @@ public class ReviewCompanyInfoVo {
 	private String  company_tel;
 	private String  company_email;
 	private String  company_area;	
+	private String  company_birthdate;
+	private String  company_address;
 	private double  tot_point;
 	private double  wc_point;
 	private double  wlb_point;

@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.prj.companys.mapper.CompanyMapper;
 import com.prj.main.mapper.MainMapper;
 import com.prj.main.mapper.PagingMapper;
 import com.prj.main.vo.Pagination;
 import com.prj.main.vo.PagingResponse;
+import com.prj.main.vo.PostVo;
 import com.prj.main.vo.ReviewCompanyInfoVo;
 import com.prj.main.vo.ReviewCompanyListVo;
 import com.prj.main.vo.SearchVo;
@@ -32,6 +34,9 @@ public class ReviewController {
 	
 	@Autowired
 	private PagingMapper pagingMapper;
+	
+	@Autowired
+	private CompanyMapper companyMapper;
 	
 	/* review 관련 */
 	/*================================================================================*/
@@ -75,7 +80,9 @@ public class ReviewController {
 		ReviewCompanyInfoVo vo = mainMapper.getCompanyInfo(company_idx);
 		Integer count = mainMapper.getReviewCount(company_idx);
 		List<UserReviewVo> userReview = mainMapper.getUserReview(company_idx);
+		int  countP = mainMapper.countP(company_idx);
 		ModelAndView mv = new ModelAndView();
+		mv.addObject("countP", countP);
 		mv.addObject("vo",vo);
 		mv.addObject("count",count);
 		mv.addObject("userReview",userReview);

@@ -1,12 +1,13 @@
 package com.prj.main.controller;
 
-import java.util.List;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 
 import com.prj.entity.Community;
 import com.prj.entity.Users;
@@ -15,11 +16,17 @@ import com.prj.users.vo.UserVo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import com.prj.main.mapper.MainMapper;
+import com.prj.main.mapper.PagingMapper;
+
 
 @Controller
 @RequestMapping("Main/Community")
 public class CommunityController {
-	
+ 	@Autowired
+	private MainMapper mainMapper;	
+	@Autowired
+	private PagingMapper pagingMapper; 
 	@Autowired
 	private CommunityService  communityService;
 	
