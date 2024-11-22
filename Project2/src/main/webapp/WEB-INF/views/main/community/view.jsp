@@ -313,15 +313,15 @@ main {
     <div class="innercontents">
        <div class="container" >
         <div class="contain-body">
-         <div id="question-duty">IT</div>       
+         <div id="question-duty">${ct.duty.dutyName}</div>       
           <h2 class="main-title"><span id="question-mark">Q</span>&nbsp;&nbsp;<!-- ${resumeVo.resume_title} -->이력서는 쳐다도 안보는 건가요?</h2>
-           <div id="info">239,310<img src="/images/community/divider2.png">2024-11-15작성</div>
+           <div id="info">${ct.comHit}<img src="/images/community/divider2.png">${ct.comRegdate}&nbsp;작성</div>
             <div class="sub-filed">
-	         <div class="sub-content"><!-- ${resumeVo.cover_letter} -->ㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷㄷ</div>
-	         <div class="nickname">닉네임 누구누구씨</div>
+	         <div class="sub-content">${ct.comTitle}</div>
+	         <div class="nickname">닉네임&nbsp;&nbsp;:&nbsp; ${ct.users.user_name}씨</div>
 	         <hr class="divider">
 	         <div class="likenshare">
-	          <span><a class="atags" href=""><img src="/images/community/like.png">&nbsp;좋아요 20</a></span>
+	          <span><a class="atags" href=""><img src="/images/community/like.png">&nbsp;${ct.comLike}</a></span>
 	          &nbsp;&nbsp;&nbsp;&nbsp;
 	          <span><a class="atags" href=""><img src="/images/community/share.png">&nbsp;공유하기</a></span>
 	         </div>

@@ -373,7 +373,11 @@ cursor: pointer;
 	font-weight: 500;
 	
 }
-
+.star, .rats {
+margin-top:2px;
+width: 28px;
+height: 28px;
+}
 
 </style>
 
@@ -434,7 +438,15 @@ cursor: pointer;
       <h2 class="main-title">${vo.post_title}</h2>
       <hr>
       <div id="info">
-        <img src="/images/icon/company-profile.png" alt="회사 이미지"/>
+      <c:choose>
+      <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" >
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/company-profile.png"alt="Company Image" >
+       </c:otherwise>
+       </c:choose> 
+       
         <div id="info-content">
            <h3 id="info-title">${vo.company_name}</h3>
            <p><img id="star-size1"src="/images/star1.png" alt="Star Image"> (${not empty totPoint ? totPoint : 0.0 })</p>
@@ -595,11 +607,26 @@ cursor: pointer;
          <div id="side-bottom">
            <button class="btn" id="btn-apply">입사지원</button>
            <div id="btn-scrape" >
-            <input type="image" src="/images//star1.png" alt="Star Image"class="image">
+           
+          <c:choose>
+           <c:when test="${empty user_idx}">
+            <input type="image"src="/images/bookmark/staroff.png" alt="Star Image"class="image">          
+           </c:when>
+           <c:when test="${empty cb_idx}">
+            <input type="image" class="star"src="/images/bookmark/staroff.png" alt="Star Image"class="image" data-com="${vo.company_idx}" data-user="${user_idx}">
+           </c:when>
+           <c:otherwise>
+            <input type="image" class="rats"src="/images/bookmark/staron.png" alt="Star Image"class="image" data-com="${vo.company_idx}" data-user="${user_idx}">          
+           </c:otherwise>
+           </c:choose>
+
            </div>
          </div>
        </div>
     </div>
+    
+    
+    
     <c:if test="${not empty clickList}">
     <div class="side-recommend">
     <h4>추천공고</h4>
@@ -630,7 +657,46 @@ cursor: pointer;
    <script>
   
   $(function(){
-
+	  //북마크
+		var count = '${cb_idx}' ? 1 : 0;
+		console.log(count);
+		$('.star, .rats').on('click',function() {
+		
+		if(count === 0)	{
+			$(this).attr('src', '/images/bookmark/staron.png');
+			 alert('북마크 되었습니다');
+			 console.log($(this).data('com'))
+			 console.log($(this).data('user'))
+			
+			 $.ajax({
+        			url:'/Main/Jobs/BookMark/On',
+        			data:{company_idx: $(this).data('com'),
+        				 user_idx: $(this).data('user')}
+        		}).done(function(data){           			
+        		}).fail(function(err){
+        			console.log(err)
+        		})
+        	
+			 count = 1; 
+			 
+		}else {
+			$(this).attr('src', '/images/bookmark/staroff.png');
+			 alert('북마크 해제되었습니다');
+			 console.log($(this).data('com'))
+			 console.log($(this).data('user'))
+			 
+			 $.ajax({
+     			url:'/Main/Jobs/BookMark/Off',
+     			data:{company_idx: $(this).data('com'),
+     				  user_idx: $(this).data('user')}
+     		}).done(function(data){           			
+     		}).fail(function(err){
+     			console.log(err)
+     		})			 
+			count = 0;			
+		} 
+		})	
+		
 	$('#btn-apply').on('click', function(){
 		$('.overlay').show();		
 				

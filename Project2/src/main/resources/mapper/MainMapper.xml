@@ -294,6 +294,7 @@
 	    RC.CAREER_DESCRIPTION,
 	    COVER_LETTER,
 	    RESUME_HIT,
+	    R.IMAGE_IDX,
 	    TO_CHAR(RESUME_CDATE,'""YYYY"-"MM"-"DD""') RESUME_CDATE,
 	    TO_CHAR(RESUME_FDATE,'""YYYY"-"MM"-"DD""') RESUME_FDATE
 	FROM
@@ -767,9 +768,27 @@
    <delete id="deletePostClick">
    DELETE
    FROM POST_CLICK
-   WHERE POST_IDX = #{post_idx}
-   
+   WHERE POST_IDX = #{post_idx}   
    </delete>
+   
+   <insert id="insertBookU">
+   INSERT INTO USER_BOOKMARK (UB_IDX, USER_IDX, COMPANY_IDX)
+   VALUES ((SELECT NVL(MAX(UB_IDX), 0) + 1 FROM USER_BOOKMARK), #{arg1}, #{arg0})
+   </insert>
+   
+   
+   <delete id="deleteBookU">
+   DELETE
+   FROM USER_BOOKMARK
+   WHERE USER_IDX = #{arg1} AND COMPANY_IDX = #{arg0} 
+   </delete>
+   
+   <select id="getBookU">
+   SELECT UB_IDX
+   FROM USER_BOOKMARK
+   WHERE USER_IDX = #{arg0} AND COMPANY_IDX = #{arg1} 
+   </select>
+   
    
 </mapper>
 

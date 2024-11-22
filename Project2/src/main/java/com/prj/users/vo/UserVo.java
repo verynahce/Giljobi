@@ -19,8 +19,7 @@ public class UserVo {
 	public UserVo() {
 		this.role = "개인회원";
 	}
-	
-	
+		
 	
 	public UserVo(int user_idx, String user_id, String user_name, String user_pw, String user_birthdate,
 			String user_gender, String user_email, String user_tel, String user_address,String role) {

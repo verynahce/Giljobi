@@ -74,7 +74,9 @@ public interface MainMapper {
 	void deleteBookC(int company_idx, int resume_idx);
 	String getBookC(int company_idx, String resume_idx);
 	void insertBookC(int company_idx, int resume_idx);
-	
+	void insertBookU(int company_idx, int user_idx);
+	void deleteBookU(int company_idx, int user_idx);	
+	String getBookU(int user_idx, int company_idx);
 	
 	//지원자수 ,클릭 , 클릭추천공고리스트 , 인담자 톡 ,
 	PostCountVo getPostCount(String post_idx);
@@ -90,6 +92,9 @@ public interface MainMapper {
 	void deleteClarification(int post_idx);
 	void insertCarPost(String cloth, String age, String setc, String prek, String pto, String pect, String mm, String mc, int post_idx);
 	void deletePostClick(int post_idx);
+
+
+
 
 
 

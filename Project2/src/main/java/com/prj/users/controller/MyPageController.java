@@ -14,8 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.prj.companys.vo.CompanyVo;
 import com.prj.main.mapper.MainMapper;
-import com.prj.main.service.ClickService;
-import com.prj.main.service.PdsService;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.ClarificationVo;
 import com.prj.main.vo.DutyVo;
@@ -26,6 +24,8 @@ import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
+import com.prj.service.ClickService;
+import com.prj.service.PdsService;
 import com.prj.users.mapper.UserMapper;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.EduVo;
@@ -251,25 +251,34 @@ public class MyPageController {
 	
 	
 	@RequestMapping("/BookMark/Apply")
-	public ModelAndView bmapply(ApplicationVo aVO, @RequestParam("scout_idx") int scout_idx) {
-		
+	public ModelAndView bmapply(ApplicationVo aVO, @RequestParam("scout_idx") int scout_idx) {		
 		//insert
-
 		userMapper.insertApply(aVO);
-
 		//경로 변수
 		int ridx =aVO.getResume_idx();
 		ResumeVo rvo = userMapper.getResume(ridx);
-		
 		//받은 제안 삭제
-		userMapper.deleteScope(scout_idx);
-		
+		userMapper.deleteScope(scout_idx);		
 		ModelAndView mv = new ModelAndView();
-
 		mv.setViewName("redirect:/User/MyPage/BookMark/List?user_idx="+rvo.getUser_idx());
 				
 		return mv;
 	}
+	@RequestMapping("/BookMark/deadline")
+	public ModelAndView deadline(@RequestParam("scout_idx") int scout_idx) {		
+		
+		UserScoutVo uvo = userMapper.getScout(scout_idx);
+		//insert
+		userMapper.deleteScope(scout_idx);		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/User/MyPage/BookMark/List?user_idx="+uvo.getUser_idx());
+				
+		return mv;
+	}
+	
+	
+	
+	
 
 	@RequestMapping(value="/BookMark/On")
 	@ResponseBody

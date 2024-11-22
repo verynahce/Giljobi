@@ -22,10 +22,6 @@
             automatic_uploads: true,  // 자동 업로드 활성화
             images_upload_url: '/upload-image',  // 이미지 업로드 URL
             images_upload_base_path: '/images',  // 이미지 저장 경로
-            setup: function (editor) {
-                editor.on('change', function () {
-                    editor.save(); // 에디터의 내용을 textarea에 저장
-                });}
         });
     </script>
 <style>
@@ -77,15 +73,11 @@ main {
 }
 
 .main-title {
- margin-top: 25px;
-  input[type="text"] {
-    margin-bottom:10px;
-    color: #333333;
-    font-size: 36px; 
-    font-weight: 600; 
-    height: 70px;
-    border: none;
-  }
+  color: #ccc;
+  font-size: 36px; 
+  font-weight: 600; 
+  line-height: 15.40px;
+  height:70px;
 }
 
 .title-text {
@@ -224,9 +216,7 @@ main {
   align-items:center;
   justify-content:center;
 }
-textarea {
-height: 1000px;
-}
+
 </style>
 
 </head>
@@ -240,18 +230,23 @@ height: 1000px;
       <div class="innercontents">
       <div class="container" >
       <div class="contain-body">       
-      <h2 class="main-title"><input type="text" name="comTitle" placeholder="제목을 입력하세요"></h2>
-     <hr class="divider">
-       <textarea id="content" name="comContent" required></textarea>
+      <h2 class="main-title"><textarea name="comTitle" class="title-text" placeholder="제목을 입력하세요."></textarea></h2>
+      <hr class="divider">
+      <div id="info">
+        <span><a class="upload" href=""><img src="/images/community/link.png">링크</a></span>&nbsp;
+        <span><a class="upimage upload" href=""><img src="/images/community/photo.png">사진</a></span>
+      </div>
+      <hr class="divider">
+      <div class="sub-filed">
+	    <textarea id="question-content"  name="comContent" placeholder="질문할 내용을 입력하세요."></textarea>
+	  </div> 
       <hr class="divider">
 	  <div class="btn-layout">
-	  <input type="hidden" name=dutyId value="60">
-	  <input type="hidden" name="userIdx" value="${userIdx}">
-              <div><input class="btn btn-apply"type="submit"value="등록하기"></div>
-              <div class="btn btn-back"><a href ="/Main/Community/List">취소</a></div>
+              <div class="btn btn-apply"><a href ="#">등록하기</a></div>
+              <div class="btn btn-back"><a href ="/Company/Mypage/Bookmark/List?company_idx=${company_idx}">취소</a></div>
          </div>  
-  
-      
+                 <label for="content">내용:</label>
+        <textarea id="content" name="content" required></textarea>
            
           </div>
       </div>
@@ -266,17 +261,9 @@ height: 1000px;
  
  <script>
  
-
+ //오버레이 
  $(function(){
 	 
-	 //tiny 커스텀
-	 tinymce.init({
-		  selector: 'textarea',  
-		  max_height: 500,
-		  max_width: 500,
-		  min_height: 100,
-		  min_width: 400
-		}); 
 
 
 

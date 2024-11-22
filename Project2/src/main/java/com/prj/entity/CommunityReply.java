@@ -1,4 +1,4 @@
-package com.green.entity;
+package com.prj.entity;
 
 import java.util.Date;
 
@@ -33,7 +33,7 @@ public class CommunityReply {
 
 	@ManyToOne
     @JoinColumn(name = "COMMUNITY_IDX", referencedColumnName = "COMMUNITY_IDX")
-    private Imagefile communityIdx;
+    private Community communityIdx;
 	
 	@ManyToOne
     @JoinColumn(name = "USER_IDX", referencedColumnName = "USER_IDX")

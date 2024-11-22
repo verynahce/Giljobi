@@ -1,6 +1,6 @@
-package com.green.entity;
+package com.prj.entity;
 
-import com.green.dto.PostClickDTO;
+import com.prj.dto.PostClickDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

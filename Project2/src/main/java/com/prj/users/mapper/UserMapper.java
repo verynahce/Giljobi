@@ -124,10 +124,11 @@ public interface UserMapper {
 
 	void deleteUser(UserVo vo);
 
-
 	void updateResumeximage(ResumeVo resumeVo);
 
 	UserVo getUserById(String user_id);
+
+	UserScoutVo getScout(int scout_idx);
 
 
 
