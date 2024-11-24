@@ -167,6 +167,7 @@ main {
   flex-direction:row;
   gap:5px;
   margin-top:20px;
+  border: 1px solid #cccccc;
 }
 
 /*댓글 필터영역*/
@@ -182,7 +183,7 @@ main {
 
 /*댓글입력, 등록칸*/
 .replycontent {
-  width:100%;
+
   td {
     border:1px solid black;
   }
@@ -198,11 +199,11 @@ main {
   color:white;
 }
 
-/*등록칸 a태그 꽉차게*/
+/*등록칸 a태그 꽉차게
 .reply-register {
-  display:block;
+  display:inline-block;
 }
-
+*/
 /*질문자 닉네임 표시*/
 .nickname {
   padding-bottom:10px;
@@ -269,7 +270,17 @@ main {
   align-items:center;
   justify-content:center;
 }
+.Like2 {
+background-color: #F8E372;
 
+}
+.Like {
+padding: 4px;
+border-radius: 12px;
+}
+.Like:hover{
+background-color: #E4EBFF !important;
+}
 </style>
 
 </head>
@@ -277,36 +288,6 @@ main {
 
 <%@include file="/WEB-INF/include/header.jsp" %>
 
-
-	<div class="overlay">  
-	<c:choose>
-		<c:when test="${not empty postVo}">
-			 <div class="support"> 
-			   <div class="s-header">
-			      <h2 class="s-title">채용제의</h2><span class="s-delete">x</span>
-			   </div>
-			    <table class="s-list">
-			     <c:forEach var="post" items="${postVo}">
-              <tr>
-                <td>
-					<input type="radio" name="post_idx" id="post_id${post.post_idx}" class="resume-input" value="${post.post_idx}">
-					<label for="post_id${post.post_idx}">${post.post_title}</label>
-                </td>
-              </tr>
-            </c:forEach>
-          </table>
-			   <div class="s-btn" ><a class="apply-val" href ="">채용제의</a></div> 
-			</div>
-		</c:when>
-		  <c:otherwise>
-		  	<div class="support login-alter">
-		      <h2 class="s-title">기업회원 로그인이 필요합니다.</h2>
-			  <a href ="/Company/LoginForm">로그인</a>
-		   </div>
-		  </c:otherwise>
-	</c:choose>	
-	</div>
-	
 	
 <main>
   <div class="inner">  
@@ -314,14 +295,14 @@ main {
        <div class="container" >
         <div class="contain-body">
          <div id="question-duty">${ct.duty.dutyName}</div>       
-          <h2 class="main-title"><span id="question-mark">Q</span>&nbsp;&nbsp;<!-- ${resumeVo.resume_title} -->이력서는 쳐다도 안보는 건가요?</h2>
-           <div id="info">${ct.comHit}<img src="/images/community/divider2.png">${ct.comRegdate}&nbsp;작성</div>
+          <h2 class="main-title"><span id="question-mark">Q</span>&nbsp;&nbsp;${ct.comTitle}</h2>
+           <div id="info">${ct.comHit}<img src="/images/community/divider2.png">${ct.comRegdate}&nbsp;&nbsp;작성</div>
             <div class="sub-filed">
 	         <div class="sub-content">${ct.comTitle}</div>
 	         <div class="nickname">닉네임&nbsp;&nbsp;:&nbsp; ${ct.users.user_name}씨</div>
 	         <hr class="divider">
 	         <div class="likenshare">
-	          <span><a class="atags" href=""><img src="/images/community/like.png">&nbsp;${ct.comLike}</a></span>
+	          <span><a class="atags Like" href="/Main/Reply/Like/on" data-idx="${ct.communityIdx}"><img src="/images/community/like.png">&nbsp;<span class="likeCount">${ct.comLike}</span></a></span>
 	          &nbsp;&nbsp;&nbsp;&nbsp;
 	          <span><a class="atags" href=""><img src="/images/community/share.png">&nbsp;공유하기</a></span>
 	         </div>
@@ -329,30 +310,67 @@ main {
 	        <div class="replyarea">
 	         <table class="replyfilter">
 	          <tbody>
-	           <tr><td><a href="" class="atags"><img src="/images/community/down.png">직무</a></td></tr>
-	           <tr><td><a href="" class="atags"><img src="/images/community/down.png">경력</a></td></tr>
+	           <tr><td>
+	           <select id="dutyId" class="atags">	           
+		       <option>직무</option>
+		      <c:forEach var="d" items="${dutyList}">
+		      <option value="${d.dutyId}">${d.dutyName}</option>
+		      </c:forEach>
+	           </select>
+	           </td></tr>
+	           <tr><td>
+	          <select id="careerSelf"class="atags">	           
+		       <option>경력</option>
+		       <option>신입</option>
+		       <option>1년차</option>
+		       <option>2년차</option>
+		       <option>3년차</option>
+		       <option>5년차</option>
+		       <option>8년차</option>
+	           </select>
+	           </td></tr>
 	          </tbody>
 	         </table> 
 	         <table class="replycontent">
 	          <tbody>
 	           <tr>
-	            <td><textarea class="replytext" placeholder="답변을 입력하세요"></textarea></td>
-	            <td><a href="" class="reply-register">등록</a></td>
+	            <td>
+	            <textarea id="replyContent" class="replytext" placeholder="답변을 입력하세요"></textarea>
+	            </td>
+	            <td><a href="/Main/Reply/Write" class="reply-register" >등록</a></td>
 	           </tr>
 	          </tbody>
 	         </table>
+
 	        </div>
         </div>
-        <div class="contain-body">
-          <h2 class="main-title"><!-- ${resumeVo.resume_title} -->답변&nbsp;&nbsp;<span id="replycount">2</span></h2>
+        <div class="contain-body ">
+          <h2 class="main-title">답변&nbsp;&nbsp;<span id="replycount">2</span></h2>
           <hr class="divider">
-            <div class="sub-filed">
-             <div class="replier">익명의<span id="replier-career">IT/5년차</span></div>
-	         <div class="sub-content">${resumeVo.cover_letter}2시간 거리면 다른곳 알아보세요.. 넘 멀어요. 금방 지쳐서 오래 못다님</div>
-	         <div class="reply-date">2일전 작성</div>
-	         <div class="reply-like"><a href="" class="likea"><img src="/images/community/like.png">&nbsp;<span>0</span></a></div>
-              <hr class="divider">
-	        </div>     
+          <div class="result-box">
+          <c:forEach var="r" items="${replyList}">
+          
+   			        <div class="sub-filed">
+			            <div class="replier">
+			                익명 <span id="replier-career">${r.duty.dutyName}/${r.careerSelf}</span>
+			            </div>
+			            <div class="sub-content">
+			                ${r.replyContent}
+			            </div>
+			            <div class="reply-date">
+			                ${r.replyRegdate} 작성
+			            </div>
+			            <div class="reply-like">
+			                <a href="" class="likea">
+			                    <img src="/images/community/like.png">&nbsp;<span>${r.replyLike}</span>
+			                </a>
+			            </div>
+			            <hr class="divider">
+			        </div>
+   </c:forEach>
+   </div>
+   
+   
         </div>
         <div class="btn-layout">
         <div class="btn btn-back"><a href ="/Company/Mypage/Bookmark/List?company_idx=${company_idx}">목록보기</a></div>
@@ -368,34 +386,132 @@ main {
  
  <script>
  
- //오버레이 
- $(function(){
-	 
-	$('.btn-apply').on('click', function(e){
-		 e.preventDefault();
-		$('.overlay').show();		
-						
-	})
-	$('.s-delete').on('click', function(){
-		$('.overlay').hide();				
-	})
-	$('.s-btn').on('click', function(){
-		$('.overlay').hide();				
-	})
-		$(".overlay").on('click', function(e) {
-    if($(e.target).closest('.support').length == 0) { 
-         $(".overlay").hide();
+
+ $(function(){ 
+
+//게시글 - 좋아요
+$('.Like').on('click', function(e) {
+    e.preventDefault(); // 기본 클릭 동작 방지
+    $(this).toggleClass('Like2');
+    let likeCount = parseInt($(this).find('.likeCount').text()); // 'likeCount' span의 텍스트 값
+    
+        const communityIdx = $(this).data('idx'); 
+    if ($(this).hasClass('Like2')) {
+
+    	$.ajax({
+    	    url: '/Main/Reply/Like/on',
+    	    method: 'PATCH',
+    	    contentType: 'application/json', 
+    	    data: JSON.stringify({ communityIdx: communityIdx }) 
+    	})
+    	.done(function(data) {
+    	    console.log(data + " 응답 On");
+    	})
+    	.fail(function(err) {
+    	    console.log(err);
+    	});
+        likeCount++;
+    } else {
+    	$.ajax({
+ 			url:'/Main/Reply/Like/off',
+ 			 method: 'PATCH',
+     	    contentType: 'application/json', 
+    	    data: JSON.stringify({ communityIdx: communityIdx }) 
+ 		}).done(function(data){  
+ 			console.log(data + "응답 Off")
+ 		}).fail(function(err){
+ 			console.log(err)
+ 		}) 
+    	   	
+        likeCount--;
     }
 
+
+    $('.likeCount').text(likeCount);
+});
+
+//댓글- 좋아요 
+//$('.likea')
+
+	 
+//댓글 작성 
+$('.reply-register').on('click', function(e){
+	
+	e.preventDefault();
+	
+	 const userIdx = '${userIdx}';
+	 const communityIdx = '${ct.communityIdx}'
+	 const  dutyId =  $('#dutyId').val();
+	 const  replyContent =  $('#replyContent').val();
+	 const  careerSelf =  $('#careerSelf').val();
+	 console.log(dutyId);
+	 console.log(replyContent);
+	 console.log(careerSelf);
+	 console.log(communityIdx);
+	
+	  const registerEl = $(this).attr('href');
+	   fetch( registerEl,   {
+	    		  method: 'POST',
+	    		  body: JSON.stringify({
+	    			  userIdx   : userIdx,
+	    			  communityIdx : communityIdx,
+	    			  dutyId : dutyId,
+	    			  replyContent : replyContent,
+	    			  careerSelf : careerSelf,
+	    		  }),
+	    		  headers: {
+	    		    'Content-type': 'application/json; charset=UTF-8',
+	    		  },
+	    		})
+	    		  .then((response) => response.json())
+	    		  .then( reply  => {
+
+	               
+	                //dutylist를 json으로 바꾸기
+	                const dutyListStr = '${dutyList}';
+	                const dutyList = dutyListStr
+	                .slice(1, -1)
+	                .split('),')
+	                .map(item => {
+	                    const parts = item.replace('Duty(', '').replace(')', '').split(',');
+	                    const dutyId = parseInt(parts[0].split('=')[1].trim(), 10);
+	                    const dutyName = parts[1].split('=')[1].trim();
+	                    return { dutyId, dutyName };
+	                });	                
+	                	                
+	                //dutyid -> name으로 바꾸기 
+					const duty = dutyList.find(item => item.dutyId === reply.dutyId); 
+					const dutyName = duty ? duty.dutyName : '미정';  
+						                  
+	                  
+	                //추가할 답변 모양   
+				       const result = `
+			        <div class="sub-filed">
+			            <div class="replier">
+			                익명 <span id="replier-career">\${dutyName}/\${reply.careerSelf}</span>
+			            </div>
+			            <div class="sub-content">
+			                \${reply.replyContent}
+			            </div>
+			            <div class="reply-date">
+			                \${reply.replyRegdate} 작성
+			            </div>
+			            <div class="reply-like">
+			                <a href="" class="likea">
+			                    <img src="/images/community/like.png">&nbsp;<span>\${reply.replyLike}</span>
+			                </a>
+			            </div>
+			            <hr class="divider">
+			        </div>
+			    `;
+			    
+			    //보이기 (앞에서 부터)
+	                 $('.result-box').prepend(result); 	                                  	                 	                  
+	               })
+	              .catch((error) => alert(error + '저장실패') );
+	 
+	
 })
-
-  $(".apply-val").attr("href","/Company/Mypage/Bookrmark/Support?resume_idx=${resumeVo.resume_idx}&post_idx=${0}")
-		console.log( $(".apply-val").attr("href"))
-  $(".resume-input").click(function(e){
-			console.log(e.target.value)
-			$(".apply-val").attr("href","/Company/Mypage/Bookrmark/Support?resume_idx=${resumeVo.resume_idx}&post_idx="+e.target.value)
-		})
-
 
 
  const links = document.querySelectorAll(".link");

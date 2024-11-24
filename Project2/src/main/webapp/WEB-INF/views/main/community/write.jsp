@@ -29,23 +29,15 @@
         });
     </script>
 <style>
-/*오버레이*/
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display:none;
-  transition: all 0.3s  ease-in;
- }
+
+
 
  /*body*/
 .inner {
   display:flex;
-  justify-content: space-between;
+  justify-content: center;
+
+  
 }
 
 main {
@@ -54,25 +46,19 @@ main {
 
  .innercontents {
   display:flex;
-  gap:30px;
+justify-content:center;
   font-family: pretendard; 
   padding-top:30px; 
   padding-bottom:60px; 
-}
 
- .container {
-  width:  100%;
-  display:flex;
-  flex-direction: column; 
-  justify-content: center;
-}
- 
+
 .contain-body {
+  border: 1px solid #cccccc;
   width:940px;
   min-height: 1200px;
   background-color: white;
   border-radius: 20px;
-  margin: 0px auto 60px  auto  ;
+  margin: 0px auto;
   padding: 0 60px 50px 60px;
 }
 
@@ -85,6 +71,7 @@ main {
     font-weight: 600; 
     height: 70px;
     border: none;
+    width:640px;
   }
 }
 
@@ -158,8 +145,10 @@ main {
 /*버튼*/
 
 .btn-layout {  
- width:fit-content;
- margin: 80px auto 0 auto;
+padding-top: 40px;
+display: flex;
+justify-content: center;
+
 }
  .btn {
    display: inline-block;
@@ -180,12 +169,14 @@ main {
   background: #fff; 
   color: #7C7373;
   border: 1px solid #ccc;
+  font-size: 16px;
 }
  
  .btn-apply {
    
    background:#2F9EFF;
    color: #fff;
+   font-size: 16px;
    border : 1px solid #ccc;
 }
 
@@ -227,6 +218,24 @@ main {
 textarea {
 height: 1000px;
 }
+
+.contain-header {
+display: flex;
+justify-content: space-between;
+align-items:baseline;
+select{
+width: 130px;
+height: 30px;
+    border: 1px solid #cccccc;
+    color: #333333;
+    font-size:16px;
+    border-radius: 7px;
+}
+p{
+ font-size:16px;
+ font-weight: 400;
+}
+}
 </style>
 
 </head>
@@ -238,22 +247,29 @@ height: 1000px;
   <div class="inner">  
   <form action="/Main/Community/Write" method="POST">
       <div class="innercontents">
-      <div class="container" >
-      <div class="contain-body">       
+      <div class="contain-body">   
+      <div class="contain-header">   
       <h2 class="main-title"><input type="text" name="comTitle" placeholder="제목을 입력하세요"></h2>
+      <p>분야&nbsp;</p>
+      <select name="dutyId">
+      <c:forEach var="d" items="${dutyList}">
+      <option value="${d.dutyId}">${d.dutyName}</option>
+      </c:forEach>
+      </select>
+      </div> 
      <hr class="divider">
        <textarea id="content" name="comContent" required></textarea>
       <hr class="divider">
 	  <div class="btn-layout">
-	  <input type="hidden" name=dutyId value="60">
 	  <input type="hidden" name="userIdx" value="${userIdx}">
               <div><input class="btn btn-apply"type="submit"value="등록하기"></div>
               <div class="btn btn-back"><a href ="/Main/Community/List">취소</a></div>
+       </div>
          </div>  
   
       
            
-          </div>
+
       </div>
    </div>
    </form>

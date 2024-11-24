@@ -1,4 +1,4 @@
-package com.prj.users.api.controller;
+package com.prj.api.controller;
 
 import java.io.File;
 import java.io.FileInputStream;

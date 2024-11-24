@@ -8,13 +8,17 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.prj.dto.CommunityDTO;
 import com.prj.entity.Community;
+import com.prj.entity.CommunityReply;
 import com.prj.entity.Duty;
 
 
 
-public interface DutyRepository extends JpaRepository<Duty, Long> {
+public interface ReplyRepository extends JpaRepository<CommunityReply, Long> {
+	
 	@Override
-	ArrayList<Duty> findAll();
+	ArrayList<CommunityReply> findAll();
+
+
 
 	
 

@@ -1,6 +1,7 @@
 package com.prj.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -48,13 +50,25 @@ public class Community {
     @Column(name = "COM_CONTENT", nullable = false)
     private String comContent;
 
-    @Column(name = "COM_HIT")
+    @Column(name = "COM_HIT", columnDefinition = "integer default 0")
     private Integer comHit;
 
     @Column(name = "COM_REGDATE", columnDefinition = "TIMESTAMP DEFAULT SYSDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date comRegdate;
 
-    @Column(name = "COM_LIKE")
+    @Column(name = "COM_LIKE", columnDefinition = "integer default 0")
     private Integer comLike;
+    
+    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
+    private List<CommunityReply> replies;
+
+	public void patchOn() {	
+	this.comLike = comLike+1;
+	}
+
+	public void patchOff() {
+		this.comLike = comLike-1;
+		
+	}
 }

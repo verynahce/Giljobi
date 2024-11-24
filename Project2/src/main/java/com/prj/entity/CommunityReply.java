@@ -1,6 +1,8 @@
 package com.prj.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+
+import com.prj.dto.CommunityReplyDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,8 +13,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,11 +29,11 @@ public class CommunityReply {
     @SequenceGenerator(name="COMMUNITY_REPLY_SEQ", 
     sequenceName = "COMMUNITY_REPLY_SEQ", allocationSize = 1)
 	 @Column(name = "REPLY_IDX")
-	private Long reply_idx;   
+	private Long replyIdx;   
 
 	@ManyToOne
     @JoinColumn(name = "COMMUNITY_IDX", referencedColumnName = "COMMUNITY_IDX")
-    private Community communityIdx;
+    private Community community;
 	
 	@ManyToOne
     @JoinColumn(name = "USER_IDX", referencedColumnName = "USER_IDX")
@@ -43,8 +43,7 @@ public class CommunityReply {
     private String replyContent;
 
     @Column(name = "REPLY_REGDATE", columnDefinition = "TIMESTAMP DEFAULT SYSDATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date replyRegdate;
+    private LocalDateTime  replyRegdate;
 
     @Column(name = "REPLY_LIKE")
     private Integer replyLike;
@@ -52,8 +51,26 @@ public class CommunityReply {
     @Column(name = "CAREER_SELF")
     private String careerSelf;
     
-    @Column(name = "DUTY_ID")
-    private Integer dutyId;
+	@ManyToOne
+    @JoinColumn(name = "DUTY_ID", referencedColumnName = "DUTY_ID")	
+    private Duty duty;
+
+	public CommunityReplyDTO toDto() {
+		CommunityReplyDTO crdto = new CommunityReplyDTO();
+		crdto.setReplyIdx(this.replyIdx);
+		crdto.setCommunityIdx(community.getCommunityIdx());
+		crdto.setUserIdx(users.getUser_idx()); 
+		crdto.setReplyContent(this.replyContent);
+		crdto.setReplyRegdate(this.replyRegdate); 
+		crdto.setReplyLike(this.replyLike); 
+		crdto.setCareerSelf(this.careerSelf);
+		crdto.setDutyId(duty.getDutyId());
+	
+		
+		return crdto;
+	}
+
+
   
 
 
