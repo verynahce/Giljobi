@@ -31,7 +31,7 @@
  }
 
  .sidebar th {
-   background-color:#333;
+   background-color:#4876EF;
    color:white;
    height:80px;
    margin:0;
@@ -55,7 +55,7 @@
  }
    
  .sidebar a:hover {
-   background-color: #EBECF1;
+   background-color: #BED0FF;
    color: #111;
  }
  
@@ -137,7 +137,7 @@
       <div class="sidebar">
          <table>
          <tr><th>기업서비스</th></tr>
-         <tr><td><a href="/Company/Mypage/Home/View?company_idx=${companyVo.company_idx}" class="active-color"><img src="/images/myhome.svg" class="img" >MY홈</a></td></tr>
+         <tr><td><a href="/Company/Mypage/Home/View?company_idx=${companyVo.company_idx}" class="active-color2"><img src="/images/myhome.svg" class="img" >MY홈</a></td></tr>
          <tr><td><a href="/Company/Mypage/Post/List?company_idx=${companyVo.company_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">채용공고</a></td></tr>
          <tr><td><a href="/Company/Mypage/Bookmark/List?company_idx=${companyVo.company_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심인재</a></td></tr>
          <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${companyVo.company_idx}" class="link"><img src="/images/arrow.svg" class="img" data-hover="/images/arrow2.svg">지원내역</a></td></tr>

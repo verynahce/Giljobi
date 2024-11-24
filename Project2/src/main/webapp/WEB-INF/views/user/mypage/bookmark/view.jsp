@@ -61,7 +61,7 @@ main {
  }
 
  .sidebar th {
-   background-color:#333;
+   background-color:#ffd700;
    color:white;
    height:80px;
    margin:0;
@@ -85,7 +85,7 @@ main {
  }
    
  .sidebar a:hover {
-   background-color: #EBECF1;
+   background-color: #FFEF96;
    color: #111;
  }
  
