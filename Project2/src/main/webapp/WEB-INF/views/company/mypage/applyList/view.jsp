@@ -44,7 +44,7 @@ main {
  }
 
  .sidebar th {
-   background-color:#333;
+   background-color:#4876EF;
    color:white;
    height:80px;
    margin:0;
@@ -68,7 +68,7 @@ main {
  }
    
  .sidebar a:hover {
-   background-color: #EBECF1;
+   background-color: #BED0FF;
    color: #111;
  }
  
@@ -244,13 +244,14 @@ p {
     a {
     display: block;
     text-decoration: none; 
-    width: 100%; 
-    height: 100%;
     text-align: center;
     line-height: 60px;
  }
  }
   .btn-back {
+  display:flex;
+  justify-content:center;
+  align-items:center;
   background: #585766; 
    color: white;
     text-align: center;
@@ -923,7 +924,7 @@ cursor: pointer;
          <tr><td><a href="/Company/Mypage/Home/View?company_idx=${company_idx}" class="link"><img src="/images/myhome2.svg" class="img" data-hover="/images/myhome.svg">MY홈</a></td></tr>
          <tr><td><a href="/Company/Mypage/Post/List?company_idx=${company_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">채용공고</a></td></tr>
          <tr><td><a href="/Company/Mypage/Bookmark/List?company_idx=${company_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심인재</a></td></tr>
-         <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${company_idx}" class="active-color"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
+         <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${company_idx}" class="active-color2"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
         </table>
         
 	      <div id="side-menu">

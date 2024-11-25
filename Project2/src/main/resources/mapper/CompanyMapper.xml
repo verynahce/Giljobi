@@ -318,7 +318,7 @@ WHERE PS.POST_IDX = #{post_idx}
 	        TO_CHAR(P.POST_DDATE, 'DY') AS POST_DDAY,
       COUNT(AP.APPLI_IDX) AS COUNT
 	  FROM POST P LEFT JOIN APPLICATION AP ON P.POST_IDX = AP.POST_IDX
-	  WHERE COMPANY_IDX = #{company_idx}
+	  WHERE COMPANY_IDX = #{company_idx} AND AP.REMOVE IS NULL
 	  GROUP BY  P.POST_IDX,
 		      P.COMPANY_IDX,
 		      P.POST_TITLE,
@@ -346,7 +346,7 @@ WHERE PS.POST_IDX = #{post_idx}
                         LEFT JOIN SKILL SK ON RS.SKILL_ID = SK.SKILL_ID
                         LEFT JOIN USERS U ON RE.USER_IDX = U.USER_IDX 
                         LEFT JOIN RESUME_CAREER RC ON RE.RESUME_IDX = RC.RESUME_IDX
-                        LEFT JOIN EVALUATE EV ON EV.RESUME_IDX = AP.RESUME_IDX                    
+                        LEFT JOIN EVALUATE EV ON EV.APPLI_IDX = AP.APPLI_IDX                    
   WHERE POST_IDX = #{post_idx} AND AP.REMOVE IS NULL
   
   

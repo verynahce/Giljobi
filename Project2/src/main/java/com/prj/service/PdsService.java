@@ -1,4 +1,4 @@
-package com.prj.main.service;
+package com.prj.service;
 
 import java.util.HashMap;
 import java.util.List;

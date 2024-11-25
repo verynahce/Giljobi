@@ -25,15 +25,10 @@
  .sidebar {
    border :1px solid #ccc;
    width:300px;
-   height:378px;
    border-radius:15px;
    overflow:hidden;
    margin:0;
-   
-    position: sticky; 
-    top: 124px; 
-    
-  
+   max-height:fit-content;
  }
  
  .sidebar table {
@@ -43,7 +38,7 @@
  }
 
  .sidebar th {
-   background-color:#333;
+   background-color:#ffd700;
    color:white;
    height:80px;
    margin:0;
@@ -67,7 +62,7 @@
  }
    
  .sidebar a:hover {
-   background-color: #EBECF1;
+   background-color: #FFEF96;
    color: #111;
  }
  

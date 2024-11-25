@@ -18,7 +18,6 @@ import com.prj.companys.vo.CompanyVo;
 import com.prj.companys.vo.PostSkillVo;
 import com.prj.companys.vo.PostWriteVo;
 import com.prj.main.mapper.MainMapper;
-import com.prj.main.service.PdsService;
 import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.ClarificationVo;
@@ -29,6 +28,7 @@ import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.PostVo;
 import com.prj.main.vo.SkillVo;
+import com.prj.service.PdsService;
 import com.prj.users.vo.EduVo;
 import com.prj.users.vo.ScoreVo;
 

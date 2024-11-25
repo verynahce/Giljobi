@@ -24,4 +24,5 @@ public class PostVo {
 	private String 	post_cdate;
 	private String 	post_fdate;
 	private int     company_idx;
+	private int     count;
 }

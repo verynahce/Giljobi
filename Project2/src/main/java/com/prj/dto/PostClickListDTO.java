@@ -1,4 +1,4 @@
-package com.green.dto;
+package com.prj.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

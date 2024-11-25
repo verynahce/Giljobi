@@ -294,6 +294,7 @@
 	    RC.CAREER_DESCRIPTION,
 	    COVER_LETTER,
 	    RESUME_HIT,
+	    R.IMAGE_IDX,
 	    TO_CHAR(RESUME_CDATE,'""YYYY"-"MM"-"DD""') RESUME_CDATE,
 	    TO_CHAR(RESUME_FDATE,'""YYYY"-"MM"-"DD""') RESUME_FDATE
 	FROM
@@ -522,6 +523,8 @@
 	    C.COMPANY_TEL,
 	    C.COMPANY_EMAIL,
 	    C.COMPANY_AREA,
+	    C.COMPANY_ADDRESS,
+	    TO_CHAR(TO_DATE(C.COMPANY_BIRTHDATE, 'YYYY-MM-DD'), 'YYYY.MM.DD') AS COMPANY_BIRTHDATE,
 	    (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 TOT_POINT,
 	    ROUND(AVG(WC_POINT),1) WC_POINT,
 	    ROUND(AVG(WLB_POINT),1) WLB_POINT,
@@ -530,7 +533,7 @@
 	    ROUND(AVG(EM_POINT),1) EM_POINT
 		FROM COMPANYS C LEFT JOIN REVIEW R ON C.COMPANY_IDX = R.COMPANY_IDX
 		WHERE C.COMPANY_IDX = #{company_idx}
-		GROUP BY   C.COMPANY_IDX,C.COMPANY_NAME,C.COMPANY_TEL,C.COMPANY_EMAIL,C.COMPANY_AREA
+		GROUP BY   C.COMPANY_IDX,C.COMPANY_NAME,C.COMPANY_TEL,C.COMPANY_EMAIL,C.COMPANY_AREA,C.COMPANY_ADDRESS,C.COMPANY_BIRTHDATE
 	</select>
 	
 	<select id="getReviewCount">
@@ -581,7 +584,13 @@
 	    REVIEW R LEFT JOIN COMPANYS C ON R.COMPANY_IDX = C.COMPANY_IDX
 			WHERE USER_IDX = #{user_idx}
 	</select>
-
+	
+  <select id="countP">
+ 	SELECT COUNT(POST_IDX)
+	FROM POST
+	WHERE COMPANY_IDX = #{company_idx}
+  
+  </select>
 	
 	<select id="getReviewData">
 		SELECT
@@ -767,9 +776,27 @@
    <delete id="deletePostClick">
    DELETE
    FROM POST_CLICK
-   WHERE POST_IDX = #{post_idx}
-   
+   WHERE POST_IDX = #{post_idx}   
    </delete>
+   
+   <insert id="insertBookU">
+   INSERT INTO USER_BOOKMARK (UB_IDX, USER_IDX, COMPANY_IDX)
+   VALUES ((SELECT NVL(MAX(UB_IDX), 0) + 1 FROM USER_BOOKMARK), #{arg1}, #{arg0})
+   </insert>
+   
+   
+   <delete id="deleteBookU">
+   DELETE
+   FROM USER_BOOKMARK
+   WHERE USER_IDX = #{arg1} AND COMPANY_IDX = #{arg0} 
+   </delete>
+   
+   <select id="getBookU">
+   SELECT UB_IDX
+   FROM USER_BOOKMARK
+   WHERE USER_IDX = #{arg0} AND COMPANY_IDX = #{arg1} 
+   </select>
+   
    
 </mapper>
 

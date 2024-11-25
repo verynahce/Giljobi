@@ -88,11 +88,16 @@ div.login-alter{
 	
 }
 
-/*side & layout 통일정리 =================================================*/
+/*side & layout 통일정리 ================#F0F5FF=================================*/
 
 
 .active-color {
-  background-color:#F0F5FF;
+  background-color:#FFF8D4;
+  color: #111 !important;
+  }
+  
+.active-color2 {
+  background-color:#EFF3FF;
   color: #111 !important;
 }
 
