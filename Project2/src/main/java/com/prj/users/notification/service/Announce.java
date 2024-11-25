@@ -1,4 +1,4 @@
-package com.prj.users.announce.service;
+package com.prj.users.notification.service;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

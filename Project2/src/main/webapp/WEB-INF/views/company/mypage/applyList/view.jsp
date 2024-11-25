@@ -381,7 +381,7 @@ p {
 }
 .e-title {
     color: #333333;
-    font-size: 36px; 
+    font-size: 30px; 
     font-weight: 600; 
     line-height: 50.40px;
     margin-bottom: 30px;
@@ -830,10 +830,10 @@ cursor: pointer;
                                         <td><input type="number" name="score4" min="0" max="5" value="0"></td>
                                         <td rowspan="5"><textarea name="letter_note">${evaluate.letter_note}</textarea></td>
                                     </tr>
-                                    <tr><td>성격 및 장단점</td><td><input type="number" name="_score5" min="0" max="5" value="0"></td></tr>
-                                    <tr><td>가치관</td><td><input type="number" name="_score6" min="0" max="5" value="0"></td></tr>
-                                    <tr><td>목표 달성 경험</td><td><input type="number" name="_score7" min="0" max="5" value="0"></td></tr>
-                                    <tr><td>실패 및 위기 극복 경험</td><td><input type="number" name="_score8" min="0" max="5" value="0"></td></tr>
+                                    <tr><td>성격 및 장단점</td><td><input type="number" name="score5" min="0" max="5" value="0"></td></tr>
+                                    <tr><td>가치관</td><td><input type="number" name="score6" min="0" max="5" value="0"></td></tr>
+                                    <tr><td>목표 달성 경험</td><td><input type="number" name="score7" min="0" max="5" value="0"></td></tr>
+                                    <tr><td>실패 및 위기 극복 경험</td><td><input type="number" name="score8" min="0" max="5" value="0"></td></tr>
 
                                     <tr>
                                         <td>포트폴리오</td>
@@ -855,7 +855,7 @@ cursor: pointer;
                         <span class="total">총평</span>
                         <textarea name="total_note">${evaluate.total_note}</textarea>
                         <span class="totalscore">총점</span>
-                        <input type="text" name="total_score" min="0" max="5" readonly value="${evaluate.total_score != null ? evaluate.total_score : 0}">
+                        <input type="text" name="total_score" min="0" max="5" value="${evaluate.total_score != null ? evaluate.total_score : 0}">
                     </div>
                     <br>
                     <div class="e-btn">    
@@ -876,8 +876,8 @@ cursor: pointer;
 	<!-- 알림창 -->
 	<form action="/api/announce" method="POST" enctype="multipart/form-data">
 	<input type="hidden" name="companyIdx" value="${company_idx}">
-	<input type="hidden" name="userIdx" value="${user_idx}">
-	<input type="hidden" name="announcementIdx" value="${announcement_idx}">
+	<input type="hidden" name="post_idx" value="${post_idx}">
+	<input type="hidden" name="userIdx" value="${resumeVo.user_idx}">
 	<div class="overlay-notice">
 	<c:choose>
 		<c:when test="${not empty company_idx}">
@@ -896,8 +896,8 @@ cursor: pointer;
 				    	<p>응애 합격하였습니다.</p>
 		                <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
 		                <p>일시: <input type="date" name="scadule"></p>
-		                <p>장소: <input type="text" name="loaction"></p>
-		                <p>안내사항: <input type="text" name="information"></p>
+		                <p>장소: <input type="text" name="location"></p>
+		                <p>안내사항: <textarea name="information"></textarea></p>
 				    </div>
 				</div>
 			   <div class="n-btn" >
@@ -1217,7 +1217,7 @@ $(function () {
     
     function calculateTotal() {
         let totalsum = 0;
-        const inputs = $('input[type="number"]');
+        const inputs = $('.evaluation-content input[name^="score"], .evaluation-content input[name$="score"]');
         let validInputFound = false;
 
         inputs.each(function () {
@@ -1230,7 +1230,7 @@ $(function () {
         });
 
         // 총점 계산
-        let total = validInputFound ? (totalsum / 10).toFixed(2) : '0.00'; // 유효한 입력이 없으면 0.00
+        let total = validInputFound ? (totalsum / 15).toFixed(2) : '0.00'; // 유효한 입력이 없으면 0.00
         $('input[name="total_score"]').val(total); // 총점을 입력 필드에 업데이트
     }
 
