@@ -32,12 +32,12 @@ public class PostClick {
 	private Post post;
 	
 	@ManyToOne
-    @JoinColumn(name = "user_idx", referencedColumnName = "user_idx", nullable = false)
+    @JoinColumn(name = "USER_IDX", referencedColumnName = "USER_IDX", nullable = false)
 	private Users users;	
 	
     // DTO 변환 메서드
     public PostClickDTO toDTO() {
-        return new PostClickDTO(this.pc_idx,this.post.getPost_idx(),this.users.getUser_idx());
+        return new PostClickDTO(this.pc_idx,this.post.getPost_idx(),this.users.getUserIdx());
     }
 	
 }
