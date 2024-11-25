@@ -31,8 +31,8 @@ main {
    border-radius:15px;
    overflow:hidden;
    margin:0;
-    position: sticky; 
-    top: 124px; 
+   position: sticky; 
+   top: 124px; 
 
   
  }
@@ -44,7 +44,7 @@ main {
  }
 
  .sidebar th {
-   background-color:#4876EF;
+   background-color:#333;
    color:white;
    height:80px;
    margin:0;
@@ -68,7 +68,7 @@ main {
  }
    
  .sidebar a:hover {
-   background-color: #BED0FF;
+   background-color: #EBECF1;
    color: #111;
  }
  
@@ -198,14 +198,14 @@ p {
 /*서브 - 경력긴글*/    
 #sub-duty {
  td:nth-child(1) > div {
-   width:100%;
-   min-height: 100px;
-                     }   
+	width:100%;
+	min-height: 100px;
+      					}   
  td:nth-child(2) > div {
-   width:100%;
-   min-height: 100px;
-   color: #767676;
-                     }
+	width:100%;
+	min-height: 100px;
+	color: #767676;
+      					}
  } 
   
   
@@ -231,8 +231,7 @@ p {
 
 /*버튼*/
 
-.btn-layout {   
-margin: 0 auto;
+.btn-layout {   margin: 0 auto;
 }
  .btn {
    display: inline-block;
@@ -243,26 +242,24 @@ margin: 0 auto;
     a {
     display: block;
     text-decoration: none; 
+    width: 100%; 
+    height: 100%;
     text-align: center;
     line-height: 60px;
  }
  }
-.btn-back {
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  .btn-back {
   background: #585766; 
-  color: white;
+   color: white;
      &:hover {
      background-color:#666577;
      color:white;
      
    }
  }
-
 .noob{
-   padding:20px 0 0 5px;
-   color: #333333; 
+	padding:20px 0 0 5px;
+	color: #333333; 
     font-size: 16px;
     font-weight: 400;
 }
@@ -326,16 +323,16 @@ margin: 0 auto;
    }
    }
    #btn-evaluate{
-      background-color: #ffffff;
-      border: 1px solid #333333;
-      margin-right: 10px;
-      color: #333333;
+   	background-color: #ffffff;
+   	border: 1px solid #333333;
+   	margin-right: 10px;
+   	color: #333333;
    }
    #btn-notify{
-      background-color: #585766;
-      &:hover{
-         background-color: #666577;
-      }
+   	background-color: #585766;
+   	&:hover{
+   		background-color: #666577;
+   	}
    }
    
     
@@ -424,32 +421,32 @@ cursor: pointer;
   border-collapse: collapse;
   width:100%;
    & tr {
-      & td {padding:18px 0 18px;};
-      & td:nth-child(1){
-         width:80%;
-         text-align: left;
-         input{
-         width: 17px;
-         height: 17px;
-         border-bottom: #cccccc;
-         };
-      & label{
-      margin-left:8px;
-      font-size: 20px;
-      color: #333333;
-        }
-      }
-      & td:nth-child(2){
-      width:20%;
-      text-align: right;
-      color: #767676;
-      }
+	   & td {padding:18px 0 18px;};
+	   & td:nth-child(1){
+		   width:80%;
+		   text-align: left;
+		   input{
+		   width: 17px;
+		   height: 17px;
+		   border-bottom: #cccccc;
+	      };
+	   & label{
+	   margin-left:8px;
+	   font-size: 20px;
+	   color: #333333;
+	     }
+	   }
+	   & td:nth-child(2){
+	   width:20%;
+	   text-align: right;
+	   color: #767676;
+	   }
    }
 }
 
 .noob{
-   padding-top :20px;
-   font-size: 20px;
+	padding-top :20px;
+	font-size: 20px;
 }
 
 .evaluation-container {
@@ -470,16 +467,16 @@ cursor: pointer;
             text-align: right;
         }
         textarea {
-          width: 100%; /* 텍스트 영역 너비 조정 */
-          height: 60px; /* 높이 조정 */
-          margin-top: 10px; /* 여백 조정 */
-      }
-      .dotted {
-          border-top: 1px dotted #ddd; /* 점선 */
-      }
-      .no-border {
-          border: none; /* 선 없음 */
-      }
+		    width: 100%; /* 텍스트 영역 너비 조정 */
+		    height: 60px; /* 높이 조정 */
+		    margin-top: 10px; /* 여백 조정 */
+		}
+		.dotted {
+		    border-top: 1px dotted #ddd; /* 점선 */
+		}
+		.no-border {
+		    border: none; /* 선 없음 */
+		}
 
 
 }
@@ -555,34 +552,34 @@ cursor: pointer;
 }
 
 .noob{
-   padding-top :20px;
-   font-size: 20px;
+	padding-top :20px;
+	font-size: 20px;
 }
 
 .n-list{
   border-collapse: collapse;
   width:100%;
    & tr {
-      & td {padding:18px 0 18px;};
-      & td:nth-child(1){
-         width:80%;
-         text-align: left;
-         input{
-         width: 17px;
-         height: 17px;
-         border-bottom: #cccccc;
-         };
-      & label{
-      margin-left:8px;
-      font-size: 20px;
-      color: #333333;
-        }
-      }
-      & td:nth-child(2){
-      width:20%;
-      text-align: right;
-      color: #767676;
-      }
+	   & td {padding:18px 0 18px;};
+	   & td:nth-child(1){
+		   width:80%;
+		   text-align: left;
+		   input{
+		   width: 17px;
+		   height: 17px;
+		   border-bottom: #cccccc;
+	      };
+	   & label{
+	   margin-left:8px;
+	   font-size: 20px;
+	   color: #333333;
+	     }
+	   }
+	   & td:nth-child(2){
+	   width:20%;
+	   text-align: right;
+	   color: #767676;
+	   }
    }
 }
  .notice-container {
@@ -592,38 +589,38 @@ cursor: pointer;
      padding: 20px;
      border-radius: 8px;
      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    h1 {
-        text-align: center;
-        color: #333;
-    }
-    .info {
-        margin: 20px 0;
-        font-size: 18px;
-        line-height: 1.6;
-    }
-    .button {
-        display: block;
-        width: 100%;
-        padding: 10px;
-        background-color: #007bff;
-        color: white;
-        text-align: center;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        text-decoration: none;
-        font-size: 16px;
-    }
-    .button:hover {
-        background-color: #0056b3;
-    }
-    select {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
+	 h1 {
+	     text-align: center;
+	     color: #333;
+	 }
+	 .info {
+	     margin: 20px 0;
+	     font-size: 18px;
+	     line-height: 1.6;
+	 }
+	 .button {
+	     display: block;
+	     width: 100%;
+	     padding: 10px;
+	     background-color: #007bff;
+	     color: white;
+	     text-align: center;
+	     border: none;
+	     border-radius: 5px;
+	     cursor: pointer;
+	     text-decoration: none;
+	     font-size: 16px;
+	 }
+	 .button:hover {
+	     background-color: #0056b3;
+	 }
+	 select {
+	     width: 100%;
+	     padding: 10px;
+	     margin-bottom: 20px;
+	     border-radius: 5px;
+	     border: 1px solid #ccc;
+	 }
  }
  .overlay-notice {
     display: none; /* 기본 상태를 숨김으로 설정 */
@@ -667,22 +664,16 @@ cursor: pointer;
 <body>
 
 <%@include file="/WEB-INF/include/header.jsp" %>
-   
-   <!-- 평가창 -->
-   <form action="/Company/Mypage/ApplyList/Evaluate" method="POST">
-       <input type="hidden" name="appli_idx" value="${appli_idx}">
-    <input type="hidden" name="company_idx" value="${company_idx}">
-    <input type="hidden" name="post_idx" value="${post_idx}">
-    <input type="hidden" name="post_idx" value="${post_idx}">
-   <div class="popup-evaluate">  
-   
-   <c:choose>
-      <c:when test="${not empty company_idx}">
-          <div class="evaluation"> 
-            <div class="e-header">
-               <h2 class="e-title">평가지</h2>
-               <span class="e-delete">x</span>
-            </div>
+	
+	<!-- 평가창 -->
+	<div class="popup-evaluate">  
+	<c:choose>
+		<c:when test="${not empty company_idx}">
+			 <div class="evaluation"> 
+			   <div class="e-header">
+			      <h2 class="e-title">평가지</h2>
+			      <span class="e-delete">x</span>
+			   </div>
         <table class="evaluation-container">
             <thead>
                 <tr>
@@ -696,8 +687,8 @@ cursor: pointer;
                 <tr>
                     <td rowspan="5">학력</td>
                     <td>고졸이하:1</td>
-                    <td rowspan="5"><input type="number" name="edu_score" min="0" max="5" value="${evaluate.edu_score}" ></td>
-                    <td rowspan="5" class="no-border"><input type="text" name="edu_note" value="${evaluate.edu_note}"></td>
+                    <td rowspan="5"><input type="number" name="score1" min="0" max="5" required></td>
+                    <td rowspan="5" class="no-border"></td>
                 </tr>
                 <tr class="dotted">
                     <td class="dotted">전문학사:2</td>
@@ -714,13 +705,13 @@ cursor: pointer;
                 <tr>
                     <td>자격증 또는 기술</td>
                     <td>인사담당자 재량</td>
-                    <td><input type="number" name="skill_score" min="0" max="5" value="${evaluate.skill_score}" ></td>
-                    <td class="no-border"><input type="text" name="skill_note"  value="${evaluate.edu_note}"></td>
+                    <td><input type="number" name="score2" min="0" max="5" required></td>
+                    <td class="no-border"><input type="text"></td>
                 <tr>
                     <td rowspan="5">경력</td>
                     <td>1년이상:1</td>
-                    <td rowspan="5"><input type="number" name="career_score" min="0" max="5"  value="${evaluate.edu_note}"  ></td>
-                    <td rowspan="5" class="no-border"><input type="text" name="career_note"  value="${evaluate.edu_note}"></td>
+                    <td rowspan="5"><input type="number" name="score3" min="0" max="5" required></td>
+                    <td rowspan="5" class="no-border"><input type="text"></td>
                 </tr>
                 <tr>
                     <td>3년이상:2</td>
@@ -737,37 +728,36 @@ cursor: pointer;
                 <tr>
                     <td rowspan="5">자기소개서</td>
                     <td>직무관련 경험</td>
-                    <td><input type="number" name="score4" min="0" max="5"  ></td>
-                    <td rowspan="5" class="no-border"><input type="text" name="letter_note" value="${evaluate.letter_note}"></td>
-                   <td><input type="hidden" name="letter_score" value="${evaluate.letter_score}"></td>
+                    <td><input type="number" name="score4" min="0" max="5" required></td>
+                    <td rowspan="5" class="no-border"><input type="text"></td>
                 </tr>
                 <tr>
                     <td>성격 및 장단점</td>
-                    <td><input type="number" name="_score5" min="0" max="5"  ></td>
+                    <td><input type="number" name="score5" min="0" max="5" required></td>
                 </tr>
                 <tr>
                     <td>가치관</td>
-                    <td><input type="number" name="_score6" min="0" max="5"  ></td>
+                    <td><input type="number" name="score6" min="0" max="5" required></td>
                 </tr>
                 <tr>
                     <td>목표 달성 경험</td>
-                    <td><input type="number" name="_score7" min="0" max="5"  ></td>
+                    <td><input type="number" name="score7" min="0" max="5" required></td>
                 </tr>
                 <tr>
                     <td>실패 및 위기 극복 경험</td>
-                    <td><input type="number" name="_score8" min="0" max="5"  ></td>
+                    <td><input type="number" name="score8" min="0" max="5" required></td>
                 </tr>
                 <tr>
                     <td>포트폴리오</td>
                     <td>인사담당자 재량</td>
-                    <td><input type="number" name="portfolio_score" min="0" max="5" value="${evaluate.portfolio_score}"  ></td>
-                    <td class="no-border"><input type="text" name="porfolio_note" value="${evaluate.portfolio_note}"></td>
+                    <td><input type="number" name="score9" min="0" max="5" required></td>
+                    <td class="no-border"><input type="text"></td>
                 </tr>
                 <tr>
                     <td>가점</td>
                     <td>인사담당자 재량</td>
-                    <td><input type="number" name="ext_score" value="${evaluate.ext_score}"  ></td>
-                    <td class="no-border"><input type="text" name="ext_note" value="${evaluate.ext_note}"></td>
+                    <td><input type="number" name="score10" min="0" max="5" required></td>
+                    <td class="no-border"><input type="text"></td>
                 </tr>
             </tbody>
         </table>
@@ -775,59 +765,56 @@ cursor: pointer;
             <span class="total">총평</span>
             <textarea></textarea>
             <span class="totalscore">총점</span>
-            <input type="text" name="total_score" min="0" max="5" readonly value="${evaluate.total_score}">
+            <input type="text" name="totalScore" readonly value="3.8">
         </div>
         <br>
-            <div class="e-btn" >    
-            <button type="submit" class="evaluation-val">평가등록</button>
-            </div> 
-         </div>
-      </c:when>
-        <c:otherwise>
-           <div class="evaluate login-alter">
-            <h2 class="e-title">기업회원 로그인이 필요합니다.</h2>
-           <a href ="/Company/LoginForm">로그인</a>
-         </div>
-        </c:otherwise>
-   </c:choose>
-   </div>
-         </form>
-   
-   <!-- 알림창 -->
-   <div class="overlay-notice">  
-   <c:choose>
-      <c:when test="${not empty company_idx}">
-          <div class="notice"> 
-            <div class="n-header">
-               <h2 class="n-title">알림보내기</h2><span class="n-delete">x</span>
-            </div>
-            <div class="notice-container">
-                <h1>제목을 선택해주세요</h1>
-                <select>
-                    <option>제목 1</option>
-                    <option>제목 2</option>
-                    <option>제목 3</option>
-                </select>
-            
-                <div class="noti">
-                    <p>서류에 합격하였습니다.</p>
-                    <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
-                    <p>일시: 2024/12/21 10:00 AM</p>
-                    <p>장소: 그린아카데미 402호</p>
-                    <p>안내사항: 이력서, 포트폴리오 지참, 말씀한 복장 준수</p>
-                </div>
-            </div>
-            <div class="n-btn" ><a onclick="alert('알림보내기를 완료했습니다.')" class="notice-val" href ="">알림 전송<img src="/images/SendMessage.svg" class="img"></a></div> 
-         </div>
-      </c:when>
-        <c:otherwise>
-           <div class="notice login-alter">
-            <h2 class="n-title">기업회원 로그인이 필요합니다.</h2>
-           <a href ="/Company/LoginForm">로그인</a>
-         </div>
-        </c:otherwise>
-   </c:choose>   
-   </div>
+			   <div class="e-btn" ><a onclick="alert('평기를 완료했습니다.')" class="evaluation-val" href ="/Compayn">평가등록</a></div> 
+			</div>
+		</c:when>
+		  <c:otherwise>
+		  	<div class="evaluate login-alter">
+		      <h2 class="e-title">기업회원 로그인이 필요합니다.</h2>
+			  <a href ="/Company/LoginForm">로그인</a>
+		   </div>
+		  </c:otherwise>
+	</c:choose>
+	</div>
+	
+	<!-- 알림창 -->
+	<div class="overlay-notice">  
+	<c:choose>
+		<c:when test="${not empty company_idx}">
+			 <div class="notice"> 
+			   <div class="n-header">
+			      <h2 class="n-title">알림보내기</h2><span class="n-delete">x</span>
+			   </div>
+				<div class="notice-container">
+				    <h1>제목을 선택해주세요</h1>
+				    <select>
+				        <option>제목 1</option>
+				        <option>제목 2</option>
+				        <option>제목 3</option>
+				    </select>
+				
+				    <div class="noti">
+				        <p>서류에 합격하였습니다.</p>
+				        <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
+				        <p>일시: 2024/12/21 10:00 AM</p>
+				        <p>장소: 그린아카데미 402호</p>
+				        <p>안내사항: 이력서, 포트폴리오 지참, 말씀한 복장 준수</p>
+				    </div>
+				</div>
+			   <div class="n-btn" ><a onclick="alert('알림보내기를 완료했습니다.')" class="notice-val" href ="">알림 전송<img src="/images/SendMessage.svg" class="img"></a></div> 
+			</div>
+		</c:when>
+		  <c:otherwise>
+		  	<div class="notice login-alter">
+		      <h2 class="n-title">기업회원 로그인이 필요합니다.</h2>
+			  <a href ="/Company/LoginForm">로그인</a>
+		   </div>
+		  </c:otherwise>
+	</c:choose>	
+	</div>
 <main>
   <div class="inner">  
       <div class="innercontents">
@@ -837,20 +824,21 @@ cursor: pointer;
          <tr><td><a href="/Company/Mypage/Home/View?company_idx=${company_idx}" class="link"><img src="/images/myhome2.svg" class="img" data-hover="/images/myhome.svg">MY홈</a></td></tr>
          <tr><td><a href="/Company/Mypage/Post/List?company_idx=${company_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">채용공고</a></td></tr>
          <tr><td><a href="/Company/Mypage/Bookmark/List?company_idx=${company_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심인재</a></td></tr>
-         <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${company_idx}" class="active-color2"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
+         <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${company_idx}" class="active-color"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
         </table>
-         <div id="side-menu">
-          <div id ="side-frame">
-            <p>최종수정일 : ${resumeVo.resume_fdate}<p>
-            <hr>
-            <h4>${resumeVo.resume_title}</h4>
-            <p id="side-hit">조회수 ${resumeVo.resume_hit}<p>
-            <div id="side-bottom">
-              <button class="btn" id="btn-evaluate">평가하기</button>
-              <button class="btn" id="btn-notice">알림보내기</button>
-            </div>
-          </div>
-       </div>
+        
+	      <div id="side-menu">
+	       <div id ="side-frame">
+	         <p>최종수정일 : ${resumeVo.resume_fdate}<p>
+	         <hr>
+	         <h4>${resumeVo.resume_title}</h4>
+	         <p id="side-hit">조회수 ${resumeVo.resume_hit}<p>
+	         <div id="side-bottom">
+	           <button class="btn" id="btn-evaluate">평가하기</button>
+	           <button class="btn" id="btn-notice">알림보내기</button>
+	         </div>
+	       </div>
+	    </div>
       </div>
       
       <div class="container" >
@@ -866,7 +854,14 @@ cursor: pointer;
            </div>
         </c:when>
         <c:otherwise>
-        <img src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지"/>
+         <c:choose>
+       <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" >
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/user-profile.png" alt="User Image" >
+       </c:otherwise>
+      </c:choose> 
         <div id="info-content">
            <h3 id="info-title">${resumeVo.user_name}</h3>
            <p>${resumeVo.user_gender},${resumeVo.user_age}세 (${resumeVo.user_year}년)</p>
@@ -884,7 +879,7 @@ cursor: pointer;
         <tr>
           <td>최종학력</td>
           <td>${resumeVo.eb_name} &nbsp;${resumeVo.edu_name} </td>
-        </tr>      
+        </tr>		
         </table>
       </div>
      
@@ -894,47 +889,47 @@ cursor: pointer;
         <hr>
         <table class="sub-topic"> 
          <tr>
-         <td colspan="2" class="sub-skill">
+		   <td colspan="2" class="sub-skill">
            <div class="sub-skill-layout">
      
               <div>${resumeVo.skill_name}</div> 
           
            </div> 
          </td>
-      </tr>
+		</tr>
         </table>
       </div>
     </c:if>
 
       <div class="sub-filed">
-       <h4 class="sub-title">희망 근무조건</h4>
-       <hr> 
-       <table class="sub-topic">
-      <tr>
-         <td>희망근무지</td>
-         <td>${resumeVo.city_name}</td>
-       </tr>
-       <tr>
-         <td>희망직무</td>
-         <td>${resumeVo.duty_name}</td>
-       </tr>
-       <tr>
-         <td>희망고용형태</td>
-         <td>${resumeVo.emp_name}</td>
-       </tr>
-      </table>
-     </div>     
-     
+	    <h4 class="sub-title">희망 근무조건</h4>
+	    <hr> 
+	    <table class="sub-topic">
+		<tr>
+	      <td>희망근무지</td>
+	      <td>${resumeVo.city_name}</td>
+	    </tr>
+	    <tr>
+	      <td>희망직무</td>
+	      <td>${resumeVo.duty_name}</td>
+	    </tr>
+	    <tr>
+	      <td>희망고용형태</td>
+	      <td>${resumeVo.emp_name}</td>
+	    </tr>
+	   </table>
+	  </div>	  
+	  
        <div class="sub-filed">
-       <h4 class="sub-title">경력</h4>
-       <hr> 
+	    <h4 class="sub-title">경력</h4>
+	    <hr> 
        <c:choose>
-        <c:when test="${not empty resumeVo.career_cname}">
-       <table class="sub-topic">
-        <tr>
-          <td>회사명</td>
-          <td>${resumeVo.career_cname}</td>
-        </tr>
+		  <c:when test="${not empty resumeVo.career_cname}">
+	    <table class="sub-topic">
+	     <tr>
+	       <td>회사명</td>
+	       <td>${resumeVo.career_cname}</td>
+	     </tr>
    
         <tr>
           <td>근무기간</td>
@@ -946,22 +941,36 @@ cursor: pointer;
         </tr>
        </table>
          </c:when>
-        <c:otherwise>
-           <div class="noob">신입</div>
-        </c:otherwise>
-     </c:choose>
+	  	<c:otherwise>
+	  		<div class="noob">신입</div>
+	  	</c:otherwise>
+	  </c:choose>
      </div>
-   
+	
       <div class="sub-filed">
-       <h4 class="sub-title" >자기소개서</h4>
-       <hr> 
+	    <h4 class="sub-title" >자기소개서</h4>
+	    <hr> 
         <div class ="sub-content">${resumeVo.cover_letter}</div>
-     </div>     
-     
+	  </div>  
+	     
+      <c:if test="${not empty pfvoList}">
+      <div class="sub-filed">
+	    <h4 class="sub-title" >파일업로드</h4>
+	    <hr> 
+	    <c:forEach var="p" items="${pfvoList}">
+       <div class="sub-filedown">
+         <a href="/filedownload/${p.portfolio_idx}">
+       <img src="/images/resume/link1.png"/>&nbsp;&nbsp;&nbsp;
+       ${p.filename}
+       </a>
+       </div>
+       </c:forEach>
+	  </div>     
+     </c:if>
     
           </div>
           <div class="btn-layout">
-              <div class="btn btn-back"><a class="return-btn"href ="/Company/Mypage/ApplyList/ApplyList?post_idx=${post_idx}&company_idx=${company_idx}">돌아가기</a></div>
+              <div class="btn btn-back"><a href ="/Company/Mypage/ApplyList/ApplyList?post_idx=${post_idx}&company_idx=${company_idx}">돌아가기</a></div>
          </div>
       </div>
    </div>
@@ -989,14 +998,14 @@ cursor: pointer;
      link.addEventListener("mouseout", () => {
          img.src = originalSrc;
      });
- });    
-    
+ });	 
+	 
  
  
  </script>
  <script>
  $(function(){
-    //평가하기
+	 //평가하기
     $('#btn-evaluate').on('click', function(e) {
         $('.popup-evaluate').show(); // 팝업 보여주기
     });
@@ -1030,104 +1039,53 @@ cursor: pointer;
             });
         }
     }
-   
-   //알림보내기
-      $('#btn-notice').on('click', function(e){
-         $('.overlay-notice').show();
-      })
-      $('.n-delete').on('click', function(){
-         $('.overlay-notice').hide();            
-      })
-      $('.n-btn').on('click', function(){
-         $('.overlay-notice').hide();            
-      })
-         $(".overlay-notice").on('click', function(e) {
-              if($(e.target).closest('.notice').length == 0) { 
-                   $(".overlay-notice").hide();
-           }
-      });
-   
+	
+	//알림보내기
+		$('#btn-notice').on('click', function(e){
+			$('.overlay-notice').show();
+		})
+		$('.n-delete').on('click', function(){
+			$('.overlay-notice').hide();				
+		})
+		$('.n-btn').on('click', function(){
+			$('.overlay-notice').hide();				
+		})
+			$(".overlay-notice").on('click', function(e) {
+		  		if($(e.target).closest('.notice').length == 0) { 
+		       		$(".overlay-notice").hide();
+		  	}
+		});
+	
 
   window.addEventListener('wheel', e => {
-     const scrollUp = e.deltaY <= 0;
-     if ( window.scrollY > 100 &&  scrollUp ||  scrollUp != 0) {
-        $("header").slideDown();   
-     } else {
-        $("header").slideUp();   
-     }
-   });
+	  const scrollUp = e.deltaY <= 0;
+	  if ( window.scrollY > 100 &&  scrollUp ||  scrollUp != 0) {
+		  $("header").slideDown();	
+	  } else {
+		  $("header").slideUp();	
+	  }
+	});
  })
-
+ 
+ 
+		
+/*   $(".apply-val").attr("href","Scout?resume_idx=${vo.resume_idx}&post_idx=0")
+	
+  $(".resume-input").click(function(e){
+			console.log(e.target.value)
+			$(".apply-val").attr("href","Scout?resume_idx=${vo.resume_idx}&post_idx="+e.target.value)
+		}) */
   
  </script>
  <script>
 /* 평점 */
-$(function () {
-    // 점수 입력 시 총점 계산
-    $('input[type="number"]').on('input', function () {
-        calculateTotal();
-        calculateLetterScore();
+function calculateTotal() {
+    let total = 0;
+    const inputs = document.querySelectorAll('input[type="number"]');
+    inputs.forEach(input => {
+        total += parseInt(input.value) || 0;
     });
-
-    function calculateTotal() {
-        let totalsum = 0;
-        const inputs = $('input[type="number"]');
-        let validInputFound = false; // 유효한 입력 값이 발견되었는지 추적
-
-        inputs.each(function () {
-            const value = parseFloat($(this).val());
-            // 값이 유효한 경우에만 totalsum에 더함
-            if (!isNaN(value)) {
-                totalsum += value;
-                validInputFound = true; // 유효한 입력이 발견됨
-            }
-        });
-
-        // 유효한 입력이 없을 경우 totalsum을 0으로 설정
-        if (!validInputFound) {
-            totalsum = 0;
-        }
-
-        // 총점 계산
-        let total = (totalsum / 10).toFixed(2); // 소수점 둘째 자리까지 반올림
-        $('input[name="total_score"]').val(total); // 총점을 입력 필드에 업데이트
-    }
-});
-
-
-
-document.querySelector('.evaluation-val').addEventListener('click', function (event) {
-    const scores = document.querySelectorAll('input[type="number"]');
-    let valid = true;
-
-    scores.forEach(score => {
-        if (score.value === '' || score.value < 0 || score.value > 5) {
-            alert('모든 점수는 0과 5 사이여야 합니다.');
-            valid = false;
-        }
-    });
-
-    if (!valid) {
-        event.preventDefault();
-    }
-});
-
-function calculateLetterScore() {
-    let scores = [];
-    for (let i = 5; i <= 8; i++) {
-        const score = parseFloat($(`input[name="score${i}"]`).val());
-        if (!isNaN(score)) {
-            scores.push(score);
-        }
-    }
-
-    if (scores.length > 0) {
-        const sum = scores.reduce((a, b) => a + b, 0);
-        const average = (sum / scores.length).toFixed(2);
-        $('input[name="letter_score"]').val(average);
-    } else {
-        $('input[name="letter_score"]').val(0);
-    }
+    document.getElementById('total-score').innerText = total;
 }
 </script>
  

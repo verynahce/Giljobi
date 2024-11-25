@@ -1,8 +1,8 @@
-package com.green.dto;
+package com.prj.dto;
 
-import com.green.entity.Post;
-import com.green.entity.PostClick;
-import com.green.entity.Users;
+import com.prj.entity.Post;
+import com.prj.entity.PostClick;
+import com.prj.entity.Users;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

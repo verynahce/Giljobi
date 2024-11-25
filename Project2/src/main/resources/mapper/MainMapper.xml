@@ -41,6 +41,7 @@
 		    CR.CAREER_NAME,
 		    ED.EDU_NAME,
 		    P.POST_SALARY,
+		    P.IMAGE_IDX,
 		    S.SKILL_NAME,
 		    EM.EMP_NAME,
 		    CT.CITY_NAME,
@@ -76,7 +77,8 @@
                      POST_HIT,
                      POST_DDATE,
                      POST_CDATE,
-                     POST_FDATE
+                     POST_FDATE,
+                     P.IMAGE_IDX
 	</select>
 	<select id="getTotPoint">
 	  SELECT (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 FROM REVIEW R JOIN POST P ON R.COMPANY_IDX = P.COMPANY_IDX
@@ -292,6 +294,7 @@
 	    RC.CAREER_DESCRIPTION,
 	    COVER_LETTER,
 	    RESUME_HIT,
+	    R.IMAGE_IDX,
 	    TO_CHAR(RESUME_CDATE,'""YYYY"-"MM"-"DD""') RESUME_CDATE,
 	    TO_CHAR(RESUME_FDATE,'""YYYY"-"MM"-"DD""') RESUME_FDATE
 	FROM
@@ -736,6 +739,64 @@
    FROM RESUME_CLICK
    WHERE RESUME_IDX = #{resume_idx}
    </delete>
+   
+   <insert id="inserCarification">
+   INSERT INTO CLARIFICATION (CLARIFICATION_IDX,CLOTH,AGE,SITUATION_ETC,PREK,PTO,PREK_ETC,MEETING_NUM,MEETING_COUNT,POST_IDX)
+    VALUES ( CLARIFICATION_SEQ.NEXTVAL,#{cloth},#{age},#{situation_etc},#{prek},#{pto},#{prek_etc},#{meeting_num},#{meeting_count},
+    (SELECT NVL(MAX(POST_IDX),0) FROM POST)
+)
+   </insert>
+   
+   <insert id="insertCarPost">
+      INSERT INTO CLARIFICATION (CLARIFICATION_IDX,CLOTH,AGE,SITUATION_ETC,PREK,PTO,PREK_ETC,MEETING_NUM,MEETING_COUNT,POST_IDX)
+    VALUES ( CLARIFICATION_SEQ.NEXTVAL,#{arg0},#{arg1},#{arg2},#{arg3},#{arg4},#{arg5},#{arg6},#{arg7},
+    #{arg8}
+)
+   </insert>
+   
+   <update id="updateClarification">
+   UPDATE CLARIFICATION
+   SET  CLOTH = #{cloth},
+        AGE = #{age},
+        SITUATION_ETC = #{situation_etc},
+        PREK = #{prek},
+        PTO = #{pto},
+        PREK_ETC = #{prek_etc},
+        MEETING_NUM  = #{meeting_num},
+        MEETING_COUNT = #{meeting_count}
+   WHERE CLARIFICATION_IDX = #{clarification_idx}
+   </update>
+   
+   <delete id="deleteClarification">
+   DELETE 
+   FROM CLARIFICATION
+   WHERE POST_IDX = #{post_idx}
+   </delete>
+   
+   <delete id="deletePostClick">
+   DELETE
+   FROM POST_CLICK
+   WHERE POST_IDX = #{post_idx}   
+   </delete>
+   
+   <insert id="insertBookU">
+   INSERT INTO USER_BOOKMARK (UB_IDX, USER_IDX, COMPANY_IDX)
+   VALUES ((SELECT NVL(MAX(UB_IDX), 0) + 1 FROM USER_BOOKMARK), #{arg1}, #{arg0})
+   </insert>
+   
+   
+   <delete id="deleteBookU">
+   DELETE
+   FROM USER_BOOKMARK
+   WHERE USER_IDX = #{arg1} AND COMPANY_IDX = #{arg0} 
+   </delete>
+   
+   <select id="getBookU">
+   SELECT UB_IDX
+   FROM USER_BOOKMARK
+   WHERE USER_IDX = #{arg0} AND COMPANY_IDX = #{arg1} 
+   </select>
+   
    
 </mapper>
 

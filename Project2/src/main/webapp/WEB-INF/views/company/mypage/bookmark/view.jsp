@@ -458,7 +458,14 @@ cursor: pointer;
       <h2 class="main-title">${resumeVo.resume_title}</h2>
       <hr>
       <div id="info">
-        <img src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지"/>
+      <c:choose>
+       <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" >
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/user-profile.png" alt="User Image" >
+       </c:otherwise>
+      </c:choose> 
         <div id="info-content">
            <h3 id="info-title">${resumeVo.user_name}</h3>
            <p>${resumeVo.user_gender},${resumeVo.user_age}세 (${resumeVo.user_year}년)</p>
@@ -549,7 +556,20 @@ cursor: pointer;
 	    <hr> 
 	    <div class ="sub-content">${resumeVo.cover_letter}</div>
 	  </div>     
-     
+    <c:if test="${not empty pfvoList}">
+      <div class="sub-filed">
+	    <h4 class="sub-title" >파일업로드</h4>
+	    <hr> 
+	    <c:forEach var="p" items="${pfvoList}">
+       <div class="sub-filedown">
+         <a href="/filedownload/${p.portfolio_idx}">
+       <img src="/images/resume/link1.png"/>&nbsp;&nbsp;&nbsp;
+       ${p.filename}
+       </a>
+       </div>
+       </c:forEach>
+	  </div>     
+     </c:if>
     
           </div>
           <div class="btn-layout">
@@ -614,8 +634,8 @@ cursor: pointer;
          img.src = originalSrc;
      });
  });	 
-	 
  
+
  })
  </script>
  

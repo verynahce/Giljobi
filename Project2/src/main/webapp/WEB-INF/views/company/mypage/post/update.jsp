@@ -309,7 +309,12 @@ textarea {
     }
 
 }
+.sub-talkform {
+display:flex;
+justify-content: space-between;
+align-items: baseline;
 
+}
 
 </style>
 
@@ -331,9 +336,10 @@ textarea {
       </div>
       
       <div class="container" >
-    <form action="/Company/Mypage/Post/Update" method="get">
+    <form action="/Company/Mypage/Post/Update" method="POST"enctype="multipart/form-data">
     <input type="hidden" name="company_idx"  value="${sessionScope.login.company_idx }"/>   
-    <input type="hidden" name="post_idx"  value="${vo.post_idx }"/>   
+    <input type="hidden" name="post_idx"  value="${vo.post_idx }"/>  
+    <input type="hidden" value="${not empty cvo.clarification_idx ? cvo.clarification_idx : 0}" name="clarification_idx">    
       <div class="contain-body">  
        
       <h2 class="main-title">채용공고 수정</h2>
@@ -342,7 +348,14 @@ textarea {
       <h4 class="sub-title">기본정보</h4>
       <hr>
       <div id="info">
-        <img src="/images/profile.png" alt=""/>
+       <c:choose>
+       <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" class="preview">
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/company-profile.png" alt="User Image" class="preview">
+       </c:otherwise>
+       </c:choose>
         <div id="info-content">
            <h3 id="info-title">${vo.company_name }</h3>
            <p><img id="star-size1"src="/images/star1.png" alt="Star Image">&nbsp; (${score})</p>
@@ -350,6 +363,11 @@ textarea {
            <p>${vo.company_tel }<p/>
         </div>
       </div>
+      
+      <input id="idPhoto" type="file" name="upimage" class="upimage" style="display:none"accept=".jpg, .jpeg, .png"/>
+      <label class="input-file-button2 idPhto2" for="idPhoto">사진 업로드</label>     
+       <input type="hidden" name="image_idx" value="${not empty ifvo.image_idx ? ifvo.image_idx : 0}"> 
+           
       <div class="sub-filed">
         <h4 class="sub-title">채용공고 제목</h4>
         <hr>
@@ -462,17 +480,24 @@ textarea {
             </c:forEach>
             </select>
           </td>
-	    </tr>
-	   
+	    </tr>	   
 	   </table>
 	  </div>	 
 	  
       <div class="sub-filed">
 	    <h4 class="sub-title" >상세내용</h4>
 	    <hr> 
-	    <textarea id="details" name="post_content" placeholder="센스있게 작성하여 입사지원의 확률을 높이세요">${vo.post_content}</textarea>
+	    <textarea id="details" name="post_content" wrap="hard" placeholder="센스있게 작성하여 입사지원의 확률을 높이세요">${vo.post_content}</textarea>
 	  </div>     
-     
+	  
+        <div class="sub-filed ">
+        <div class="sub-talkform">
+	      <h4 class="sub-title">인사담당자 톡</h4><input type="button" id="btnAddFile2" value="답변하기"/>
+	    </div>
+	    <hr> 
+	    <div class="sub-talkout"></div>	 
+	
+	  </div>	 
     
           </div>
           <div class="btn-layout">
@@ -492,8 +517,96 @@ textarea {
  <script>
  
  $(function() {
-
-	 console.log("${companyVo.company_idx }")
+	//인사담당자 톡
+	 const addRow =`
+	     <table class="sub-topic">
+	     <tr>
+	     <td>근무환경은<br>어떤가요?</td>
+	     <td> 
+	      <select name="cloth" id="cloth">	      	       
+	       <option >출근복장</option>
+	       <option value="자율 복장" <c:if test="${cvo.cloth == '자율 복장'}">selected</c:if>>자율 복장</option>
+	       <option value="복장규율" <c:if test="${cvo.cloth == '복장 규율 준수'}">selected</c:if>>복장 규율 준수</option>
+	       </select>
+	      <select name="age" id="age">	      	       
+	       <option >연령대</option>
+	       <option value="연령 구성 다양" <c:if test="${cvo.age == '연령 구성 다양'}">selected</c:if>>연령 구성 다양</option>
+	       <option value="대부분 2030대" <c:if test="${cvo.age == '대부분 2030대'}">selected</c:if>>대부분 2030대</option>
+	       <option value="대부분 3040대" <c:if test="${cvo.age == '대부분 3040대'}">selected</c:if>>대부분 3040대</option>
+	       <option value="대부분 4050대" <c:if test="${cvo.age == '대부분 4050대'}">selected</c:if>>대부분 4050대</option>
+	      </select>
+	     <input type="text" name="situation_etc" id="situation_etc" placeholder="추가근무환경을 입력하세요"<c:if test="${not empty cvo.situation_etc}">value="${cvo.situation_etc}"</c:if>/>
+	     </td>
+	     
+	   </tr>
+		<tr>
+	     <td>복지 및<br> 처우는 어떻게 되나요?</td>
+	     <td> 
+	      <select name="prek" id="prek">	      	       
+	       <option >식비</option>
+	       <option value="급여 외 식대제공" <c:if test="${cvo.prek == '급여 외 식대제공'}">selected</c:if>>급여 외 식대제공</option>
+	       <option value="급여 내 식대포함" <c:if test="${cvo.prek == '급여 내 식대포함'}">selected</c:if>>급여 내 식대포함</option>
+	       <option value="구내식당 보유" <c:if test="${cvo.prek == '구내식당 보유'}">selected</c:if>>구내식당 보유</option>
+	       <option value="면접 후 식대결정" <c:if test="${cvo.prek == '면접 후 식대결정'}">selected</c:if>>면접 후 식대결정</option>
+	      </select>
+	      <select name="pto" id="pto">	      	       
+	       <option >연차</option>
+	       <option value="리프레쉬 지급" <c:if test="${cvo.pto == '리프레쉬 지급'}">selected</c:if>>리프레쉬 지급</option>
+	       <option value="포상휴가 많음" <c:if test="${cvo.pto == '포상휴가 많음'}">selected</c:if>>포상휴가 많음</option>
+	       <option value="연차 표준준수" <c:if test="${cvo.pto == '연령 구성 다양'}">selected</c:if>>연차 표준준수</option>
+	      </select>
+	       <input type="text" name="prek_etc" id="prek_etc" placeholder="추가복지를 입력하세요"<c:if test="${not empty cvo.prek_etc}">value="${cvo.prek_etc}"</c:if>/>
+	     </td>
+	   </tr>
+	  <tr>
+	     <td>면접은 어떻게 진행되나요?</td>
+	     <td> 
+	      <select name="meeting_num" id="meeting_num">	      	       
+	       <option >면접인원</option>
+	       <option value="다수 지원자 동시 면접" <c:if test="${cvo.meeting_num == '다수 지원자 동시 면접'}">selected</c:if>>다수 지원자 동시 면접</option>
+	       <option value="1명 지원자 다수 면졉관" <c:if test="${cvo.meeting_num == '1명 지원자 다수 면졉관'}">selected</c:if>>1명 지원자 다수 면졉관</option>
+	       <option value="1명 지원자 소수 면접관" <c:if test="${cvo.meeting_num == '1명 지원자 소수 면접관'}">selected</c:if>>1명 지원자 소수 면접관</option>
+	      </select>
+	      <select name="meeting_count" id="meeting_count">	      	       
+	       <option >면접일정</option>
+	       <option value="접수기간 중 수시 면접" <c:if test="${cvo.meeting_count == '접수기간 중 수시 면접'}">selected</c:if> >접수기간 중 수시 면접</option>
+	       <option value="마감 후 1~2주 이내 면접" <c:if test="${cvo.meeting_count == '마감 후 1~2주 이내 면접'}">selected</c:if>>마감 후 1~2주 이내 면접</option>
+	       <option value="공고내 정해진 면접날짜" <c:if test="${cvo.meeting_count == '공고내 정해진 면접날짜'}">selected</c:if>>공고내 정해진 면접날짜</option>
+	      </select>
+	     </td>
+	   </tr>
+	  </table>`
+	 
+	  
+	  
+	  //버튼 클릭
+	   let click = "${cvo}" ? 1 : 0;
+	   if ( "${cvo}"!== "") {
+		    $('.sub-talkout').append(addRow);
+		}
+	   	   
+	  $(document).on('click', '#btnAddFile2', function() {
+	  if (click == 0) {
+	      $('.sub-talkout').append(addRow);
+	      click = 1;
+	  } else {		
+	      $('.sub-talkout').empty();
+	      click = 0;
+	  }
+	});
+	 
+ //이미지추가
+ $('.upimage').on('change', function() {
+            const file = this.files[0];
+            console.log(file)
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('.preview').attr('src', e.target.result).show(); // 미리보기 이미지 표시
+                }
+                reader.readAsDataURL(file); // 파일을 Data URL로 읽기
+            }
+        });
 	 
 	 
 //변수
@@ -550,9 +663,12 @@ $('#techList').on('click', '.skillDelete', function() {
 //폼 제출 시 Enter 키 입력방치처리
 $(formEl).on('keydown', function(event) {
    if (event.keyCode === 13) {
-       event.preventDefault(); 
+	   const textarea = document.querySelector('#details'); // textarea의 id를 사용하여 선택
+	    if (event.key === 'Enter' && document.activeElement !== textarea) {
+	        event.preventDefault(); // textarea가 아닌 경우에만 기본 동작 방지
+	    }
    }
-});
+});;
  
  
  //폼 제출시 null값 방지
@@ -584,6 +700,30 @@ $(formEl).on('keydown', function(event) {
      }  else if ($('#details').val().trim() == '') {
          alert('상세내용을 작성하세요');
          $('#details').focus();
+         return false;    
+     }else if ($('#cloth').val() == '출근복장') {
+         alert('출근복장을 선택하세요');
+         $('#cloth').focus();
+         return false;    
+     }else if ($('#age').val() == '연령대') {
+         alert('연령대를 선택하세요');
+         $('#age').focus();
+         return false;    
+     }else if ($('#prek').val() == '식비') {
+         alert('식비를 선택하세요');
+         $('#prek').focus();
+         return false;    
+     }else if ($('#pto').val() == '연차') {
+         alert('연차를 선택하세요');
+         $('#pto').focus();
+         return false;    
+     }else if ($('#meeting_num').val() == '면접인원') {
+         alert('면접인원을 선택하세요');
+         $('#meeting_num').focus();
+         return false;    
+     }else if ($('#meeting_count').val() == '면접일정') {
+         alert('면접일정을 선택하세요');
+         $('#meeting_count').focus();
          return false;    
      }else {
         	 

@@ -1,12 +1,15 @@
 package com.prj.companys.controller;
 
-import java.util.List;	
+import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.prj.companys.mapper.CompanyMapper;
@@ -17,11 +20,15 @@ import com.prj.companys.vo.PostWriteVo;
 import com.prj.main.mapper.MainMapper;
 import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
+import com.prj.main.vo.ClarificationVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
+import com.prj.main.vo.ImagefileVo;
+import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.PostVo;
 import com.prj.main.vo.SkillVo;
+import com.prj.service.PdsService;
 import com.prj.users.vo.EduVo;
 import com.prj.users.vo.ScoreVo;
 
@@ -39,6 +46,9 @@ public class MypageController {
 	
 	@Autowired
 	private MainMapper mainMapper;
+	
+	@Autowired
+	private PdsService pdsService;
 	
 	@RequestMapping("/Home/View")
 	public ModelAndView homeview(HttpServletRequest request, HttpServletResponse responese) {
@@ -106,12 +116,27 @@ public class MypageController {
 	
 	@RequestMapping("/Post/View")
 	public ModelAndView postView(@RequestParam (value = "post_idx") String postIdx) {
-		PostListVo vo = mainMapper.getPost(postIdx);
-		ScoreVo score = companyMapper.getReviewScore(vo.getCompany_idx());
-	
+	PostListVo vo = mainMapper.getPost(postIdx);
+	ScoreVo score = companyMapper.getReviewScore(vo.getCompany_idx());
+
+    //공고수 , 인사담당자톡
+	PostCountVo pcvo = mainMapper.getPostCount(postIdx);
+	ClarificationVo cfvo = mainMapper.getClarification(Integer.parseInt(postIdx));
+	//이미지 정보
+	ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+	String imagePath = "";
+	if(ifvo==null) {
+		 imagePath = "0";
+	}else {
+		imagePath = ifvo.getImage_path().replace("\\", "/");
+	}
+		
 	ModelAndView mv = new ModelAndView();
 	mv.addObject("vo",vo);
 	mv.addObject("score",score.getScore());
+	mv.addObject("pcount",pcvo);
+	mv.addObject("cfvo",cfvo);
+	mv.addObject("imagePath",imagePath);
 	mv.setViewName("company/mypage/post/view");
 	return mv;
 	}
@@ -142,17 +167,19 @@ public class MypageController {
 	
 	
 	@RequestMapping("/Post/Write")
-	public ModelAndView postWrite(PostWriteVo postWriteVo) {
-		
-	postWriteVo.getCompany_idx();
+	public ModelAndView postWrite(PostWriteVo postWriteVo,
+			                      @RequestParam(value="upimage",required = false) MultipartFile uploadimage,
+			                      ClarificationVo carificationVo) {
 	
+	HashMap<String, Object> map = new HashMap<>();	
+	String type ="POST";
+	map.put("type", type );
+	pdsService.setimageWrite(map, uploadimage);
 	companyMapper.insertPost(postWriteVo);
-
+	mainMapper.inserCarification(carificationVo);
 	if (postWriteVo.getSkill_name() != null) {
         companyMapper.insertPostSkill(postWriteVo);
-    }
-	
-	/*companyMapper.insertPostSkill(postWriteVo);*/
+    }	
 
 	
 	ModelAndView mv = new ModelAndView();
@@ -167,8 +194,18 @@ public class MypageController {
 	
 	PostListVo vo = mainMapper.getPost(postIdx);
 	ScoreVo score = companyMapper.getReviewScore(vo.getCompany_idx());
-	System.out.println(vo);
 
+	//이미지 정보
+	ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+	String imagePath = "";
+	if(ifvo==null) {
+		 imagePath = "0";
+	}else {
+		imagePath = ifvo.getImage_path().replace("\\", "/");
+	}	
+	//인담자 톡
+	ClarificationVo cvo = mainMapper.getClarification(Integer.parseInt(postIdx));
+	
 	ModelAndView mv = new ModelAndView();
 	List<DutyVo> dutyList = companyMapper.getDuty();
 	List<EmpVo> empList = companyMapper.getEmp();
@@ -196,8 +233,9 @@ public class MypageController {
 	mv.addObject("vo", vo);
 	mv.addObject("post_ddate", formattedDate);
 	mv.addObject("score", score.getScore());
-
-	
+	mv.addObject("imagePath",imagePath);
+	mv.addObject("cvo",cvo);
+	mv.addObject("ifvo",ifvo);
 	mv.addObject("skillList", skillList);
 	mv.setViewName("company/mypage/post/update");
 	return mv;
@@ -205,16 +243,48 @@ public class MypageController {
 	}
 	
 	@RequestMapping("/Post/Update")
-	public ModelAndView postUpdate(PostWriteVo vo) {
+	public ModelAndView postUpdate(PostWriteVo vo,
+			                      @RequestParam(value="upimage",required = false) MultipartFile uploadimage,
+			                      ClarificationVo clarificationVo) {
 		
-	System.out.println(vo);
-	companyMapper.updatePost(vo);
+	HashMap<String, Object> map = new HashMap<>();		
+    //이미지 업데이트	
+	if(uploadimage != null && !uploadimage.isEmpty()) {	
+		String type ="POST";
+        map.put("type", type );	
+		pdsService.updateimagePost(uploadimage,vo.getImage_idx(),map,vo);
+	 }else {
+		//이력서 정보 업데이트
+	  companyMapper.updatePost(vo);		 		 
+	 }
 	
+	//인담자 톡 업데이트	
+	ClarificationVo cfvo = mainMapper.getClarification(vo.getPost_idx());
+	if(clarificationVo.getCloth() != null) {
+	if(cfvo != null)	{
+	mainMapper.updateClarification(clarificationVo);	
+		
+	}else {
+		String age = clarificationVo.getAge();
+		String cloth = clarificationVo.getCloth();
+		String mc = clarificationVo.getMeeting_count();
+		String mm = clarificationVo.getMeeting_num();
+		String prek = clarificationVo.getPrek();
+		String pect = clarificationVo.getPrek_etc();
+		String pto = clarificationVo.getPto();
+		String setc = clarificationVo.getSituation_etc();
+		
+		
+	mainMapper.insertCarPost(cloth,age,setc,prek,pto,pect,mm,mc,vo.getPost_idx());
+	  }
+	}else {
+		if(cfvo != null) {
+			mainMapper.deleteClarification(vo.getPost_idx());
+		}
+	}
 	
-	
-	PostSkillVo svo = companyMapper.getSkillIDX(vo.getPost_idx());
-
-	
+	//기술 정보 업데이트
+	PostSkillVo svo = companyMapper.getSkillIDX(vo.getPost_idx());	
 	// 기술이 기존에 없으면 - insert  있으면 -update 기존에 있지만 지웠다면 - delete 진행
 	if(vo.getSkill_name() != null ) {
 	  if(svo != null) {
@@ -227,8 +297,6 @@ public class MypageController {
 		
 	}
 	
-	System.out.println(vo);
-	System.out.println(vo.getCompany_idx());
 	ModelAndView mv = new ModelAndView();
 	mv.setViewName("redirect:/Company/Mypage/Post/List?company_idx=" + vo.getCompany_idx());
 	return mv;
@@ -238,12 +306,16 @@ public class MypageController {
 	
 	@RequestMapping("/Post/Delete")
 	public ModelAndView postDelete(@RequestParam("appli_idx") int appli_idx, PostWriteVo postWriteVo) {
-		
-	postWriteVo.getCompany_idx();
+
+	int image_idx= companyMapper.getpostC(postWriteVo.getPost_idx());
 	
 	companyMapper.deleteApply(appli_idx);
 	companyMapper.deletePostSkill(postWriteVo);
+	mainMapper.deleteClarification(postWriteVo.getPost_idx());
+	mainMapper.deletePostClick(postWriteVo.getPost_idx());	
 	companyMapper.deletePost(postWriteVo);
+	pdsService.deleteImage(image_idx);	
+
 	System.out.println(postWriteVo);
 	ModelAndView mv = new ModelAndView();
 	mv.setViewName("redirect:/Company/Mypage/Post/List?company_idx=" + postWriteVo.getCompany_idx());

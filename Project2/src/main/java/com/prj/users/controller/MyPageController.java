@@ -13,16 +13,19 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.prj.companys.vo.CompanyVo;
-import com.prj.main.service.ClickService;
-import com.prj.main.service.PdsService;
+import com.prj.main.mapper.MainMapper;
 import com.prj.main.vo.CityVo;
+import com.prj.main.vo.ClarificationVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
 import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PortfolioVo;
+import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
+import com.prj.service.ClickService;
+import com.prj.service.PdsService;
 import com.prj.users.mapper.UserMapper;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.EduVo;
@@ -45,8 +48,8 @@ public class MyPageController {
 	
 	@Autowired
 	private UserMapper userMapper;
-	
-
+	@Autowired
+    private MainMapper mainMapper;
 	@Autowired
 	private PdsService pdsService;
 	@Autowired
@@ -154,22 +157,38 @@ public class MyPageController {
 	@RequestMapping("/ApplyList/View")
 	public ModelAndView applylistview(@RequestParam("post_idx") int post_idx,
                                       @RequestParam("user_idx") int user_idx) {
-		
 		//view 내릴 정보
 		PostListVo vo = userMapper.getPost(post_idx);
-		CompanyVo cvo= userMapper.getCompany(post_idx);		
-		ScoreVo score = userMapper.getReviewScore(post_idx);		
+		CompanyVo cvo= userMapper.getCompany(post_idx);
+		ScoreVo score = userMapper.getReviewScore(post_idx);
 		
-
+	    //공고수 , 인사담당자톡
+		PostCountVo pcvo = mainMapper.getPostCount(String.valueOf(post_idx));
+		ClarificationVo cfvo = mainMapper.getClarification(post_idx);
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}				
+		
+		//이력서 도출
+		List<ResumeVo> SRList = userMapper.getSRList(user_idx);
+		
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("user/mypage/applyList/view");
 		mv.addObject("postVo",vo);	
 		mv.addObject("companyVo",cvo);	
-		mv.addObject("user_idx",user_idx);			
-		mv.addObject("score",score.getScore());
-		
-		return mv;
-	}
+		mv.addObject("resumeList",SRList);	
+		mv.addObject("user_idx",user_idx);	
+		mv.addObject("pcount",pcvo);
+		mv.addObject("cfvo",cfvo);
+		mv.addObject("imagePath",imagePath);
+		mv.addObject("score",score.getScore());	
+			return mv;
+}
 	
 	@RequestMapping("/BookMark/List")
 	public ModelAndView bookmarklist(UserVo uservo) {
@@ -201,6 +220,18 @@ public class MyPageController {
 		CompanyVo cvo= userMapper.getCompany(post_idx);
 		ScoreVo score = userMapper.getReviewScore(post_idx);
 		
+	    //공고수 , 인사담당자톡
+		PostCountVo pcvo = mainMapper.getPostCount(String.valueOf(post_idx));
+		ClarificationVo cfvo = mainMapper.getClarification(post_idx);
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}				
+		
 		//이력서 도출
 		List<ResumeVo> SRList = userMapper.getSRList(user_idx);
 		
@@ -210,6 +241,9 @@ public class MyPageController {
 		mv.addObject("companyVo",cvo);	
 		mv.addObject("resumeList",SRList);	
 		mv.addObject("user_idx",user_idx);	
+		mv.addObject("pcount",pcvo);
+		mv.addObject("cfvo",cfvo);
+		mv.addObject("imagePath",imagePath);
 		mv.addObject("score",score.getScore());	
 		return mv;
 	}
@@ -217,25 +251,34 @@ public class MyPageController {
 	
 	
 	@RequestMapping("/BookMark/Apply")
-	public ModelAndView bmapply(ApplicationVo aVO, @RequestParam("scout_idx") int scout_idx) {
-		
+	public ModelAndView bmapply(ApplicationVo aVO, @RequestParam("scout_idx") int scout_idx) {		
 		//insert
-
 		userMapper.insertApply(aVO);
-
 		//경로 변수
 		int ridx =aVO.getResume_idx();
 		ResumeVo rvo = userMapper.getResume(ridx);
-		
 		//받은 제안 삭제
-		userMapper.deleteScope(scout_idx);
-		
+		userMapper.deleteScope(scout_idx);		
 		ModelAndView mv = new ModelAndView();
-
 		mv.setViewName("redirect:/User/MyPage/BookMark/List?user_idx="+rvo.getUser_idx());
 				
 		return mv;
 	}
+	@RequestMapping("/BookMark/deadline")
+	public ModelAndView deadline(@RequestParam("scout_idx") int scout_idx) {		
+		
+		UserScoutVo uvo = userMapper.getScout(scout_idx);
+		//insert
+		userMapper.deleteScope(scout_idx);		
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/User/MyPage/BookMark/List?user_idx="+uvo.getUser_idx());
+				
+		return mv;
+	}
+	
+	
+	
+	
 
 	@RequestMapping(value="/BookMark/On")
 	@ResponseBody
