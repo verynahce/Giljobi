@@ -10,20 +10,19 @@
 <script src="/js/common.js" defer></script>
 
 <style>
- .innercontents {
+
+.innercontents {
    display:flex;
-   gap:120px;
+   gap:30px;
  }
  
  .sidebar {
    border :1px solid #ccc;
    width:300px;
-   height:378px;
    border-radius:15px;
    overflow:hidden;
    margin:0;
-   position:sticky;
-   top:124px;
+   max-height:fit-content;
  }
  
  .sidebar table {
@@ -39,6 +38,7 @@
    margin:0;
    font-size:25px;
  }
+ 
  .sidebar td {
    padding:15px 15px;;
    margin:0;

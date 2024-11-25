@@ -43,15 +43,11 @@ main {
  }
  
  .sidebar {
+   border :1px solid #ccc;
    width:300px;
-   height:378px;
    border-radius:15px;
    overflow:hidden;
    margin:0;
-   
-    position: sticky; 
-    top: 124px; 
-  
  }
  
  .sidebar table {
