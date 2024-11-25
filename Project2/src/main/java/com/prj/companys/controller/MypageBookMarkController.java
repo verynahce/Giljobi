@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -128,6 +127,8 @@ public class MypageBookMarkController {
 	public ModelAndView applyListapplyList(@RequestParam("company_idx") int company_idx,
 			                               @RequestParam("post_idx") int post_idx,
 			                               @ModelAttribute("evaluateVo") EvaluateVo evaluateVo) {
+
+
 	
     List<ComApplyVo> applyList = companyMapper.getapplyList(post_idx);
 	
@@ -186,6 +187,7 @@ public class MypageBookMarkController {
 		
 		
 		ModelAndView mv = new ModelAndView();
+
 			
 		if (evaluateIdx != null && !evaluateIdx.isEmpty()) {
 		    EvaluateVo evaluate = companyMapper.getEvaluate(evaluateIdx);
@@ -201,11 +203,16 @@ public class MypageBookMarkController {
 		mv.addObject("applyList",applyList);
 		mv.addObject("appli_idx",appli_idx);
 
+
+		mv.addObject("resumeVo",vo);
+		mv.addObject("company_idx",company_idx);
+		mv.addObject("post_idx",post_idx);
 		mv.addObject("imagePath",imagePath);
 		mv.addObject("pfvoList",pfvoList);
 		mv.setViewName("/company/mypage/applyList/view");
 		return mv;
 	}
+
 
 	@RequestMapping(value = "/ApplyList/Evaluate")
 	@ResponseBody
@@ -229,6 +236,7 @@ public class MypageBookMarkController {
 	    mv.setViewName("redirect:/Company/Mypage/ApplyList/ApplyList?company_idx= "+company_idx +"&post_idx="+post_idx);
 	    return mv;
 	}
+
 
 	
 	@RequestMapping("/ApplyList/Delete")

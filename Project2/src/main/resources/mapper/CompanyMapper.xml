@@ -327,8 +327,7 @@ WHERE PS.POST_IDX = #{post_idx}
 
 
   <select id="getapplyList">
-    SELECT
-    AP.APPLI_IDX,
+    SELECT AP.APPLI_IDX,
          AP.RESUME_IDX,
          AP.POST_IDX,
          AP.APPLI_DATE,
@@ -407,6 +406,7 @@ WHERE PS.POST_IDX = #{post_idx}
 	 SET REMOVE ='X'
 	 WHERE APPLI_IDX =#{appli_idx}
 	</update>
+
 
 <insert id="insertEvaluate">
 INSERT INTO EVALUATE

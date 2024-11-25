@@ -353,6 +353,7 @@ textarea {
 #improvedText {
     color: gray; /* 색상을 회색으로 설정 */
 }
+
 </style>
 
 </head>
@@ -499,6 +500,7 @@ textarea {
        </table>
      </div>
 	
+
 	<div class="sub-filed">
 	    <h4 class="sub-title">자기소개서</h4>
 	    <hr>

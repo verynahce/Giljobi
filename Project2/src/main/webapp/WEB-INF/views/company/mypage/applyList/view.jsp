@@ -233,6 +233,7 @@ p {
 
 .btn-layout {   margin: 0 auto;
  text-align: center;
+
 }
  .btn {
    display: inline-block;
@@ -246,7 +247,7 @@ p {
     width: 100%; 
     height: 100%;
     text-align: center;
-    line-height: 30px;
+    line-height: 60px;
  }
  }
   .btn-back {
@@ -358,7 +359,6 @@ p {
  }
  
  /* 평가지 */
-
 .evaluation {
    position: fixed;
    top: 50%;
@@ -367,9 +367,10 @@ p {
    width: 700px; 
    background-color: white; 
    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-   z-index: 3;
+   z-index: 3 
    display: flex;
-   flex-direction: column;
+   align-items: center;
+   justify-content: center;
    border-radius: 8px;
    padding: 30px 51px 15px 51px;
 }
@@ -383,6 +384,7 @@ p {
     font-weight: 600; 
     line-height: 50.40px;
     margin-bottom: 30px;
+
 }
 .evaluation-val {
    width: 170px; 
@@ -473,6 +475,100 @@ textarea {
     box-sizing: border-box; /* 패딩 포함 계산 */
 }
 
+
+    }
+
+.e-btn {
+width: 170px; 
+   height: 50px; 
+   padding: 10px; 
+   background: #333333; 
+   border-radius: 8px;
+   color:white;
+   margin:0 auto;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    
+   &:hover {
+    background-color: #4A4A4A;
+   }
+   a{ display: block;
+    text-decoration: none; 
+    color: white; 
+    width: 100%; 
+    height: 100%;
+    text-align: center;
+    line-height: 33px;
+   }   
+   }
+
+
+
+.e-list{
+  border-collapse: collapse;
+  width:100%;
+   & tr {
+	   & td {padding:18px 0 18px;};
+	   & td:nth-child(1){
+		   width:80%;
+		   text-align: left;
+		   input{
+		   width: 17px;
+		   height: 17px;
+		   border-bottom: #cccccc;
+	      };
+	   & label{
+	   margin-left:8px;
+	   font-size: 20px;
+	   color: #333333;
+	     }
+	   }
+	   & td:nth-child(2){
+	   width:20%;
+	   text-align: right;
+	   color: #767676;
+	   }
+   }
+}
+
+.noob{
+	padding-top :20px;
+	font-size: 20px;
+}
+
+.evaluation-container {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .total {
+            font-weight: bold;
+            text-align: right;
+        }
+        textarea {
+		    width: 100%; /* 텍스트 영역 너비 조정 */
+		    height: 60px; /* 높이 조정 */
+		    margin-top: 10px; /* 여백 조정 */
+		}
+		.dotted {
+		    border-top: 1px dotted #ddd; /* 점선 */
+		}
+		.no-border {
+		    border: none; /* 선 없음 */
+		}
+
+
+}
 
 
  /* 알람보내기 */
@@ -626,9 +722,39 @@ cursor: pointer;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* 배경색 설정 */
     z-index: 1000; /* 다른 요소 위에 표시 */
+
     p{
     margin: 5px 0;
     }
+}
+
+
+}
+
+.popup-evaluate {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px; /* 팝업 너비 */
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000; /* 다른 요소 위에 표시 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    padding: 20px; /* 내부 여백 */
+}
+
+.e-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.e-delete {
+    cursor: pointer;
+    color: #767676;
+    font-weight: 300;
+    font-size: 24px;
 }
 
 </style>
@@ -787,6 +913,7 @@ cursor: pointer;
 	</c:choose>	
 	</div>
 	</form>
+
 <main>
   <div class="inner">  
       <div class="innercontents">
@@ -978,6 +1105,7 @@ cursor: pointer;
 	        e.preventDefault(); // 기본 동작 방지
 	    }
 	});
+
  
  
  </script>
@@ -1148,7 +1276,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 -->
 </script>
-
 
  
 </body>
