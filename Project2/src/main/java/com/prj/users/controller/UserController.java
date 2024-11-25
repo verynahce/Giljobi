@@ -53,7 +53,8 @@ public class UserController {
 
                    HttpSession  session = request.getSession();
                    session.setAttribute( "login", vo );
-                   session.setMaxInactiveInterval(60*60);
+                   session.setMaxInactiveInterval(2*60*60);
+
                    return ("redirect:/");
                 };
                 if( vo == null ) {

@@ -26,7 +26,9 @@ public class AuthInterceptor implements HandlerInterceptor {@Override
 		
 		// /Users/LoginForm, // /Users/Login 를 제외
 		if(requestURI.contains("/User/Login") || 
-		   requestURI.contains("/User/LoginForm")
+		   requestURI.contains("/User/LoginForm") ||
+		   requestURI.contains("/Company/Login") || 
+				   requestURI.contains("/Company/LoginForm")
 		   ) {
 			return true;
 		}

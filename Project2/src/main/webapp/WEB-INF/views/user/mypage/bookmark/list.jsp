@@ -33,14 +33,11 @@
  .sidebar {
    border :1px solid #ccc;
    width:300px;
-   height:378px;
    border-radius:15px;
    overflow:hidden;
    margin:0;
-   position:sticky;
-   top: 124px; 
  }
- 
+
  .sidebar table {
    width:100%;
    margin:0;
@@ -48,7 +45,7 @@
  }
 
  .sidebar th {
-   background-color:#333;
+   background-color:#ffd700;
    color:white;
    height:80px;
    margin:0;
@@ -72,7 +69,7 @@
  }
    
  .sidebar a:hover {
-   background-color: #EBECF1;
+   background-color: #FFEF96;
    color: #111;
  }
  
@@ -359,11 +356,11 @@
       <div class="sidebar">
          <table>
          <tr><th>개인서비스</th></tr>
-         <tr><td><a href="/User/MyPage/Home/View" class="link"><img src="/images/myhome2.svg" class="img" data-hover="/images/myhome.svg">MY홈</a></td></tr>
-         <tr><td><a href="/User/MyPage/Resume/List?user_idx=${user_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">이력서</a></td></tr>
-         <tr><td><a href="/User/MyPage/BookMark/List?user_idx=${user_idx}" class="active-color"><img src="/images/icon33.svg" class="img" >관심기업 / 받은제의</a></td></tr>
-         <tr><td><a href="/User/MyPage/ApplyList/List?user_idx=${user_idx}" class="link"><img src="/images/arrow.svg" class="img"   data-hover="/images/arrow2.svg">지원내역</a></td></tr>
-         <tr><td><a href="/User/MyPage/Notice/List?user_idx=${user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/Mail.svg">수신함</a></td></tr>
+         <tr><td><a href="/User/MyPage/Home/View"><img src="/images/myhome.svg" class="img">MY홈</a></td></tr>
+         <tr><td><a href="/User/MyPage/Resume/List?user_idx=${userVo.user_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">이력서</a></td></tr>
+         <tr><td><a href="/User/MyPage/BookMark/List?user_idx=${userVo.user_idx}"class="active-color"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심기업 / 받은제의</a></td></tr>       
+         <tr><td><a href="/User/MyPage/ApplyList/List?user_idx=${userVo.user_idx}" class="link"><img src="/images/arrow.svg" class="img" data-hover="/images/arrow2.svg">지원내역</a></td></tr>
+         <tr><td><a href="/User/MyPage/Notice/List?user_idx=${user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/mail3.svg">수신함</a></td></tr>
         </table>
       </div>
       <div class="container">

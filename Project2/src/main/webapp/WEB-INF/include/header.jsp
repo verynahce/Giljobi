@@ -36,7 +36,7 @@
 </style>
  <header>
    <div class="inner">
-     <h1><a href="/"><img src="/images/logo.png" alt="logo"></a></h1>
+     <h1><a href="/"><img src="/images/logo.png" alt="logo" class="logo" id="logo"></a></h1>
      <ul class="header-gnb">
        <li><a href="/Main/Jobs/List">채용정보</a></li>
        <li><a href="/Main/Hrs/List">인재정보</a></li>

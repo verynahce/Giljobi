@@ -33,7 +33,7 @@
  }
 
  .sidebar th {
-   background-color:#333;
+   background-color:#4876EF;
    color:white;
    height:80px;
    margin:0;
@@ -57,7 +57,7 @@
  }
    
  .sidebar a:hover {
-   background-color: #EBECF1;
+   background-color: #BED0FF;
    color: #111;
  }
  
@@ -215,7 +215,7 @@ justify-content: flex-end;
          <tr><td><a href="/Company/Mypage/Home/View?company_idx=${company_idx}" class="link"><img src="/images/myhome2.svg" class="img" data-hover="/images/myhome.svg">MY홈</a></td></tr>
          <tr><td><a href="/Company/Mypage/Post/List?company_idx=${company_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">채용공고</a></td></tr>
          <tr><td><a href="/Company/Mypage/Bookmark/List?company_idx=${company_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심인재</a></td></tr>
-         <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${company_idx}" class="active-color"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
+         <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${company_idx}" class="active-color2"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
         </table>
       </div>
       <div class="container">
@@ -256,7 +256,7 @@ justify-content: flex-end;
 	       	   <td>${a.user_name}<br><span class="namebot">(${a.user_gender},${a.age}세)</span></td>
        	    </c:otherwise>
        	   </c:choose>
-       	   <td><a href="/Company/Mypage/ApplyList/View?resume_idx=${a.resume_idx}&company_idx=${company_idx}&post_idx=${post_idx}">${a.resume_title}</a>
+       	   <td><a href="/Company/Mypage/ApplyList/View?resume_idx=${a.resume_idx}&company_idx=${company_idx}&post_idx=${post_idx}&appli_idx=${a.appli_idx}">${a.resume_title}</a>
        	   <br>
        	   <c:choose>      	    
 			<c:when test="${not empty a.skill_name}">
