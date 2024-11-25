@@ -125,8 +125,7 @@ public class MypageBookMarkController {
 	
 	@RequestMapping("/ApplyList/ApplyList")
 	public ModelAndView applyListapplyList(@RequestParam("company_idx") int company_idx,
-			                               @RequestParam("post_idx") int post_idx,
-			                               @ModelAttribute("evaluateVo") EvaluateVo evaluateVo) {
+			                               @RequestParam("post_idx") int post_idx) {
 
 
 	
@@ -160,10 +159,7 @@ public class MypageBookMarkController {
 		
 		List<ComApplyVo> applyList = companyMapper.getapplyList(post_idx);
 		ResumeListVo vo  =userMapper.getResumeLong(resume_idx);	
-		System.out.println("이력서"+resume_idx);
-		System.out.println("이력서2"+vo);
 		List<ComApplyVo> appli_idx = companyMapper.getAppliIdx(resume_idx);
-	    System.out.println("지원 idx:"+appli_idx);
 	    List<Integer> appliIdxList = appli_idx.stream()
 	    	    .map(ComApplyVo::getAppli_idx)
 	    	    .collect(Collectors.toList());
@@ -191,19 +187,13 @@ public class MypageBookMarkController {
 			
 		if (evaluateIdx != null && !evaluateIdx.isEmpty()) {
 		    EvaluateVo evaluate = companyMapper.getEvaluate(evaluateIdx);
-		    System.out.println("값이 있을때" + evaluate);
 		    mv.addObject("evaluate", evaluate);
 		} else {
 		    System.out.println("평가 idx 리스트가 비어 있습니다.");
 		}
-		mv.addObject("resumeVo",vo);
-		mv.addObject("company_idx",company_idx);
-		mv.addObject("post_idx",post_idx);
 
 		mv.addObject("applyList",applyList);
 		mv.addObject("appli_idx",appli_idx);
-
-
 		mv.addObject("resumeVo",vo);
 		mv.addObject("company_idx",company_idx);
 		mv.addObject("post_idx",post_idx);

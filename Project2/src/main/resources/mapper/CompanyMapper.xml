@@ -325,7 +325,6 @@ WHERE PS.POST_IDX = #{post_idx}
 		      P.POST_DDATE	
 	</select>
 
-
   <select id="getapplyList">
     SELECT AP.APPLI_IDX,
          AP.RESUME_IDX,
@@ -346,10 +345,8 @@ WHERE PS.POST_IDX = #{post_idx}
                         LEFT JOIN SKILL SK ON RS.SKILL_ID = SK.SKILL_ID
                         LEFT JOIN USERS U ON RE.USER_IDX = U.USER_IDX 
                         LEFT JOIN RESUME_CAREER RC ON RE.RESUME_IDX = RC.RESUME_IDX
-                        LEFT JOIN EVALUATE EV ON EV.APPLI_IDX = AP.APPLI_IDX                    
-  WHERE POST_IDX = #{post_idx} AND AP.REMOVE IS NULL
-  
-  
+                        LEFT JOIN EVALUATE EV ON AP.APPLI_IDX = EV.APPLI_IDX                    
+  WHERE AP.POST_IDX = #{post_idx} AND AP.REMOVE IS NULL
   </select>
 
 	 <update id="updateApply">
@@ -465,6 +462,11 @@ EXT_NOTE=#{ext_note}
 WHERE EVALUATE_IDX=#{evaluate_idx}
 </update>
 
+<select id="insertTotalScore">
+INSERT INTO EVALUATE (TOTAL_SCORE)
+VALUES (#{total_score})
+</select>
+
 <select id="getEvaluate" resultType="com.prj.companys.vo.EvaluateVo">
     SELECT * 
     FROM EVALUATE 
@@ -495,18 +497,6 @@ WHERE EVALUATE_IDX=#{evaluate_idx}
     </foreach>
 </select>
 
-
-	<delete id="getpostC">
-	   SELECT IMAGE_IDX
-	   FROM POST
-	   WHERE POST_IDX = #{post_idx}
-	</delete>
-
-	<update id="updateRemove">
-	 UPDATE APPLICATION
-	 SET REMOVE ='X'
-	 WHERE APPLI_IDX =#{appli_idx}
-	</update>
 
 
 </mapper>

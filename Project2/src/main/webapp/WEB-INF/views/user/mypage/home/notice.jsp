@@ -159,7 +159,7 @@
    font-weight:500;
    font-size:17px;
  }
-  /* 메시지 리스트 */
+  /* 알림 목록 리스트 */
  .notice-list {
      list-style: none;
      padding: 0;
@@ -234,10 +234,29 @@
      color: #d63a3a;
  }
  
+ /* 알림창 */
+ 
 </style>
 </head>
 <body>
    <%@include file="/WEB-INF/include/header.jsp" %>
+   
+   	<div class="overlay-notice">
+		 <div class="notice"> 
+		   <div class="n-header">
+		      <h2 class="n-title">축하드립니다.</h2><span class="n-delete">x</span>
+		   </div>
+			<div class="notice-container">
+			    <div class="noti" id="notification">
+			    	<p>응애 합격하였습니다.</p>
+	                <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
+	                <p>일시: <input type="date" name="scadule" value="${scadule}"></p>
+	                <p>장소: <input type="text" name="location" value="${location}"></p>
+	                <p>안내사항: <textarea name="information">${information}</textarea></p>
+			    </div>
+			</div>
+		</div>
+	</div>
  <main>
   <div class="inner">
       <div class="innercontents">
@@ -248,7 +267,7 @@
          <tr><td><a href="/User/MyPage/Resume/List?user_idx=${user_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">이력서</a></td></tr>
          <tr><td><a href="/User/MyPage/BookMark/List?user_idx=${user_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심기업 / 받은제의</a></td></tr>
          <tr><td><a href="/User/MyPage/ApplyList/List?user_idx=${user_idx}" class="active-color"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
-         <tr><td><a href="/User/MyPage/Notice/List?user_idx=${user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/Mail.svg">수신함</a></td></tr>
+         <tr><td><a href="/api/notice/list?user_idx=${user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/mail3.svg">수신함</a></td></tr>
         </table>
       </div>
       <div class="container">

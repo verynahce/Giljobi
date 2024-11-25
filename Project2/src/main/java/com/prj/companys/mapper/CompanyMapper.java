@@ -124,6 +124,10 @@ public interface CompanyMapper {
 
 	void updateRemove(int appli_idx);
 
+	void insertTotalScore(EvaluateVo evaluate);
+
+	void updateTotalScore(EvaluateVo evaluate);
+
 
 
 

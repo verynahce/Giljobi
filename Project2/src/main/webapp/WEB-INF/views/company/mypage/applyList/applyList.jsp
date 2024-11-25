@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
 
 <!DOCTYPE html>
 <html>
@@ -279,14 +280,14 @@ justify-content: flex-end;
        	   </c:choose>
        	   </td>
        	      
-       	      <c:choose>
-       	      <c:when test="${a.total_score != 0}">
-       	       <td>${a.total_score}</td>
-       	      </c:when>
-       	      <c:otherwise>
-       	       <td>미기입</td>
-       	      </c:otherwise>
-       	      </c:choose>
+<c:choose>
+    <c:when test="${not empty a.total_score}">
+        <td>${a.total_score}</td>
+    </c:when>
+    <c:otherwise>
+        <td>미기입</td>
+    </c:otherwise>
+</c:choose>
        	       	   
        	   <td>
        	     <select class="select" data-idx="${a.appli_idx}">
