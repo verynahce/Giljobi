@@ -1,11 +1,12 @@
 package com.prj.companys.controller;
 
-import java.util.List;
+import java.util.List;	
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -87,5 +88,19 @@ public class CompanyController {
 		return mv;
 	}
 	
+
+    // /Company/Logout
+    @RequestMapping(
+            value = "/Logout",
+            method = RequestMethod.GET)
+    public String Logout(
+                    HttpServletRequest requset,
+                    HttpServletRequest response,
+                    HttpSession        session) {
+            session.invalidate();
+            return "redirect:/";
+    }
+	
+
 	
 }

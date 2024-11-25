@@ -333,7 +333,21 @@ textarea {
     border: 2px solid #ccc;
 }   
 
-
+#wait-time {
+    display: block;
+    visibility: visible;
+    height: auto;
+    overflow: visible;
+}
+#time {
+    display: inline;       /* 기본값 */
+    visibility: visible;   /* 보이도록 설정 */
+    color: black;          /* 텍스트 색상 */
+    font-size: 16px;       /* 텍스트 크기 */
+}
+#improvedText {
+    color: gray; /* 색상을 회색으로 설정 */
+}
 
 </style>
 
@@ -482,22 +496,20 @@ textarea {
      </div>
 	
 
-	<div class="sub-field">
-	  <h4 class="sub-title">자기소개서</h4>
-	  <hr>
-	  <textarea name="cover_letter" id="cover" placeholder="나에 대해 자유롭게 설명하고 채용기회의 확률을 높이세요"></textarea>
-	  <button id="analyzeButton" type="button">분석하기</button>
-	
-	  <!-- 분석 결과 -->
-	  <div id="analysisResult" style="margin-top: 20px; display: none;">
-	    <h4>분석 결과</h4>
-	    <p id="overallFeedback"></p>
-	    <h5>문법 수정 권장 사항:</h5>
-	    <ul id="grammarCorrections"></ul>
-	    <h5>추천 키워드:</h5>
-	    <ul id="keywordSuggestions"></ul>
-	  </div>
-	</div>
+	<div class="sub-filed">
+	    <h4 class="sub-title">자기소개서</h4>
+	    <hr>
+	    <textarea id="cover" name="cover_letter" placeholder="나에 대해 자유롭게 설명하고 채용 기회의 확률을 높이세요" rows="10" cols="50">${resumeVo.cover_letter}</textarea>
+	    <br>
+	    <button id="improve-button" type="button">개선 요청</button>
+	    <hr>
+	    <div id="wait-time" style="display: none;">응답 대기 시간: <span id="time"></span>초</div>
+	    <div>
+	        <h4>추천 자기소개서:</h4>
+	        <p id="improvedText">개선 요청을 클릭해 ai가 추천하는 자기소개서를 받아보세요!</p>
+	    </div>
+	</div>    
+
 	      
       <div class="file-title">
       <input type="hidden" value="test" name="text">
@@ -824,62 +836,77 @@ $(formEl).on('keydown', function(event) {
  })
  </script>
  
- <!-- 구글 NLAPI -->
+
  <script>
-  document.getElementById('analyzeButton').addEventListener('click', function(event) {
-	event.preventDefault();
-	fetchData();
-  });
-    
+ document.getElementById('improve-button').addEventListener('click', function(event) {
+	    event.stopPropagation();
+	    event.preventDefault();
+	    improveCoverLetter();
+	});
 
-    // 분석 요청
-    function fetchData() {
-    const coverLetter = document.getElementById('cover').value;
-    if($('#cover').val().trim() == '') {
-        alert('자기소개서를 작성하세요');
-        $('#cover').focus();
-        return false;
-    }
+	function improveCoverLetter() {
+	    const coverLetter = document.getElementById("cover").value;
 
-	    fetch('/api/resume/analyze', {
-	      method: 'POST',
-	      headers: {
-	        'Content-Type': 'application/json',
-	      },
-	      body: JSON.stringify({ text: coverLetter }),
+	    if (!coverLetter.trim()) {
+	        alert("자기소개서를 입력해주세요");
+	        return;
+	    }
+
+	    const waitTimeDisplay = document.getElementById("wait-time");
+	    const timeDisplay = document.getElementById("time");
+	    let startTime = Date.now(); // 시작 시간 기록
+	    let intervalId = null; // setInterval을 위한 ID
+
+	    // 대기 시간 표시 시작
+	    waitTimeDisplay.style.display = "block"; 
+
+	    // 실시간 업데이트
+	    intervalId = setInterval(() => {
+	        let elapsed = ((Date.now() - startTime) / 1000).toFixed(2); // 경과 시간 계산
+	        timeDisplay.innerText = elapsed;
+	    }, 10); // 0.01초마다 업데이트
+
+	    fetch('http://localhost:9090/coverletter/improve', {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json',
+	        },
+	        body: JSON.stringify({ 
+	            messages: [
+	                {
+	                    role: "system",
+	                    content: "이 자기소개서를 업그레이드 시켜줘."
+	                },
+	                {
+	                    role: "user",
+	                    content: coverLetter
+	                }
+	            ]
+	        })
 	    })
-	      .then((response) => {
-	        if (!response.ok) throw new Error('분석 요청 실패');
+	    .then(function(response) {
+	        if (!response.ok) {
+	            return response.json().then(function(errorData) {
+	                throw new Error(errorData.message || '알 수 없는 에러가 발생했습니다.');
+	            });
+	        }
 	        return response.json();
-	      })
-	      .then((data) => {
-	        // 분석 결과 표시
-	        document.getElementById('analysisResult').style.display = 'block';
-	        document.getElementById('overallFeedback').innerText = data.overallFeedback;
-	
-	        // 문법 수정 사항
-	        const grammarList = document.getElementById('grammarCorrections');
-	        grammarList.innerHTML = ''; // 기존 리스트 초기화
-	        data.grammarCorrections.forEach((correction) => {
-	          const li = document.createElement('li');
-	          li.textContent = correction;
-	          grammarList.appendChild(li);
-	        });
-	
-	        // 키워드 추천
-	        const keywordList = document.getElementById('keywordSuggestions');
-	        keywordList.innerHTML = ''; // 기존 리스트 초기화
-	        data.keywordSuggestions.forEach((keyword) => {
-	          const li = document.createElement('li');
-	          li.textContent = keyword;
-	          keywordList.appendChild(li);
-	        });
-	      })
-	      .catch((error) => {
-	        console.error(error);
-	        alert('분석 중 오류가 발생했습니다.');
-	      });
-  }
+	    })
+	    .then(function(data) {
+	        // 개선된 자기소개서 표시
+	        document.getElementById("improvedText").innerText = data.improvedCoverLetter;
+	    })
+	    .catch(function(error) {
+	        alert(`에러 발생: ${error.message}`);
+	    })
+	    .finally(function() {
+	        // 실시간 업데이트 종료
+	        clearInterval(intervalId); // setInterval 중지
+	        waitTimeDisplay.style.display = "none"; // 대기 시간 숨기기
+	    });
+	}
+
+
 </script>
  
  

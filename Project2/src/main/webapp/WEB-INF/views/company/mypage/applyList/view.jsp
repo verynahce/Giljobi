@@ -232,6 +232,8 @@ p {
 /*버튼*/
 
 .btn-layout {   margin: 0 auto;
+ text-align: center;
+
 }
  .btn {
    display: inline-block;
@@ -252,6 +254,7 @@ p {
   align-items:center;
   background: #585766; 
    color: white;
+    text-align: center;
      &:hover {
      background-color:#666577;
      color:white;
@@ -373,16 +376,107 @@ p {
    padding: 30px 51px 15px 51px;
 }
 .e-header {
-
-display:flex;
-justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 .e-title {
-color: #333333;
+    color: #333333;
     font-size: 36px; 
     font-weight: 600; 
     line-height: 50.40px;
     margin-bottom: 30px;
+
+}
+.evaluation-val {
+   width: 170px; 
+   height: 50px; 
+   background: #ffffff; 
+   border-radius: 8px;
+   color: #333333;
+   margin: 0 auto;
+   cursor: pointer;
+   display: flex;
+   justify-content: center;
+   padding-top: 15px;
+}
+.evaluation-val:hover {
+    background-color: #4876EF;
+}
+.e-delete {
+    color: #767676;
+    font-weight: 300;
+    font-size: 36px;  
+    cursor: pointer;
+}
+.evaluation-container {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+.evaluation-container th, .evaluation-container td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+.evaluation-container th:nth-child(1), /* 항목 열 */
+.evaluation-container td:nth-child(1) {
+    width: 25%; /* 항목 열 넓이 조정 */
+}
+
+.evaluation-container th:nth-child(2), /* 평가기준 열 */
+.evaluation-container td:nth-child(2) {
+    width: 35%; /* 평가기준 열 넓이 조정 */
+}
+
+.evaluation-container th:nth-child(3), /* 점수 열 */
+.evaluation-container input[type="number"] {
+    box-sizing: border-box; /* 패딩 포함 계산 */
+}
+
+
+.evaluation-container th:nth-child(4), /* 비고 열 */
+.evaluation-container td:nth-child(4) {
+    width: 40%; /* 비고 열 넓이 조정 */
+}
+.evaluation-container th {
+    background-color: #f2f2f2;
+}
+.scrollable-area {
+    max-height: 400px; /* 원하는 최대 높이 설정 */
+    overflow-y: auto; /* 세로 스크롤 활성화 */
+}
+textarea {
+    width: 100%; /* 텍스트 영역 너비 조정 */
+    height: 60px; /* 높이 조정 */
+    margin-top: 10px; /* 여백 조정 */
+}
+.total {
+    font-weight: bold;
+    text-align: right;
+}
+
+.popup-evaluate {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 700px; 
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    border-radius: 8px;
+    padding: 20px;
+}
+/* Input 요소 스타일 */
+.evaluation-container textarea {
+    width: 100px; /* 전체 너비 사용 */
+    height: 60px; /* 높이 조정 */
+    margin-top: 5px; /* 여백 조정 */
+    box-sizing: border-box; /* 패딩 포함 계산 */
+}
+
+
     }
 
 .e-btn {
@@ -410,12 +504,7 @@ width: 170px;
     line-height: 33px;
    }   
    }
-.e-delete {
- color: #767676;
-font-weight: 300;
-font-size: 36px;  
-cursor: pointer;
-}
+
 
 
 .e-list{
@@ -482,6 +571,7 @@ cursor: pointer;
 
 }
 
+
  /* 알람보내기 */
 .notice {
    position: fixed;
@@ -522,13 +612,14 @@ width: 170px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-bottom: 20px;
     padding: 10px;
     
     img{
     width:20px;
     height: 20px;
-    padding-top: 5px;    
+    transform: translate(30%, 20%);
     }
     
    &:hover {
@@ -632,6 +723,13 @@ cursor: pointer;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* 배경색 설정 */
     z-index: 1000; /* 다른 요소 위에 표시 */
+
+    p{
+    margin: 5px 0;
+    }
+}
+
+
 }
 
 .popup-evaluate {
@@ -659,6 +757,7 @@ cursor: pointer;
     font-weight: 300;
     font-size: 24px;
 }
+
 </style>
 
 </head>
@@ -667,122 +766,119 @@ cursor: pointer;
 <%@include file="/WEB-INF/include/header.jsp" %>
 	
 	<!-- 평가창 -->
-	<div class="popup-evaluate">  
-	<c:choose>
-		<c:when test="${not empty company_idx}">
-			 <div class="evaluation"> 
-			   <div class="e-header">
-			      <h2 class="e-title">평가지</h2>
-			      <span class="e-delete">x</span>
-			   </div>
-        <table class="evaluation-container">
-            <thead>
-                <tr>
-                    <th>항목</th>
-                    <th>평가기준</th>
-                    <th>점수</th>
-                    <th>비고</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td rowspan="5">학력</td>
-                    <td>고졸이하:1</td>
-                    <td rowspan="5"><input type="number" name="score1" min="0" max="5" required></td>
-                    <td rowspan="5" class="no-border"></td>
-                </tr>
-                <tr class="dotted">
-                    <td class="dotted">전문학사:2</td>
-                </tr>
-                <tr class="dotted">
-                    <td>학사:3</td>
-                </tr>
-                <tr class="dotted">
-                    <td>석사:4</td>
-                </tr>
-                <tr class="dotted">
-                    <td>박사:5</td>
-                </tr>
-                <tr>
-                    <td>자격증 또는 기술</td>
-                    <td>인사담당자 재량</td>
-                    <td><input type="number" name="score2" min="0" max="5" required></td>
-                    <td class="no-border"><input type="text"></td>
-                <tr>
-                    <td rowspan="5">경력</td>
-                    <td>1년이상:1</td>
-                    <td rowspan="5"><input type="number" name="score3" min="0" max="5" required></td>
-                    <td rowspan="5" class="no-border"><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>3년이상:2</td>
-                </tr>
-                <tr>
-                    <td>5년이상:3</td>
-                </tr>
-                <tr>
-                    <td>7년이상:4</td>
-                </tr>
-                <tr>
-                    <td>10년이상:5</td>
-                </tr>
-                <tr>
-                    <td rowspan="5">자기소개서</td>
-                    <td>직무관련 경험</td>
-                    <td><input type="number" name="score4" min="0" max="5" required></td>
-                    <td rowspan="5" class="no-border"><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>성격 및 장단점</td>
-                    <td><input type="number" name="score5" min="0" max="5" required></td>
-                </tr>
-                <tr>
-                    <td>가치관</td>
-                    <td><input type="number" name="score6" min="0" max="5" required></td>
-                </tr>
-                <tr>
-                    <td>목표 달성 경험</td>
-                    <td><input type="number" name="score7" min="0" max="5" required></td>
-                </tr>
-                <tr>
-                    <td>실패 및 위기 극복 경험</td>
-                    <td><input type="number" name="score8" min="0" max="5" required></td>
-                </tr>
-                <tr>
-                    <td>포트폴리오</td>
-                    <td>인사담당자 재량</td>
-                    <td><input type="number" name="score9" min="0" max="5" required></td>
-                    <td class="no-border"><input type="text"></td>
-                </tr>
-                <tr>
-                    <td>가점</td>
-                    <td>인사담당자 재량</td>
-                    <td><input type="number" name="score10" min="0" max="5" required></td>
-                    <td class="no-border"><input type="text"></td>
-                </tr>
-            </tbody>
-        </table>
-        <div>
-            <span class="total">총평</span>
-            <textarea></textarea>
-            <span class="totalscore">총점</span>
-            <input type="text" name="totalScore" readonly value="3.8">
-        </div>
-        <br>
-			   <div class="e-btn" ><a onclick="alert('평기를 완료했습니다.')" class="evaluation-val" href ="/Compayn">평가등록</a></div> 
-			</div>
-		</c:when>
-		  <c:otherwise>
-		  	<div class="evaluate login-alter">
-		      <h2 class="e-title">기업회원 로그인이 필요합니다.</h2>
-			  <a href ="/Company/LoginForm">로그인</a>
-		   </div>
-		  </c:otherwise>
-	</c:choose>
-	</div>
+<form action="/Company/Mypage/ApplyList/Evaluate" method="POST">
+    <c:forEach items="${appli_idx}" var="apply">
+        <input type="hidden" name="appli_idx" value="${apply.appli_idx}">
+    </c:forEach>
+    <input type="hidden" name="company_idx" value="${company_idx}">
+    <input type="hidden" name="post_idx" value="${post_idx}">
+    <input type="hidden" name="resume_idx" value="${vo.resume_idx}">
+    <input type="hidden" name="evaluate_idx" value="${evaluate.evaluate_idx}">
+    <input type="hidden" name="letter_score" value="${evaluate.letter_score != null ? evaluate.letter_score : 0}">
+
+    <div class="popup-evaluate">  
+        <c:choose>
+            <c:when test="${not empty company_idx}">
+                <div class="evaluation"> 
+                    <div class="e-header">
+                        <h2 class="e-title">평가지</h2>
+                        <span class="e-delete">x</span>
+                    </div>
+                    <div class="evaluation-content"> <!-- 스크롤 가능 영역 -->
+                        <div class="scrollable-area">
+                            <table class="evaluation-container">
+                                <thead>
+                                    <tr>
+                                        <th>항목</th>
+                                        <th>평가기준</th>
+                                        <th>점수</th>
+                                        <th>비고</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="5">학력</td>
+                                        <td>고졸이하:1</td>
+                                        <td rowspan="5"><input type="number" name="edu_score" min="0" max="5" value="${evaluate.edu_score != null ? evaluate.edu_score : 0}"></td>
+                                        <td rowspan="5"><textarea name="edu_note">${evaluate.edu_note}</textarea></td>
+                                    </tr>
+                                    <tr><td>전문학사:2</td></tr>
+                                    <tr><td>학사:3</td></tr>
+                                    <tr><td>석사:4</td></tr>
+                                    <tr><td>박사:5</td></tr>
+                                    <tr>
+                                        <td>자격증 또는 기술</td>
+                                        <td>인사담당자 재량</td>
+                                        <td><input type="number" name="skill_score" min="0" max="5" value="${evaluate.skill_score != null ? evaluate.skill_score : 0}"></td>
+                                        <td><textarea name="skill_note">${evaluate.skill_note}</textarea></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td rowspan="5">경력</td>
+                                        <td>1년이상:1</td>
+                                        <td rowspan="5"><input type="number" name="career_score" min="0" max="5" value="${evaluate.career_score != null ? evaluate.career_score : 0}"></td>
+                                        <td rowspan="5"><textarea name="career_note">${evaluate.career_note}</textarea></td>
+                                    </tr>
+                                    <tr><td>3년이상:2</td></tr>
+                                    <tr><td>5년이상:3</td></tr>
+                                    <tr><td>7년이상:4</td></tr>
+                                    <tr><td>10년이상:5</td></tr>
+
+                                    <tr>
+                                        <td rowspan="5">자기소개서</td>
+                                        <td>직무관련 경험</td>
+                                        <td><input type="number" name="score4" min="0" max="5" value="0"></td>
+                                        <td rowspan="5"><textarea name="letter_note">${evaluate.letter_note}</textarea></td>
+                                    </tr>
+                                    <tr><td>성격 및 장단점</td><td><input type="number" name="_score5" min="0" max="5" value="0"></td></tr>
+                                    <tr><td>가치관</td><td><input type="number" name="_score6" min="0" max="5" value="0"></td></tr>
+                                    <tr><td>목표 달성 경험</td><td><input type="number" name="_score7" min="0" max="5" value="0"></td></tr>
+                                    <tr><td>실패 및 위기 극복 경험</td><td><input type="number" name="_score8" min="0" max="5" value="0"></td></tr>
+
+                                    <tr>
+                                        <td>포트폴리오</td>
+                                        <td>인사담당자 재량</td>
+                                        <td><input type="number" name="portfolio_score" min="0" max="5" value="${evaluate.portfolio_score != null ? evaluate.portfolio_score : 0}"></td>
+                                        <td><textarea name="portfolio_note">${evaluate.portfolio_note}</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td>가점</td>
+                                        <td>인사담당자 재량</td>
+                                        <td><input type="number" name="ext_score" min="0" max="5" value="${evaluate.ext_score != null ? evaluate.ext_score : 0}"></td>
+                                        <td><textarea name="ext_note">${evaluate.ext_note}</textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div> <!-- 스크롤 가능 영역 종료 -->
+                    </div>
+                    <div>
+                        <span class="total">총평</span>
+                        <textarea name="total_note">${evaluate.total_note}</textarea>
+                        <span class="totalscore">총점</span>
+                        <input type="text" name="total_score" min="0" max="5" readonly value="${evaluate.total_score != null ? evaluate.total_score : 0}">
+                    </div>
+                    <br>
+                    <div class="e-btn">    
+                        <button type="submit" class="evaluation-val">평가등록</button>
+                    </div> 
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="evaluate login-alter">
+                    <h2 class="e-title">기업회원 로그인이 필요합니다.</h2>
+                    <a href="/Company/LoginForm">로그인</a>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</form>
 	
 	<!-- 알림창 -->
-	<div class="overlay-notice">  
+	<form action="/api/announce" method="POST" enctype="multipart/form-data">
+	<input type="hidden" name="companyIdx" value="${company_idx}">
+	<input type="hidden" name="userIdx" value="${user_idx}">
+	<input type="hidden" name="announcementIdx" value="${announcement_idx}">
+	<div class="overlay-notice">
 	<c:choose>
 		<c:when test="${not empty company_idx}">
 			 <div class="notice"> 
@@ -790,22 +886,23 @@ cursor: pointer;
 			      <h2 class="n-title">알림보내기</h2><span class="n-delete">x</span>
 			   </div>
 				<div class="notice-container">
-				    <h1>제목을 선택해주세요</h1>
-				    <select>
-				        <option>제목 1</option>
-				        <option>제목 2</option>
-				        <option>제목 3</option>
+				    <select id="status-select">
+				    	<option value="default">제목을 선택해주세요</option>
+				        <option value="document">서류합격</option>
+				        <option value="interview">면접합격</option>
 				    </select>
 				
-				    <div class="noti">
-				        <p>서류에 합격하였습니다.</p>
-				        <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
-				        <p>일시: 2024/12/21 10:00 AM</p>
-				        <p>장소: 그린아카데미 402호</p>
-				        <p>안내사항: 이력서, 포트폴리오 지참, 말씀한 복장 준수</p>
+				    <div class="noti" id="notification">
+				    	<p>응애 합격하였습니다.</p>
+		                <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
+		                <p>일시: <input type="date" name="scadule"></p>
+		                <p>장소: <input type="text" name="loaction"></p>
+		                <p>안내사항: <input type="text" name="information"></p>
 				    </div>
 				</div>
-			   <div class="n-btn" ><a onclick="alert('알림보내기를 완료했습니다.')" class="notice-val" href ="">알림 전송<img src="/images/SendMessage.svg" class="img"></a></div> 
+			   <div class="n-btn" >
+			   <button type="submit" onclick="alert('알림보내기를 완료했습니다.')" class="notice-val">알림 전송<img src="/images/SendMessage.svg" class="img"></button>
+			   </div> 
 			</div>
 		</c:when>
 		  <c:otherwise>
@@ -816,6 +913,8 @@ cursor: pointer;
 		  </c:otherwise>
 	</c:choose>	
 	</div>
+	</form>
+
 <main>
   <div class="inner">  
       <div class="innercontents">
@@ -1001,6 +1100,13 @@ cursor: pointer;
      });
  });	 
 	 
+ $('form').on('keypress', function(e) {
+	    // 특정 입력 요소에서만 Enter 키를 방지
+	    if (e.which === 13 && !$(e.target).is('textarea')) { // textarea가 아닌 경우에만
+	        e.preventDefault(); // 기본 동작 방지
+	    }
+	});
+
  
  
  </script>
@@ -1017,29 +1123,41 @@ cursor: pointer;
     });
 
     // 드래그 기능
-    let isDragging = false;
-    let offset = { x: 0, y: 0 };
+let isDragging = false;
+let offset = { x: 0, y: 0 };
+const popup = $('.popup-evaluate');
 
-    $('.e-header').on('mousedown', function(e) {
-        isDragging = true;
-        offset.x = e.clientX - $(this).closest('.popup-evaluate').offset().left;
-        offset.y = e.clientY - $(this).closest('.popup-evaluate').offset().top;
-        $(document).on('mousemove', mouseMoveHandler);
-    });
+// 마우스 다운 이벤트
+$('.e-header').on('mousedown', function(e) {
+    isDragging = true;
+    // 마우스 클릭 위치와 팝업의 현재 위치 차이를 계산
+    offset.x = e.clientX - popup.offset().left - 350; // 팝업의 문서 기준 왼쪽 위치
+    offset.y = e.clientY - popup.position().top;  // 팝업의 문서 기준 위쪽 위치
 
-    $(document).on('mouseup', function() {
-        isDragging = false;
-        $(document).off('mousemove', mouseMoveHandler);
-    });
+    // 마우스 이동 이벤트 리스너 추가
+    $(document).on('mousemove', mouseMoveHandler);
+});
 
-    function mouseMoveHandler(e) {
-        if (isDragging) {
-            $('.popup-evaluate').css({
-                left: e.clientX - offset.x,
-                top: e.clientY - offset.y
-            });
-        }
+// 마우스 업 이벤트
+$(document).on('mouseup', function() {
+    isDragging = false;
+    // 마우스 이동 이벤트 리스너 제거
+    $(document).off('mousemove', mouseMoveHandler);
+});
+
+// 마우스 이동 핸들러
+function mouseMoveHandler(e) {
+    if (isDragging) {
+        // 마우스 위치에 따른 팝업 이동
+        popup.css({
+            left: e.clientX - offset.x,
+            top: e.clientY - offset.y
+        });
     }
+}
+
+
+
 	
 	//알림보내기
 		$('#btn-notice').on('click', function(e){
@@ -1067,28 +1185,99 @@ cursor: pointer;
 	  }
 	});
  })
- 
- 
-		
-/*   $(".apply-val").attr("href","Scout?resume_idx=${vo.resume_idx}&post_idx=0")
-	
-  $(".resume-input").click(function(e){
-			console.log(e.target.value)
-			$(".apply-val").attr("href","Scout?resume_idx=${vo.resume_idx}&post_idx="+e.target.value)
-		}) */
+
   
  </script>
- <script>
-/* 평점 */
-function calculateTotal() {
-    let total = 0;
-    const inputs = document.querySelectorAll('input[type="number"]');
-    inputs.forEach(input => {
-        total += parseInt(input.value) || 0;
+ <!-- 평가 -->
+<script>
+$(function () {
+    // 점수 입력 시 총점 및 자기소개서 점수 계산
+    $('input[type="number"]').on('input', function () {
+        calculateTotal();
+        calculateLetterScore();
     });
-    document.getElementById('total-score').innerText = total;
-}
+
+    function calculateLetterScore() {
+        let scores = []; // 점수 배열 초기화
+        for (let i = 4; i <= 8; i++) {
+            const score = parseFloat($(`input[name="score${i}"]`).val());
+            if (!isNaN(score)) {
+                scores.push(score);
+            }
+        }
+
+        if (scores.length > 0) {
+            const sum = scores.reduce((a, b) => a + b, 0);
+            const average = (sum / scores.length).toFixed(2);
+            $('input[name="letter_score"]').val(average); // 평균 점수를 입력 필드에 업데이트
+        } else {
+            $('input[name="letter_score"]').val(0); // 점수가 없으면 0으로 설정
+        }
+    }
+    
+    function calculateTotal() {
+        let totalsum = 0;
+        const inputs = $('input[type="number"]');
+        let validInputFound = false;
+
+        inputs.each(function () {
+            const value = parseFloat($(this).val());
+            // 값이 유효한 경우에만 totalsum에 더함
+            if (!isNaN(value) && value >= 0 && value <= 5) {
+                totalsum += value;
+                validInputFound = true;
+            }
+        });
+
+        // 총점 계산
+        let total = validInputFound ? (totalsum / 10).toFixed(2) : '0.00'; // 유효한 입력이 없으면 0.00
+        $('input[name="total_score"]').val(total); // 총점을 입력 필드에 업데이트
+    }
+
+});
 </script>
+<!-- 알림함 -->
+
+<script type="text/javascript">
+<!--
+document.addEventListener('DOMContentLoaded', function() {
+    const selectElement = document.getElementById('status-select');
+    const notificationDiv = document.getElementById('notification');
+    const notice = document.querySelector('.notice-container');
+
+    // 초기 상태 설정
+    updateNotification(selectElement.value);
+
+    selectElement.addEventListener('change', function() {
+        updateNotification(this.value);
+    });
+
+    function updateNotification(selectedValue) {
+        if (selectedValue === 'document') {
+            notificationDiv.innerHTML = `
+                <p>서류에 합격하였습니다.</p>
+                <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
+                <p>일시: 2024/12/21 10:00 AM</p>
+                <p>장소: 그린아카데미 402호</p>
+                <p>안내사항: 이력서, 포트폴리오 지참, 말씀한 복장 준수</p>
+            `;
+            notice.style.backgroundColor = '#ffffff'; 
+        } else if (selectedValue === 'interview') {
+            notificationDiv.innerHTML = `
+                <p>면접에 합격하였습니다.</p>
+                <p>입사 OT에 대해 다음과 같이 안내드립니다.</p>
+                <p>일시: 2024/12/21 10:00 AM</p>
+                <p>장소: 그린아카데미 402호</p>
+                <p>안내사항: 이력서, 포트폴리오 지참, 말씀한 복장 준수</p>
+            `;
+            notice.style.backgroundColor = '#D8D8D8';
+        }
+        notificationDiv.style.display = 'block';
+    }
+});
+-->
+</script>
+
  
 </body>
 </html>

@@ -1,8 +1,7 @@
 package com.prj.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;	
 import org.springframework.stereotype.Service;
-
 import com.prj.entity.PostClick;
 import com.prj.repository.PostClickRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,5 +26,5 @@ public class PostClickService {
 	}
 
 
-	
+
 }
