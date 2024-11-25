@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,14 +37,34 @@ public class CommunityController {
 	private CommunityService  communityService;
 	
 	@RequestMapping("/List")
-	public ModelAndView list() {
+	public ModelAndView list( @RequestParam(name = "page",defaultValue = "0") int page,
+                              @RequestParam(name = "size",defaultValue = "5") int size,
+                              @RequestParam(name = "newhit",defaultValue = "0") int newhit) {
 
+		//duty 정보
+		List <Duty> dutyList = communityService.getDutyList();
+		Page<Community> CommunityList = null;
+		if(newhit == 0){
 		
-		List<Community> CommunityList = communityService.getCommunityList();		
-
+		//리스트 필터	
+		//List<Community> CommunityList = communityService.getCommunityList();		
+	    CommunityList = communityService.getPageCommunityList(page,size);					
+		}else if(newhit == 1) {			
+		CommunityList = communityService.getPageListdata(page,size);				      	
+		}else {
+		CommunityList = communityService.getPageListHit(page,size);					
+		}
 		
 		ModelAndView mv =new ModelAndView();
-		mv.addObject("List", CommunityList);
+		mv.addObject("List",  CommunityList.getContent());
+		mv.addObject("dutyList",dutyList);
+		
+		//페이징 정보
+		mv.addObject("totalPages", CommunityList.getTotalPages());
+		mv.addObject("totalElements", CommunityList.getTotalElements());
+		mv.addObject("currentPage", CommunityList.getNumber());
+		mv.addObject("size", CommunityList.getSize());
+		mv.addObject("newhit", newhit);
 		mv.setViewName("/main/community/list");
 		return mv;
 	}
@@ -59,7 +80,11 @@ public class CommunityController {
 	   
 		//답글
 		List<CommunityReply>communityReply= communityService.getRepliesByCommunityIdx(community.getCommunityIdx());
-		//로그인 정검
+		System.out.println(communityReply);
+		
+		//답글 수
+		Long replyCount = communityService.getReplyCountForCommunity(community.getCommunityIdx());
+		//로그인 점검
 		ModelAndView mv = new ModelAndView();
 		HttpSession session = request.getSession();
 		Object userObject = session.getAttribute("login");
@@ -67,10 +92,15 @@ public class CommunityController {
 		if (userObject instanceof UserVo) {
 			UserVo userVo = (UserVo) session.getAttribute("login");
              if(userVo != null ) {	
-            	 mv.addObject("userIdx",userVo.getUser_idx());
+            	 
+            	//조회수 업데이트
+            	 communityService.updateHit(community.getCommunityIdx());          	            	 
+            	 
+            	mv.addObject("userIdx",userVo.getUser_idx());
          		mv.addObject("ct", Community);
         		mv.addObject("dutyList",dutyList);
         		mv.addObject("replyList",communityReply);
+        		mv.addObject("replyCount",replyCount);
         		mv.setViewName("/main/community/view");
 			}						
 	   }else {

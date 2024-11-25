@@ -18,6 +18,8 @@ public interface ReplyRepository extends JpaRepository<CommunityReply, Long> {
 	@Override
 	ArrayList<CommunityReply> findAll();
 
+	 Long countByCommunityCommunityIdx(Long communityIdx);
+
 
 
 	

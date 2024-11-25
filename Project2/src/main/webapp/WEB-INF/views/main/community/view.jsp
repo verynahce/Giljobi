@@ -233,7 +233,26 @@ main {
   height:35px;
   margin-bottom:10px;
 }
+.reply-delete {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border:1px solid #A8A8A8;
+  width:70px;
+  margin-left:7px;
+  margin-top:5px;
+  height:35px;
+  margin-bottom:10px;
+  cursor: pointer;
+}
+.reply-delete:hover{
+background-color: #E4EBFF;
+}
 
+.reply-frame{
+display:flex;
+justify-content: flex-start;
+}
 /**/
 .reply-date {
   color:#7B7979;
@@ -298,13 +317,13 @@ background-color: #E4EBFF !important;
           <h2 class="main-title"><span id="question-mark">Q</span>&nbsp;&nbsp;${ct.comTitle}</h2>
            <div id="info">${ct.comHit}<img src="/images/community/divider2.png">${ct.comRegdate}&nbsp;&nbsp;작성</div>
             <div class="sub-filed">
-	         <div class="sub-content">${ct.comTitle}</div>
-	         <div class="nickname">닉네임&nbsp;&nbsp;:&nbsp; ${ct.users.user_name}씨</div>
+	         <div class="sub-content">${ct.comContent}</div>
+	         <div class="nickname">닉네임&nbsp;&nbsp;:&nbsp; ${ct.users.userName}씨</div>
 	         <hr class="divider">
 	         <div class="likenshare">
 	          <span><a class="atags Like" href="/Main/Reply/Like/on" data-idx="${ct.communityIdx}"><img src="/images/community/like.png">&nbsp;<span class="likeCount">${ct.comLike}</span></a></span>
 	          &nbsp;&nbsp;&nbsp;&nbsp;
-	          <span><a class="atags" href=""><img src="/images/community/share.png">&nbsp;공유하기</a></span>
+	          <span><a class="atags share" href=""><img src="/images/community/share.png">&nbsp;공유하기</a></span>
 	         </div>
 	        </div>     
 	        <div class="replyarea">
@@ -345,35 +364,40 @@ background-color: #E4EBFF !important;
 	        </div>
         </div>
         <div class="contain-body ">
-          <h2 class="main-title">답변&nbsp;&nbsp;<span id="replycount">2</span></h2>
+          <h2 class="main-title">답변&nbsp;&nbsp;<span id="replycount">${replyCount}</span></h2>
           <hr class="divider">
           <div class="result-box">
           <c:forEach var="r" items="${replyList}">
           
-   			        <div class="sub-filed">
-			            <div class="replier">
-			                익명 <span id="replier-career">${r.duty.dutyName}/${r.careerSelf}</span>
-			            </div>
-			            <div class="sub-content">
-			                ${r.replyContent}
-			            </div>
-			            <div class="reply-date">
-			                ${r.replyRegdate} 작성
-			            </div>
-			            <div class="reply-like">
-			                <a href="" class="likea">
-			                    <img src="/images/community/like.png">&nbsp;<span>${r.replyLike}</span>
-			                </a>
-			            </div>
-			            <hr class="divider">
-			        </div>
+		  <div class="sub-filed">
+           <div class="replier">
+               익명 <span id="replier-career">${r.duty.dutyName}/${r.careerSelf}</span>
+           </div>
+           <div class="sub-content">
+               ${r.replyContent}
+           </div>
+           <div class="reply-date">
+               ${r.replyRegdate} 작성
+           </div>
+           <div class="reply-frame">
+           <div class="reply-like">
+              <a href="" class="likea" data-idx=" ${r.replyIdx}"data-liked="on">
+                  <img src="/images/community/like.png">&nbsp;<span class="replyLike">${r.replyLike}</span>
+              </a>	
+           </div>
+            <c:if test="${userIdx == r.users.userIdx}">		               
+           <div class="reply-delete" data-idx="${r.replyIdx}">삭제</div>
+           </c:if>  
+           </div>
+           <hr class="divider">
+       </div>
    </c:forEach>
    </div>
    
    
         </div>
         <div class="btn-layout">
-        <div class="btn btn-back"><a href ="/Company/Mypage/Bookmark/List?company_idx=${company_idx}">목록보기</a></div>
+        <div class="btn btn-back"><a href ="/Main/Community/List">목록보기</a></div>
         </div>
        </div>
     </div>
@@ -388,16 +412,99 @@ background-color: #E4EBFF !important;
  
 
  $(function(){ 
+	 
+//쿠키로 게시판 좋아요 조회
+  const likedCommunityIdx = getCookie('likedCommunityIdx');
+  
+  if (likedCommunityIdx) {
+      // 만약 쿠키에 저장된 communityIdx가 있다면 해당 '좋아요' 버튼에 Like2 클래스를 추가
+      $('.Like').addClass('Like2');
+  }
 
+  // 쿠키 값 가져오기 함수
+  function getCookie(name) {
+      let value = "; " + document.cookie;
+      let parts = value.split("; " + name + "=");
+      if (parts.length == 2) return parts.pop().split(";").shift();
+  }
+console.log(likedCommunityIdx);
+
+//댓글 삭제하기
+$(document).on('click', '.reply-delete', function(e) {
+	
+	const replyIdx = $(this).data('idx');
+	const replyContainer = $(this).closest('.sub-filed');	
+	console.log(replyIdx);
+	console.log(replyContainer);	 
+	
+
+	$.ajax({
+		url:'/Main/Reply/Delete',
+		method: 'DELETE',
+		contentType : 'application/json', 
+		data: JSON.stringify({ replyIdx: replyIdx }) 
+	})
+	.done(function(data){  
+		console.log(data + " 삭제완료");    
+		
+	})
+	.fail(function(err){ console.log(err);})
+	replyContainer.remove();
+	
+    let replyCount = parseInt($('#replycount').text());	
+	console.log(replyCount)
+	replyCount --
+	$('#replycount').text(replyCount);
+})
+	 
+	 
+//공유하기
+ $(document).on('click', '.share', function(e) {
+	
+	e.preventDefault();
+        // 현재 페이지의 URL 가져오기
+        const currentUrl = window.location.href;
+        console.log(currentUrl)
+        // 텍스트 영역을 만들어서 URL을 선택 가능하게 만든 뒤 복사
+        const temp = $('<textarea>');
+        $('body').append(temp);
+        temp.val(currentUrl).select();
+        document.execCommand('copy');
+        temp.remove();
+        
+        // 사용자에게 알림
+        alert('URL이 클립보드에 복사되었습니다!');
+    });
+
+	 
+	 
 //게시글 - 좋아요
 $('.Like').on('click', function(e) {
     e.preventDefault(); // 기본 클릭 동작 방지
-    $(this).toggleClass('Like2');
     let likeCount = parseInt($(this).find('.likeCount').text()); // 'likeCount' span의 텍스트 값
     
         const communityIdx = $(this).data('idx'); 
     if ($(this).hasClass('Like2')) {
+         
+    	$.ajax({
+ 			url:'/Main/Reply/Like/off',
+ 			 method: 'PATCH',
+     	    contentType: 'application/json', 
+    	    data: JSON.stringify({ communityIdx: communityIdx }) 
+ 		}).done(function(data){  
+ 			console.log(data + "응답 Off")
+ 		}).fail(function(err){
+ 			console.log(err)
+ 		}) 
 
+ 		//좋아요 수 감소
+        likeCount--;
+        // 쿠키 삭제
+        document.cookie = `likedCommunityIdx=;  path=/Main/Community; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+        //클래스 삭제
+	    $(this).removeClass('Like2');
+   	 
+    } else {
     	$.ajax({
     	    url: '/Main/Reply/Like/on',
     	    method: 'PATCH',
@@ -410,30 +517,90 @@ $('.Like').on('click', function(e) {
     	.fail(function(err) {
     	    console.log(err);
     	});
-        likeCount++;
-    } else {
-    	$.ajax({
- 			url:'/Main/Reply/Like/off',
- 			 method: 'PATCH',
-     	    contentType: 'application/json', 
-    	    data: JSON.stringify({ communityIdx: communityIdx }) 
- 		}).done(function(data){  
- 			console.log(data + "응답 Off")
- 		}).fail(function(err){
- 			console.log(err)
- 		}) 
-    	   	
-        likeCount--;
+    	//클래스 삭제
+     	 $(this).addClass('Like2');  
+    	//쿠키 삽입
+    	const currentDate = new Date();
+    	currentDate.setMonth(currentDate.getMonth() + 1);
+    	const expires = currentDate.toUTCString();  	
+    	document.cookie = `likedCommunityIdx=\${communityIdx}; path=/Main/Community; expires=\${expires}`;	
+    	//좋아요 수 증가
+    	likeCount++;
+
     }
 
 
     $('.likeCount').text(likeCount);
 });
 
-//댓글- 좋아요 
-//$('.likea')
 
-	 
+
+
+
+
+
+
+
+
+
+
+
+
+
+//댓글- 좋아요   
+
+    	 $(document).on('click', '.likea', function(e) {
+            e.preventDefault();
+
+            const span = $(this).find('span'); 
+            let replyLike = parseInt(span.text());
+            const replyIdx = $(this).data('idx'); 
+            let liked = $(this).data('liked'); 
+            console.log(replyIdx);
+            
+            if (liked === "off") {
+            	
+            	$.ajax({
+            	    url: '/Main/Reply/RLike/off',
+            	    method: 'PATCH',
+            	    contentType: 'application/json', 
+            	    data: JSON.stringify({ replyIdx: replyIdx }) 
+            	})
+            	.done(function(data) {
+            	    console.log(data + " 응답 On");
+            	})
+            	.fail(function(err) {
+            	    console.log(err);
+            	});         	
+            	
+            	
+                replyLike -= 1;  
+                liked = "on";
+                console.log(liked);
+            } else {
+            	
+            	$.ajax({
+            	    url: '/Main/Reply/RLike/on',
+            	    method: 'PATCH',
+            	    contentType: 'application/json', 
+            	    data: JSON.stringify({ replyIdx: replyIdx }) 
+            	})
+            	.done(function(data) {
+            	    console.log(data + " 응답 On");
+            	})
+            	.fail(function(err) {
+            	    console.log(err);
+            	});           	
+            	
+                replyLike += 1; 
+                liked = "off";
+                console.log(liked);
+            }
+            span.text(replyLike);           
+            $(this).data('liked', liked);
+        })
+        
+
 //댓글 작성 
 $('.reply-register').on('click', function(e){
 	
@@ -444,10 +611,6 @@ $('.reply-register').on('click', function(e){
 	 const  dutyId =  $('#dutyId').val();
 	 const  replyContent =  $('#replyContent').val();
 	 const  careerSelf =  $('#careerSelf').val();
-	 console.log(dutyId);
-	 console.log(replyContent);
-	 console.log(careerSelf);
-	 console.log(communityIdx);
 	
 	  const registerEl = $(this).attr('href');
 	   fetch( registerEl,   {
@@ -496,17 +659,32 @@ $('.reply-register').on('click', function(e){
 			            <div class="reply-date">
 			                \${reply.replyRegdate} 작성
 			            </div>
+			          <div class="reply-frame">
 			            <div class="reply-like">
-			                <a href="" class="likea">
+			                <a href="" class="likea" data-idx="\${reply.replyIdx}"data-liked="on">
 			                    <img src="/images/community/like.png">&nbsp;<span>\${reply.replyLike}</span>
 			                </a>
+			            </div>
+			            <div class="reply-delete" data-idx="\${reply.replyIdx}">삭제</div>
 			            </div>
 			            <hr class="divider">
 			        </div>
 			    `;
 			    
 			    //보이기 (앞에서 부터)
-	                 $('.result-box').prepend(result); 	                                  	                 	                  
+	                $('.result-box').prepend(result); 	
+	                
+			    //답변 수 올라가기
+			        let replyCount = parseInt($('#replycount').text());	
+					console.log(replyCount)
+					replyCount ++
+					$('#replycount').text(replyCount);
+				//input칸 비우기
+			      $('#dutyId').prop('selectedIndex', 0); // 첫 번째 옵션으로 설정
+		          $('#careerSelf').prop('selectedIndex', 0); // 첫 번째 옵션으로 설정
+		          $('#replyContent').val('');
+				
+			    
 	               })
 	              .catch((error) => alert(error + '저장실패') );
 	 
