@@ -138,6 +138,7 @@
    padding-right:0;
    padding-left:45px;
    justify-content:left;
+   
  }
  
  .updatetitles {
@@ -148,7 +149,7 @@
  .updateinputs {
    border:1px solid silver;
    border-radius:5px;
-   width:330px;
+   width:100%;
 
  }
  .inputs {
@@ -270,17 +271,33 @@
       	  </table>
       	  <table class="updateinputs">
       	  	<tr>
-      	   	  <td class="underline"><input type="text" class="inputs" name="user_name"value="${userVo.user_name}" required></td>
+      	   	  <td colspan="2" class="underline"><input type="text" class="inputs" name="user_name"value="${userVo.user_name}" required></td>
       	  	</tr>
       	  	<tr>
-      	   	  <td class="underline"><input type="text" class="inputs"name="user_birthdate" id="bdate"value="${userVo.user_birthdate}"required></td>
+      	   	  <td colspan="2" class="underline"><input type="text" class="inputs"name="user_birthdate" id="bdate"value="${userVo.user_birthdate}"required></td>
       	  	</tr>
     	  	<tr>
-      	   	  <td class="underline"><input type="text" class="inputs" name="user_tel"id="tel" value="${userVo.user_tel}"required></td>
+      	   	  <td colspan="2" class="underline"><input type="text" class="inputs" name="user_tel"id="tel" value="${userVo.user_tel}"required></td>
       	  	</tr>
       	  	<tr>
-      	   	  <td class="underline"><input type="email" class="inputs" name="user_email"value="${userVo.user_email}"required></td>
+      	   	  <td  colspan="2" class="underline">             
+              <input type="email" id="user_email" class="inputs" name="user_email" placeholder="이메일 입력" value="${userVo.user_email}"required/>
+                <select id="email_domain" class="inputs" onchange="updateEmail()">
+                	<option value="" selected>직접입력</option>
+                    <option value="gmail.com">gmail.com</option>
+                    <option value="naver.com">naver.com</option>
+                    <option value="kakao.com">kakao.com</option>
+                    <option value="yahoo.com">yahoo.com</option>
+                    <option value="outlook.com">outlook.com</option>
+                </select>
+             </td>
       	  	</tr>
+	      	  <tr>
+	            <td class="under-line">
+	             <input type="text" name="user_address" class="inputs" id="roadFullAddr" placeholder="주소 검색을 해주세요" value="${userVo.user_address}"readonly required/>
+	            </td>
+	            <td class="inputs"><button type="button" onclick="searchAddress()">주소 검색</button></td>
+	          </tr>
       	  </table>     	 
       	</div>
       	   
@@ -354,6 +371,7 @@ $(function() {
          
     	
     })
+    
 
     $('.btn-delete').on('click', function() {
         if (confirm("정말 탈퇴하시겠습니까?")) {
@@ -363,7 +381,24 @@ $(function() {
 
     
 })
- 
+     function searchAddress() {
+        window.open("/User/SearchAddress","pop","width=570,height=430, scrollbars=yes, resizable=yes");
+    }
+    function jusoCallBack(roadFullAddr){
+        document.getElementById('roadFullAddr').value = roadFullAddr;
+    }
+      function updateEmail() {
+          var emailInput = document.getElementById('user_email');
+          var domainSelect = document.getElementById('email_domain');
+
+          var selectedDomain = domainSelect.value;
+
+          if (selectedDomain) {
+              emailInput.value = emailInput.value.split('@')[0] + '@' + selectedDomain;
+          } else {
+              emailInput.value = emailInput.value.split('@')[0]; // 도메인 제거
+          }
+      }
 </script>
 
 </body>

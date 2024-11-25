@@ -12,17 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.prj.main.mapper.MainMapper;
-import com.prj.main.service.ClickService;
 import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.ClarificationVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
+import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PostClickListVo;
 import com.prj.main.vo.PostCountVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
+import com.prj.service.ClickService;
+import com.prj.service.PdsService;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.UserVo;
 
@@ -37,6 +39,8 @@ public class JopsController {
 	private MainMapper mainMapper;
 	@Autowired
 	private ClickService postClickService;
+	@Autowired
+	private PdsService pdsService;
 	/* Jobs 관련 */
 	/*================================================================================*/
 	@RequestMapping("/Jobs/List")
@@ -91,13 +95,21 @@ public class JopsController {
 		/*추가*/
 		PostCountVo pcvo = mainMapper.getPostCount(post_idx);
 		ClarificationVo cfvo = mainMapper.getClarification(Integer.parseInt(post_idx));
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}		
+		
 		/* 여기 까지*/
 		
 		ModelAndView mv = new ModelAndView();
 		if (userObject instanceof UserVo) {
 			UserVo userVo = (UserVo) session.getAttribute("login");
-			System.out.println("userlogin : " + userVo);
-			
+			System.out.println("userlogin : " + userVo);			
 			/*추가*/
 			List<PostClickListVo> list =	mainMapper.getPostClickList(userVo.getUser_idx(),post_idx);
 			postClickService.insertPostClick(userVo.getUser_idx(),Integer.parseInt(post_idx));
@@ -105,12 +117,13 @@ public class JopsController {
 			
 			mv.addObject("clickList",list);
 			System.out.println("clickList : " + list);
-            
-			if(userVo != null ) {	
+             if(userVo != null ) {	
 				
 				List<ResumeListVo> resumeVo = mainMapper.getUserResume(userVo.getUser_idx());
-				System.out.println(resumeVo);
+				String ub_idx = mainMapper.getBookU(userVo.getUser_idx(),vo.getCompany_idx());
+				mv.addObject("cb_idx",ub_idx);
 				mv.addObject("resumeVo",resumeVo);
+				mv.addObject("user_idx",userVo.getUser_idx());
 				mv.addObject("userObject",userObject);
 			}	
 		}
@@ -118,6 +131,7 @@ public class JopsController {
 		mv.addObject("totPoint",totPoint);
 		mv.addObject("pcount",pcvo);
 		mv.addObject("cfvo",cfvo);
+		mv.addObject("imagePath",imagePath);
 		mv.setViewName("main/jobs/view");
 		return mv;
 	}
@@ -131,5 +145,21 @@ public class JopsController {
 		mv.setViewName("redirect:/Main/Jobs/View?post_idx="+vo.getPost_idx());
 		return mv;
 	}
+	@RequestMapping(value="Jobs/BookMark/On")
+	@ResponseBody
+	public String bookmarkon(@RequestParam("company_idx") int company_idx,@RequestParam("user_idx") int user_idx) {
+		
+
+		mainMapper.insertBookU(company_idx,user_idx);
+
+		return "";	
+	}
 	
+	@RequestMapping(value="Jobs/BookMark/Off")
+	@ResponseBody
+	public String bookmarkoff(@RequestParam("company_idx") int company_idx,@RequestParam("user_idx") int user_idx) {
+		
+		mainMapper.deleteBookU(company_idx,user_idx);
+		return "";	
+	}	
 }

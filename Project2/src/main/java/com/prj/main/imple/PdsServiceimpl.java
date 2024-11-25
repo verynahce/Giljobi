@@ -9,11 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-
+import com.prj.companys.mapper.CompanyMapper;
+import com.prj.companys.vo.PostWriteVo;
 import com.prj.main.mapper.PdsMapper;
-import com.prj.main.service.PdsService;
 import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PortfolioVo;
+import com.prj.service.PdsService;
 import com.prj.users.mapper.UserMapper;
 import com.prj.users.vo.ResumeVo;
 
@@ -29,6 +30,8 @@ public class PdsServiceimpl implements PdsService {
 
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private CompanyMapper companyMapper;
 	
 	@Override
 	public void serWrite(HashMap<String, Object> map, MultipartFile[] uploadfiles) {
@@ -114,6 +117,32 @@ public class PdsServiceimpl implements PdsService {
 	@Override
 	public void deleteImage(int image_idx) {
 		pdsMapper.deleteImagefile(image_idx);
+	}
+
+	@Override
+	public void updateimagePost(MultipartFile uploadimage, int image_idx, HashMap<String, Object> map, PostWriteVo vo) {
+		
+		//기존  파일 삭제 
+		ImagefileVo imfo = pdsMapper.getImagefile(image_idx); 				
+	    if(imfo != null) {
+		File file = new File(uploadPath + imfo.getImage_path());
+		if( file.exists()) {
+			file.delete();
+		 }	
+	    }
+		map.put("uploadPath", uploadPath );
+		//새로운 파일 저장
+		PdsFile.getsave(uploadimage,map);
+		
+		//새로운 파일 db 저장
+		ImagefileVo idPhoto = (ImagefileVo) map.get("idPhoto");		
+		if(idPhoto != null)
+		pdsMapper.setimageWriter(idPhoto);			
+		//resume 업데이트
+		companyMapper.updatePostimage(vo);
+		// 기존 db 삭제
+		pdsMapper.deleteImagefile(image_idx);
+		
 	}
 
 	

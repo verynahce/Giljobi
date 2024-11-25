@@ -1,5 +1,6 @@
 package com.prj.main.controller;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,15 @@ import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
+import com.prj.main.vo.ImagefileVo;
+import com.prj.main.vo.PortfolioVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
+import com.prj.service.PdsService;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.UserScoutVo;
+import com.prj.users.vo.UserVo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +37,8 @@ public class HrsController {
 	
 	@Autowired
 	private MainMapper mainMapper;
+	@Autowired
+	private PdsService pdsService;
 	
 	/* hrs 관련 */
 	/*================================================================================*/
@@ -89,25 +96,44 @@ public class HrsController {
 		
 		HttpSession session = request.getSession();
 		ResumeListVo vo   = mainMapper.getResume(resume_idx); 
-		ModelAndView mv = new ModelAndView();
-
 		
+		ModelAndView mv = new ModelAndView();
+		//파일 정보
+		List<PortfolioVo> pfvoList = pdsService.getPortfolio(Integer.parseInt(resume_idx));
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}
+
 		Object userObject = session.getAttribute("login");
+
 		if (userObject instanceof CompanyVo) {
+			System.out.println("userObject는 CompanyVo 타입입니다.");
 			CompanyVo userVo = (CompanyVo) session.getAttribute("login");
-			if(userVo != null ) {			
+			if( userVo != null ) {		
+				
 				List<PostListVo> postVo = mainMapper.getCompanyPost(userVo.getCompany_idx());
 				String cb_idx = mainMapper.getBookC(userVo.getCompany_idx(),resume_idx);
 				mv.addObject("cb_idx",cb_idx);
+				mv.addObject("company_idx",userVo.getCompany_idx());
 				mv.addObject("postVo",postVo);
-				System.out.println(postVo);
+				
 			}	
+			mv.addObject("vo",vo);
+			mv.addObject("imagePath",imagePath);
+			mv.addObject("pfvoList",pfvoList);
+			mv.addObject("userObject",userObject);
+			mv.setViewName("main/hrs/view");
+		}else {
+			mv.setViewName("company/loginForm");
+			
 		}
 
-		
-		mv.addObject("vo",vo);
-		mv.addObject("userObject",userObject);
-		mv.setViewName("main/hrs/view");
+
 		return mv;
 	}
 	@RequestMapping("/Hrs/Scout")

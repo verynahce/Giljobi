@@ -15,8 +15,11 @@ import com.prj.companys.vo.ComApplyVo;
 import com.prj.companys.vo.ComBookmarkVo;
 import com.prj.companys.vo.CompanyVo;
 import com.prj.companys.vo.RConutVo;
+import com.prj.main.vo.ImagefileVo;
+import com.prj.main.vo.PortfolioVo;
 import com.prj.main.vo.PostVo;
 import com.prj.main.vo.ResumeListVo;
+import com.prj.service.PdsService;
 import com.prj.users.mapper.UserMapper;
 import com.prj.users.vo.ResumeVo;
 
@@ -31,6 +34,8 @@ public class MypageBookMarkController {
 	@Autowired
 	private UserMapper userMapper;
 	
+	@Autowired
+	private PdsService pdsService;
 	@RequestMapping("/Bookmark/List")
 	public ModelAndView bookmarkList(CompanyVo companyVo) {
 	
@@ -47,15 +52,29 @@ public class MypageBookMarkController {
 	@RequestMapping("/Bookmark/View")
 	public ModelAndView bookmarkView(PostVo pvo,@RequestParam("resume_idx") int resume_idx) {	
 	//이력서 정보
-	ResumeListVo vo  =userMapper.getResumeLong(resume_idx);	
-	
+	ResumeListVo vo  =userMapper.getResumeLong(resume_idx);		
 	//공고 정보	
 	List<PostVo> povo = companyMapper.getPostList(pvo);
+	
+	//파일 정보
+	List<PortfolioVo> pfvoList = pdsService.getPortfolio(resume_idx);
+	//이미지 정보
+	ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+	String imagePath = "";
+	if(ifvo==null) {
+		 imagePath = "0";
+	}else {
+		imagePath = ifvo.getImage_path().replace("\\", "/");
+	}
+	
+	
 	
 	ModelAndView mv = new ModelAndView();	
 	mv.addObject("resumeVo",vo);
 	mv.addObject("postVo",povo);
 	mv.addObject("company_idx",pvo.getCompany_idx());
+	mv.addObject("imagePath",imagePath);
+	mv.addObject("pfvoList",pfvoList);
 	mv.setViewName("/company/mypage/bookmark/view");
 		return mv;
 	}
@@ -104,8 +123,8 @@ public class MypageBookMarkController {
 	public ModelAndView applyListapplyList(@RequestParam("company_idx") int company_idx,
 			                               @RequestParam("post_idx") int post_idx) {
 	
-   List<ComApplyVo> applyList = companyMapper.getapplyList(post_idx);
-		
+    List<ComApplyVo> applyList = companyMapper.getapplyList(post_idx);
+	
 	ModelAndView mv = new ModelAndView();
 	mv.addObject("company_idx",company_idx);
 	mv.addObject("post_idx",post_idx);
@@ -132,11 +151,25 @@ public class MypageBookMarkController {
 			                          @RequestParam("post_idx") int post_idx ) {
 		
 		ResumeListVo vo  =userMapper.getResumeLong(resume_idx);	
+		//파일 정보
+		List<PortfolioVo> pfvoList = pdsService.getPortfolio(resume_idx);
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}
+		
+		
 		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("resumeVo",vo);
 		mv.addObject("company_idx",company_idx);
 		mv.addObject("post_idx",post_idx);
+		mv.addObject("imagePath",imagePath);
+		mv.addObject("pfvoList",pfvoList);
 		mv.setViewName("/company/mypage/applyList/view");
 		return mv;
 	}
@@ -153,5 +186,15 @@ public class MypageBookMarkController {
 		mv.setViewName("redirect:/Company/Mypage/ApplyList/ApplyList?company_idx= "+company_idx +"&post_idx="+post_idx);
 		return mv;
 	}
+	
+	@RequestMapping(value="/ApplyList/Remove")
+	@ResponseBody
+	public void Remove(@RequestParam("appli_idx") int appli_idx) {
+		
+		companyMapper.updateRemove(appli_idx);	
+	
+		
+	}
+	
 
 }

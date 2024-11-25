@@ -1,14 +1,17 @@
-package com.green.entity;
+package com.prj.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -29,17 +32,17 @@ public class Community {
     @SequenceGenerator(name="COMMUNITY_SEQ", 
     sequenceName = "COMMUNITY_SEQ", allocationSize = 1)
 	 @Column(name = "COMMUNITY_IDX")
-	private Long community_idx;   
+	private Long communityIdx;   
 	
 	@ManyToOne
     @JoinColumn(name = "USER_IDX", referencedColumnName = "USER_IDX", nullable = false)
 	private Users users;	
 	@ManyToOne
-    @JoinColumn(name = "IMAGE_IDX", referencedColumnName = "IMAGE_IDX", nullable = false)
+    @JoinColumn(name = "IMAGE_IDX", referencedColumnName = "IMAGE_IDX")
     private Imagefile imagefile;
-
-    @Column(name = "DUTY_ID")
-    private String dutyId;
+	@ManyToOne
+    @JoinColumn(name = "DUTY_ID", referencedColumnName = "DUTY_ID")	
+    private Duty duty;
 
     @Column(name = "COM_TITLE", nullable = false)
     private String comTitle;
@@ -47,13 +50,25 @@ public class Community {
     @Column(name = "COM_CONTENT", nullable = false)
     private String comContent;
 
-    @Column(name = "COM_HIT")
+    @Column(name = "COM_HIT", columnDefinition = "integer default 0")
     private Integer comHit;
 
     @Column(name = "COM_REGDATE", columnDefinition = "TIMESTAMP DEFAULT SYSDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date comRegdate;
 
-    @Column(name = "COM_LIKE")
+    @Column(name = "COM_LIKE", columnDefinition = "integer default 0")
     private Integer comLike;
+    
+    @OneToMany(mappedBy = "community", fetch = FetchType.LAZY)
+    private List<CommunityReply> replies;
+
+	public void patchOn() {	
+	this.comLike = comLike+1;
+	}
+
+	public void patchOff() {
+		this.comLike = comLike-1;
+		
+	}
 }

@@ -68,8 +68,8 @@
   color:#fff;
   border-radius:3px;
   padding:4px;
-  height:30px;
-  width:60px;
+  height:40px;
+  width:90px;
   text-align:center;
   font-size:20px;
 }
@@ -96,6 +96,10 @@
   border-radius:30px;
   padding:8px;
 }
+.addinfo-layout {
+display:flex;
+align-items: center;
+}
 
 
 </style>
@@ -112,7 +116,7 @@
 		</div>
 		<div class="review-banner2">
 			<div class="banner-inner">
-				<a href="WriteForm" class="phone review-mybtn"><img src="/images/review/phone2.png"></a>
+				<a href="/Main/Community/WriteForm" class="phone review-mybtn"><img src="/images/review/phone2.png"></a>
 				<div class="banner-title">
 					<h2 id="blue">커리어 고민될 땐,</h2><h2 id="yellow"> 커리어 피드!</h2>
 					<p id="yellow2">현업자들의 속 시원한 대답!</p>
@@ -122,23 +126,36 @@
 		</div>
 		<div class="inner">
 		  <div class="list-filter">
-		  	<span id="list-filter-duty">직무</span><span class="list-filter-hitndate"><span id="list-filter-date">최신순</span><span id="list-filter-hit">인기순</span></span>
+		  	<select id="list-filter-duty">
+		  	<option>직무</option>
+		  	</select>
+		  	<span class="list-filter-hitndate">
+		  	  <span id="list-filter-date">최신순</span>
+		  	  <span id="list-filter-hit">인기순</span>
+		  	</span>
 		  </div>
 			<div class="company-list2">
-				<c:forEach var="vo" items="${response.list}">
+				<c:forEach var="vo" items="${List}">
 					<div class="company-card2">
 					<div class="company-content2">
 						<div class="company-text2">
 							<div class="company-info2">
-								<span id="duty-area">${vo.company_area }</span>
+								<span id="duty-area">${vo.duty.dutyName}</span>
 								<div class="title-container">
 								<span id="question-indicator">Q</span>
-								<h3><a class="review-list-btn" href="/Main/Community/Write">이력서는 쳐다도 안보는 건가요?</a></h3>
+								<h3><a class="review-list-btn" href="/Main/Community/View?communityIdx=${vo.communityIdx}">${vo.comTitle}</a></h3>
 								</div>
-							<p id="question-content">이력서가 한달내내 미열람인데요, 읽어보긴 하는건가요?</p>
+							<p id="question-content">${vo.comContent}</p>
 							</div>
 							<div class="additional-info">
-							<span>723&nbsp;&nbsp;&nbsp;723&nbsp;&nbsp;&nbsp;723</span><span id="updelbtn"><img src="/images/dots.png"></span>
+							 <span class="addinfo-layout">
+							    <img src="/images/community/eye.png">&nbsp;${vo.comHit}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+							    <img src="/images/community/like.png">&nbsp;${vo.comLike}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
+							    <img src="/images/community/Message.png">&nbsp;10(댓글수 받아야함)
+							</span>
+							<span id="updelbtn">
+							  <img src="/images/dots.png">
+							</span>
 							</div>
 						</div>
 					</div>
