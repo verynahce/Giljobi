@@ -23,6 +23,7 @@
    border-radius:15px;
    overflow:hidden;
    margin:0;
+   max-height:fit-content
  }
  
  .sidebar table {
