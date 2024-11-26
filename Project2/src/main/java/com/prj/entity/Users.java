@@ -16,20 +16,34 @@ import lombok.NoArgsConstructor;
 public class Users {	
 	
 	@Id
-	private Long 	user_idx;
-	@Column
-	private String 	user_id;
-	@Column
-	private String 	user_name;
-	@Column
-	private String 	user_pw;
-	@Column
-	private String 	user_birthdate;
-	@Column
-	private String 	user_gender;
-	@Column
-	private String 	user_email;
-	@Column
-	private String 	user_tel;
+	@Column(name = "USER_IDX", nullable = false)
+	private Long 	userIdx;
+
+	@Column(name = "USER_ID")
+	private String 	userId;
+
+	@Column(name = "USER_PW")
+	private String 	userPw;
+	
+	@Column(name = "USER_NAME")
+	private String 	userName;
+	
+	@Column(name = "USER_BIRTHDATE")
+	private String 	userBirthdate;
+
+	@Column(name = "USER_GENDER")
+	private String 	userGender;
+	
+	 @Column(name = "USER_TEL")
+	private String 	userTel;
+	 
+	 @Column(name = "USER_EMAIL")
+	 private String  userEmail;
+	 
+	 @Column(name = "USER_ADDRESS")
+	 private String  userAddress;
+
+
+
 
 }

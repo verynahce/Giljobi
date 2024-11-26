@@ -1,12 +1,14 @@
 package com.prj.companys.mapper;
 
-import java.util.List;
+import java.util.List;	
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.prj.companys.vo.ComApplyVo;
 import com.prj.companys.vo.ComBookmarkVo;
 import com.prj.companys.vo.CompanyVo;
+import com.prj.companys.vo.EvaluateVo;
 import com.prj.companys.vo.PostSkillVo;
 import com.prj.companys.vo.PostWriteVo;
 import com.prj.companys.vo.RConutVo;
@@ -16,6 +18,7 @@ import com.prj.main.vo.DutyVo;
 import com.prj.main.vo.EmpVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.PostVo;
+import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
 import com.prj.users.vo.EduVo;
 import com.prj.users.vo.ScoreVo;
@@ -105,11 +108,25 @@ public interface CompanyMapper {
 
 	CompanyVo getCompanyById(String company_id);
 
+	void insertEvaluate(EvaluateVo evaluateVo);
+
+	EvaluateVo getEvaluate(@Param("evaluateIdx") List<EvaluateVo> evaluateIdx);
+
+	void updateEvaluate(EvaluateVo evaluateVo);
+
+	List<EvaluateVo> getEvaluateIdx(@Param("appliIdxList") List<Integer> appliIdxList);
+
+	List<ComApplyVo> getAppliIdx(int resume_idx);
+
 	void updatePostimage(PostWriteVo vo);
 
 	int getpostC(int post_idx);
 
 	void updateRemove(int appli_idx);
+
+	void insertTotalScore(EvaluateVo evaluate);
+
+	void updateTotalScore(EvaluateVo evaluate);
 
 
 

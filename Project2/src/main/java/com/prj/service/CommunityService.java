@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.prj.dto.CommunityReplyDTO;
@@ -16,6 +20,7 @@ import com.prj.repository.DutyRepository;
 import com.prj.repository.ReplyRepository;
 import com.prj.repository.UsersRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -129,6 +134,69 @@ public class CommunityService {
 
     // 댓글 리스트 반환
     return target.getReplies();
+	}
+
+	public CommunityReply updateRLikeOn(Long replyIdx) {
+		CommunityReply target = replyRepository.findById(replyIdx).orElseThrow(()-> 
+        new  IllegalArgumentException("좋아요수 off업데이트 실패! 댓글이 없습니다"));
+		
+		target.patchOn();
+		CommunityReply reply = replyRepository.save(target);
+		return reply;
+	}
+
+	public CommunityReply updateRLikeOff(Long replyIdx) {
+		CommunityReply target = replyRepository.findById(replyIdx).orElseThrow(()-> 
+        new  IllegalArgumentException("좋아요수 off업데이트 실패! 댓글이 없습니다"));
+		
+		target.patchOff();
+		CommunityReply reply = replyRepository.save(target);
+		return reply;
+	}
+
+	public Long getReplyCountForCommunity(Long communityIdx) {
+		Long count = replyRepository.countByCommunityCommunityIdx(communityIdx);
+		return count;
+	}
+	@Transactional 
+	public CommunityReply deleteReply(CommunityReplyDTO crDto) {
+		
+		//타겟 조회
+		CommunityReply target = replyRepository.findById(crDto.getReplyIdx()).orElseThrow(()-> 
+        new  IllegalArgumentException("삭제 실패! 댓글이 없습니다"));
+		//없는 자료 처리
+		if( target == null  )
+			return  null;		
+		// 3. 실제 삭제		
+		replyRepository.delete( target );
+		//삭제					
+		return target;
+	}
+
+	public void updateHit(Long communityIdx) {
+		//타겟 조회
+		 Community target = cRepository.findById(communityIdx).orElseThrow(() -> 
+	        new IllegalArgumentException("조회수 업데이트 실패! 게시물이 없습니다"));
+		
+		target.updateHit();
+		cRepository.save(target);
+		
+	}
+
+// 리스트 -기본 , 최신순, 추천순
+	public Page<Community> getPageCommunityList(int page, int size) {
+		  Pageable pageable = PageRequest.of(page, size);
+		return cRepository.findAll(pageable);
+	}
+
+	public Page<Community> getPageListdata(int page, int size) {
+	    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("comRegdate")));
+	    return cRepository.findAll(pageable);
+	}
+
+	public Page<Community> getPageListHit(int page, int size) {
+	    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("comLike")));
+	    return cRepository.findAll(pageable);
 	}
 	
 		   

@@ -325,7 +325,6 @@ WHERE PS.POST_IDX = #{post_idx}
 		      P.POST_DDATE	
 	</select>
 
-
   <select id="getapplyList">
     SELECT AP.APPLI_IDX,
          AP.RESUME_IDX,
@@ -346,10 +345,8 @@ WHERE PS.POST_IDX = #{post_idx}
                         LEFT JOIN SKILL SK ON RS.SKILL_ID = SK.SKILL_ID
                         LEFT JOIN USERS U ON RE.USER_IDX = U.USER_IDX 
                         LEFT JOIN RESUME_CAREER RC ON RE.RESUME_IDX = RC.RESUME_IDX
-                        LEFT JOIN EVALUATE EV ON EV.APPLI_IDX = AP.APPLI_IDX                    
-  WHERE POST_IDX = #{post_idx} AND AP.REMOVE IS NULL
-  
-  
+                        LEFT JOIN EVALUATE EV ON AP.APPLI_IDX = EV.APPLI_IDX                    
+  WHERE AP.POST_IDX = #{post_idx} AND AP.REMOVE IS NULL
   </select>
 
 	 <update id="updateApply">
@@ -406,6 +403,101 @@ WHERE PS.POST_IDX = #{post_idx}
 	 SET REMOVE ='X'
 	 WHERE APPLI_IDX =#{appli_idx}
 	</update>
+
+
+<insert id="insertEvaluate">
+INSERT INTO EVALUATE
+(EVALUATE_IDX,
+TOTAL_SCORE,
+TOTAL_NOTE,
+EDU_SCORE,
+SKILL_SCORE,
+CAREER_SCORE,
+LETTER_SCORE,
+PORTFOLIO_SCORE,
+EXT_SCORE,
+EDU_NOTE,
+SKILL_NOTE,
+CAREER_NOTE,
+LETTER_NOTE,
+PORTFOLIO_NOTE,
+APPLI_IDX,
+EXT_NOTE)
+VALUES(EVALUATE_SEQ.NEXTVAL,
+#{total_score},
+#{total_note, jdbcType=VARCHAR},
+#{edu_score},
+#{skill_score},
+#{career_score},
+#{letter_score, jdbcType=DOUBLE},
+#{portfolio_score, jdbcType=DOUBLE},
+#{ext_score, jdbcType=DOUBLE},
+#{edu_note, jdbcType=VARCHAR},
+#{skill_note, jdbcType=VARCHAR},
+#{career_note, jdbcType=VARCHAR},
+#{letter_note, jdbcType=VARCHAR},
+#{portfolio_note, jdbcType=VARCHAR},
+#{appli_idx},
+#{ext_note, jdbcType=VARCHAR})
+
+</insert>
+
+<update id="updateEvaluate">
+UPDATE EVALUATE
+SET 
+TOTAL_SCORE=#{total_score},
+TOTAL_NOTE=#{total_note},
+EDU_SCORE=#{edu_score},
+SKILL_SCORE=#{skill_score},
+CAREER_SCORE=#{career_score},
+LETTER_SCORE=#{letter_score},
+PORTFOLIO_SCORE=#{portfolio_score},
+EXT_SCORE=#{ext_score},
+EDU_NOTE=#{edu_note},
+SKILL_NOTE=#{skill_note},
+CAREER_NOTE=#{career_note},
+LETTER_NOTE=#{letter_note},
+PORTFOLIO_NOTE=#{portfolio_note},
+EXT_NOTE=#{ext_note}
+WHERE EVALUATE_IDX=#{evaluate_idx}
+</update>
+
+<select id="insertTotalScore">
+INSERT INTO EVALUATE (TOTAL_SCORE)
+VALUES (#{total_score})
+</select>
+
+<select id="getEvaluate" resultType="com.prj.companys.vo.EvaluateVo">
+    SELECT * 
+    FROM EVALUATE 
+    WHERE EVALUATE_IDX IN 
+    <foreach item="item" collection="evaluateIdx" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+</select>
+
+
+
+
+<select id="getAppliIdx">
+      SELECT 
+    AP.APPLI_IDX,
+    AP.RESUME_IDX
+    FROM APPLICATION AP LEFT JOIN RESUME RE ON RE.RESUME_IDX = AP.RESUME_IDX
+  WHERE RE.RESUME_IDX =#{resume_idx}
+</select>
+
+<select id="getEvaluateIdx" resultType="Integer">
+    SELECT E.EVALUATE_IDX
+    FROM EVALUATE E
+    JOIN APPLICATION A ON A.APPLI_IDX = E.APPLI_IDX
+    WHERE A.APPLI_IDX IN 
+    <foreach item="item" index="index" collection="appliIdxList" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+</select>
+
+
 
 </mapper>
 

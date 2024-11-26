@@ -53,7 +53,8 @@ public class UserController {
 
                    HttpSession  session = request.getSession();
                    session.setAttribute( "login", vo );
-                   session.setMaxInactiveInterval(60*60);
+                   session.setMaxInactiveInterval(2*60*60);
+
                    return ("redirect:/");
                 };
                 if( vo == null ) {
@@ -97,10 +98,11 @@ public class UserController {
             }
             return "불가능";  // 아이디가 존재하면 불가능
         }
-             @RequestMapping("/SearchAddress")
-             public String searchAddress() {
-                     return "user/popupaddress";
-             }
+        
+		@RequestMapping("/SearchAddress")
+		public String searchAddress() {
+		        return "user/popupaddress";
+		}
 
         @RequestMapping("/Register")
         public ModelAndView register(UserVo userVo) {
