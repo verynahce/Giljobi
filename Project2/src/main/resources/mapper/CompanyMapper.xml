@@ -497,7 +497,20 @@ VALUES (#{total_score})
     </foreach>
 </select>
 
+  <update id="updateCompanyMax">
+  UPDATE COMPANYS
+  SET
+  	COMPANY_NAME = #{company_name},
+  	COMPANY_TEL = #{company_tel},
+  	COMPANY_AREA = #{company_area},
+  	REP_NAME = #{rep_name},
+  	COMPANY_EMAIL = #{company_email},
+  	COMPANY_BRNUM = #{company_brnum},
+  	IMAGE_IDX = ( SELECT NVL(MAX(IMAGE_IDX), 1) FROM  IMAGEFILE  )
+  WHERE COMPANY_IDX = #{company_idx}
 
+
+  </update>
 
 </mapper>
 

@@ -198,6 +198,42 @@ public class CommunityService {
 	    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("comLike")));
 	    return cRepository.findAll(pageable);
 	}
+
+	//조회수
+	public List<Community> getCommunityU(int user_idx) {
+		
+		 //유저 조회
+		 Long userIdx = (long) user_idx;
+		 Users user = usersRepository.findById(userIdx).orElseThrow(()->
+		 new IllegalArgumentException("글 업로드 실패! 등록된 유저가 아닙니다") );
+		 
+		 List <Community> CommunityList = cRepository.findByUsers(user);		 
+		return CommunityList;
+		
+		
+	}
+
+	public void  deleteCommunity(Long communityIdx) {
+		//게시물이 있는지 조회
+	    Community target = cRepository.findById(communityIdx).orElseThrow(()-> 
+				  new  IllegalArgumentException("삭제 실패! 게시물이 없습니다"));
+		
+	    cRepository.delete(target);
+	}
+   
+	public void updateCommunity(Community community, Long dutyId) {
+		
+		//게시물이 있는지 조회
+		Community target = cRepository.findById(community.getCommunityIdx()).orElseThrow(()-> 
+		                   new  IllegalArgumentException("업데이트 실패! 게시물이 없습니다"));
+       //직무
+		Duty duty = dutyRepository.findById(dutyId).orElseThrow(null);    
+        
+		//수정 후 다시 저장
+		target.patch(community,duty);  
+		Community updated = cRepository.save(target);
+		
+	}
 	
 		   
 

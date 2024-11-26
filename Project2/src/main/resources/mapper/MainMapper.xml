@@ -38,6 +38,7 @@
 		    C.COMPANY_EMAIL,
 		    C.COMPANY_TEL,
 		    D.DUTY_NAME,
+		    D.DUTY_ID,
 		    CR.CAREER_NAME,
 		    ED.EDU_NAME,
 		    P.POST_SALARY,
@@ -78,7 +79,8 @@
                      POST_DDATE,
                      POST_CDATE,
                      POST_FDATE,
-                     P.IMAGE_IDX
+                     P.IMAGE_IDX,
+                     D.DUTY_ID
 	</select>
 	<select id="getTotPoint">
 	  SELECT (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 FROM REVIEW R JOIN POST P ON R.COMPANY_IDX = P.COMPANY_IDX
@@ -119,6 +121,7 @@
                     LEFT JOIN CITY          CT ON P.CITY_ID          = CT.CITY_ID
                     LEFT JOIN POST_SKILL PS  ON P.POST_IDX = PS.POST_IDX
                     LEFT JOIN SKILL         S   ON PS.SKILL_ID  = S.SKILL_ID
+         WHERE P.POST_DDATE &gt; SYSDATE            
 		 GROUP BY	P.POST_IDX,
                      P.COMPANY_IDX,
                      P.POST_TITLE,
@@ -230,7 +233,7 @@
 		                   LEFT JOIN CITY          CT ON P.CITY_ID          = CT.CITY_ID
 		                   LEFT JOIN POST_SKILL PS  ON P.POST_IDX = PS.POST_IDX
 		                   LEFT JOIN SKILL         S   ON PS.SKILL_ID  = S.SKILL_ID
-		WHERE 1=1
+		WHERE 1=1 	      AND P.POST_DDATE &gt; SYSDATE 
 	    <if test="city_id != null and city_id != ''">
 	      AND P.city_id = #{city_id}
 	    </if>
@@ -246,25 +249,26 @@
 	    <if test="skill_id != null and skill_id != ''">
 	      AND PS.skill_id = #{skill_id}
 	    </if>
-	    		 GROUP BY	P.POST_IDX,
-		                     P.COMPANY_IDX,
-		                     P.POST_TITLE,
-		                     C.COMPANY_NAME,
-		                     C.COMPANY_EMAIL,
-		                     C.COMPANY_TEL,
-		                     D.DUTY_ID,
-		                     D.DUTY_NAME,
-		                     CR.CAREER_NAME,
-		                     ED.EDU_NAME,
-		                     P.POST_SALARY,
-		                     S.SKILL_NAME,
-		                     EM.EMP_NAME,
-		                     CT.CITY_NAME,
-		                     POST_CONTENT,
-		                     POST_HIT,
-		                     POST_DDATE,
-		                     POST_CDATE,
-		                     POST_FDATE
+ 
+          GROUP BY P.POST_IDX,
+                 P.COMPANY_IDX,
+                 P.POST_TITLE,
+                 C.COMPANY_NAME,
+                 C.COMPANY_EMAIL,
+                 C.COMPANY_TEL,
+                 D.DUTY_ID,
+                 D.DUTY_NAME,
+                 CR.CAREER_NAME,
+                 ED.EDU_NAME,
+                 P.POST_SALARY,
+                 S.SKILL_NAME,
+                 EM.EMP_NAME,
+                 CT.CITY_NAME,
+                 POST_CONTENT,
+                 POST_HIT,
+                 POST_DDATE,
+                 POST_CDATE,
+                 POST_FDATE
   </select>
   
   
@@ -285,6 +289,7 @@
 	    S.SKILL_NAME,
 	    C.CITY_NAME,
 	    D.DUTY_NAME,
+	    D.DUTY_ID,
 	    E.EMP_NAME,
 	    RC.CAREER_CNAME,
 	    TO_CHAR(RC.CAREER_SDATE,'YYYY.MM') CAREER_SDATE,
@@ -420,7 +425,7 @@
                  LEFT JOIN RESUME_SKILL RS  ON R.RESUME_IDX = RS.RESUME_IDX
                  LEFT JOIN SKILL S          ON RS.SKILL_ID 	= S.SKILL_ID
                  LEFT JOIN RESUME_CAREER RC ON R.RESUME_IDX = RC.RESUME_IDX
-		WHERE 1=1
+		WHERE 1=1 AND U.USER_NAME IS NOT NULL
 	    <if test="city_id != null and city_id != ''">
 	      AND R.city_id = #{city_id}
 	    </if>
@@ -440,6 +445,7 @@
 	      AND RS.skill_id = #{skill_id}
 	    </if>
 	</select>
+	
  <update id="updateResumeHit">
 	 	UPDATE RESUME SET RESUME_HIT = RESUME_HIT + 1 WHERE RESUME_IDX = #{resume_idx}
  </update>
@@ -700,7 +706,9 @@
 	    FROM POST_CLICK
 	    WHERE POST_IDX = #{arg1} AND USER_IDX != #{arg0}
 	)
-	AND PC.POST_IDX != #{arg1} AND P.POST_DDATE >= SYSDATE 
+	AND PC.POST_IDX != #{arg1} 
+	AND P.POST_DDATE >= SYSDATE 
+	AND P.DUTY_ID = #{arg2}
 	GROUP BY PC.POST_IDX
 	ORDER BY COUNT(PC.POST_IDX) DESC, DBMS_RANDOM.VALUE  
 	)
@@ -796,8 +804,48 @@
    FROM USER_BOOKMARK
    WHERE USER_IDX = #{arg0} AND COMPANY_IDX = #{arg1} 
    </select>
+   <select id="getResumeClickListR">
+      SELECT U.USER_IDX,
+          R.RESUME_IDX,
+          R.RESUME_TITLE,
+          U.USER_NAME,
+          D.DUTY_NAME,
+       CASE 
+           WHEN RC.CAREER_SDATE IS NULL OR RC.CAREER_EDATE IS NULL THEN '신입'
+           ELSE TO_CHAR(FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE) / 12)) || '년 ' || 
+                        TO_CHAR(MOD(FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE)), 12)) || '개월'
+       END AS duration
+   FROM RESUME R LEFT JOIN RESUME_CAREER RC ON R.RESUME_IDX =RC.RESUME_IDX
+                 JOIN USERS U ON R.USER_IDX = U.USER_IDX
+                 JOIN DUTY D ON R.DUTY_ID = D.DUTY_ID
+   WHERE R.RESUME_IDX IN 
+   ( SELECT RESUME_IDX
+	        FROM
+   ( SELECT RC.RESUME_IDX AS RESUME_IDX
+    FROM RESUME_CLICK RC JOIN RESUME R ON RC.RESUME_IDX = R.RESUME_IDX
+    WHERE COMPANY_IDX IN (
+ 	      SELECT COMPANY_IDX
+	      FROM RESUME_CLICK
+	      WHERE RESUME_IDX = #{arg0} AND COMPANY_IDX != #{arg1}  )
+    AND RC.RESUME_IDX ! = #{arg0}
+    AND R.DUTY_ID = #{arg2} 
+    GROUP BY RC.RESUME_IDX
+    ORDER BY COUNT(RC.RESUME_IDX) DESC, DBMS_RANDOM.VALUE 
+    )FETCH FIRST 3 ROWS ONLY )
+     
+   </select>
+   
+   <select id="getResumeClick">
+   SELECT *
+   FROM RESUME_CLICK
+   WHERE RESUME_IDX = #{arg0} AND COMPANY_IDX = #{arg1}
+   </select> 
    
    
+   <insert id="insertResumeClick">
+  INSERT INTO RESUME_CLICK (RC_IDX,RESUME_IDX,COMPANY_IDX) 
+  VALUES (RESUME_CLICK_SEQ.NEXTVAL,#{arg0},#{arg1}) 
+   </insert>
 </mapper>
 
 

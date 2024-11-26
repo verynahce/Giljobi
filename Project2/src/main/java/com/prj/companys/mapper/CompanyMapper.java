@@ -128,6 +128,8 @@ public interface CompanyMapper {
 
 	void updateTotalScore(EvaluateVo evaluate);
 
+	void updateCompanyMax(CompanyVo companyVo);
+
 
 
 

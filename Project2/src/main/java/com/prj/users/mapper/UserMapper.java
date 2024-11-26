@@ -130,6 +130,10 @@ public interface UserMapper {
 
 	UserScoutVo getScout(int scout_idx);
 
+	void updateUserMax(UserVo uservo);
+
+
+
 
 
 

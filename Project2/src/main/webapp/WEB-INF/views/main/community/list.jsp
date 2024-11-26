@@ -46,7 +46,8 @@
 
 #duty-area {
   background-color:#EBECF1;
-  max-width:100px;
+
+  max-width:120px;
   text-align:center;
   padding-left:10px;
   padding-right:10px;

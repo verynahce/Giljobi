@@ -21,8 +21,10 @@ import com.prj.main.vo.EmpVo;
 import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PortfolioVo;
 import com.prj.main.vo.PostListVo;
+import com.prj.main.vo.ResumeClickVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
+import com.prj.service.ClickService;
 import com.prj.service.PdsService;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.UserScoutVo;
@@ -39,6 +41,8 @@ public class HrsController {
 	private MainMapper mainMapper;
 	@Autowired
 	private PdsService pdsService;
+	@Autowired
+	private ClickService clickService;
 	
 	/* hrs 관련 */
 	/*================================================================================*/
@@ -91,13 +95,14 @@ public class HrsController {
 	@RequestMapping("/Hrs/View")
 	public ModelAndView view(HttpServletRequest request
 			,@RequestParam(required = true, value="resume_idx")  String resume_idx) {
-
-		mainMapper.updateResumeHit(resume_idx);
-		
+        //조회수 -기본이력서정보-로그인세션
+		mainMapper.updateResumeHit(resume_idx);		
 		HttpSession session = request.getSession();
-		ResumeListVo vo   = mainMapper.getResume(resume_idx); 
-		
+		ResumeListVo vo   = mainMapper.getResume(resume_idx); 		
 		ModelAndView mv = new ModelAndView();
+		
+
+		
 		//파일 정보
 		List<PortfolioVo> pfvoList = pdsService.getPortfolio(Integer.parseInt(resume_idx));
 		//이미지 정보
@@ -110,14 +115,19 @@ public class HrsController {
 		}
 
 		Object userObject = session.getAttribute("login");
-
 		if (userObject instanceof CompanyVo) {
 			System.out.println("userObject는 CompanyVo 타입입니다.");
 			CompanyVo userVo = (CompanyVo) session.getAttribute("login");
 			if( userVo != null ) {		
 				
+				List<ResumeClickVo> rcvoList = mainMapper.getResumeClickListR(vo.getResume_idx(),userVo.getCompany_idx(),vo.getDuty_id());
 				List<PostListVo> postVo = mainMapper.getCompanyPost(userVo.getCompany_idx());
 				String cb_idx = mainMapper.getBookC(userVo.getCompany_idx(),resume_idx);
+			
+				//클릭수 업데이트
+				clickService.insertResumeClick(vo.getResume_idx(),userVo.getCompany_idx());
+				
+				mv.addObject("clickList",rcvoList);
 				mv.addObject("cb_idx",cb_idx);
 				mv.addObject("company_idx",userVo.getCompany_idx());
 				mv.addObject("postVo",postVo);
