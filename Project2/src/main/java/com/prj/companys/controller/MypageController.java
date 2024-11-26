@@ -63,12 +63,20 @@ public class MypageController {
 		CompanyVo vo = companyMapper.getCompany(login);		
 		ScoreVo score = companyMapper.getReviewScore(Company_idx);
 		
-		
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("companyVo" , vo);
 		mv.addObject("CountP", countP);
 		mv.addObject("CountB", countB);
 		mv.addObject("CountA", countA);
+		mv.addObject("imagePath",imagePath);
 		mv.addObject("score", score.getScore());
 		mv.setViewName("/company/mypage/home/view");
 		return mv;
@@ -82,19 +90,43 @@ public class MypageController {
 	CompanyVo vo = companyMapper.getCompany(companyVo);
 	System.out.println(vo);
 	
+	//이미지 정보
+	ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+	String imagePath = "";
+	if(ifvo==null) {
+		 imagePath = "0";
+	}else {
+		imagePath = ifvo.getImage_path().replace("\\", "/");
+	}
+	
 	int company_idx = companyVo.getCompany_idx();
 	ModelAndView mv = new ModelAndView();
 	mv.addObject("companyVo", vo);
+	mv.addObject("imagePath",imagePath);
+	mv.addObject("company_idx",company_idx);
+	mv.addObject("ifvo",ifvo);
 	mv.setViewName("company/mypage/home/update");
 	return mv;
 	}
 	
 	@RequestMapping("/Home/Update")
-	public ModelAndView homeupdate(CompanyVo companyVo) {
+	public ModelAndView homeupdate(CompanyVo companyVo,
+			@RequestParam(value="upimage",required = false) MultipartFile uploadimage) {
 		
-	companyMapper.updateCompany(companyVo);
-	System.out.println(companyVo);
+
+
 	
+	HashMap<String, Object> map = new HashMap<>();		
+    //이미지 업데이트	
+	if(uploadimage != null && !uploadimage.isEmpty()) {	
+		String type ="COMPANYS";
+        map.put("type", type );	
+		pdsService.updateimageCompany(uploadimage,companyVo.getImage_idx(),map,companyVo);
+	 }else {
+		//이력서 정보 업데이트
+     companyMapper.updateCompany(companyVo);	 		 
+	 }
+
 	int company_idx = companyVo.getCompany_idx();
 	ModelAndView mv = new ModelAndView();
 	mv.setViewName("redirect:/Company/Mypage/Home/View");

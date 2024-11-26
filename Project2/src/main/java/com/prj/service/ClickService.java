@@ -31,5 +31,14 @@ public class ClickService {
 			mainMapper.deleteResumeClickR(resume_idx);
 		}
 	}
+	
+	public void insertResumeClick(int resume_idx, int company_idx) {
+		ResumeClickVo rvo = mainMapper.getResumeClick(resume_idx,company_idx);
+		if( rvo == null) {
+			mainMapper.insertResumeClick(resume_idx,company_idx);
+			
+		}
+		
+	}
 
 }

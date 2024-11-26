@@ -81,7 +81,7 @@ public interface MainMapper {
 	
 	//지원자수 ,클릭 , 클릭추천공고리스트 , 인담자 톡 ,
 	PostCountVo getPostCount(String post_idx);
-	List<PostClickListVo> getPostClickList(int user_idx, String post_idx);
+	List<PostClickListVo> getPostClickList(int user_idx, String post_idx, int duty_id);
 	PostClickVo getPostclick(int user_idx, int post_idx);
 	void insertPostClick(int user_idx, int post_idx);
 	ClarificationVo getClarification(String post_idx);
@@ -94,6 +94,9 @@ public interface MainMapper {
 	void deleteClarification(int post_idx);
 	void insertCarPost(String cloth, String age, String setc, String prek, String pto, String pect, String mm, String mc, int post_idx);
 	void deletePostClick(int post_idx);
+	List<ResumeClickVo> getResumeClickListR(int resume_idx, int company_idx, int duty_id);
+	ResumeClickVo getResumeClick(int resume_idx, int company_idx);
+	void insertResumeClick(int resume_idx, int company_idx);
 
 
 

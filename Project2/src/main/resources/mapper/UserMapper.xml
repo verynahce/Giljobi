@@ -491,6 +491,18 @@
      WHERE SCOUT_IDX=#{scout_idx}	
  	</select>
  	
+ 	<update id="updateUserMax">
+ 	    UPDATE USERS
+    SET 
+        USER_NAME = #{user_name},
+        USER_BIRTHDATE = #{user_birthdate},
+        USER_TEL = #{user_tel},
+        USER_EMAIL = #{user_email},
+        USER_ADDRESS= #{user_address},
+        IMAGE_IDX = ( SELECT NVL(MAX(IMAGE_IDX), 1) FROM  IMAGEFILE  )
+    WHERE USER_IDX = #{user_idx}	
+ 	</update>
+ 	
 </mapper>
 
 

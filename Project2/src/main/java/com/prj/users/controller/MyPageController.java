@@ -78,7 +78,14 @@ public class MyPageController {
 		int  CountA= userMapper.countA(User_idx);
 		int  CountS= userMapper.countS(User_idx);
 	    		
-		
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(login.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("userVo",login);		
 		mv.addObject("CountR",CountR);	
@@ -87,6 +94,8 @@ public class MyPageController {
 		mv.addObject("CountS",CountS);	
 		mv.addObject("UYear",UYear);	
 		mv.addObject("age",age);	
+		mv.addObject("imagePath",imagePath);
+		mv.addObject("ifvo",ifvo);
 		mv.setViewName("user/mypage/home/view");
 		return mv;
 	}
@@ -95,7 +104,14 @@ public class MyPageController {
 	 public ModelAndView homeupdateForm(UserVo uservo) {	
 		
 		UserVo vo = userMapper.getUser(uservo);
-		
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}
 		
 		//나이 계산		
 		String UYearStr =vo.getUser_birthdate().substring(0, 4);
@@ -109,13 +125,27 @@ public class MyPageController {
 		mv.addObject("userVo",vo);
 		mv.addObject("UYear",UYear);	
 		mv.addObject("age",age);
+		mv.addObject("imagePath",imagePath);
+		mv.addObject("ifvo",ifvo);
 		return mv;
 		
 	}
 	@RequestMapping("/Home/update")
-	public ModelAndView homeupdate(UserVo uservo) {
+	public ModelAndView homeupdate(UserVo uservo,@RequestParam(value="upimage",required = false) MultipartFile uploadimage) {
 	
-		userMapper.updateUser(uservo);
+		HashMap<String, Object> map = new HashMap<>();
+	     //이미지 업데이트	
+		if(uploadimage != null && !uploadimage.isEmpty()) {	
+			 String type ="USERS";
+	         map.put("type", type );	
+	         System.out.println("!!!!!!!!!!!!!!!!!!!" + uservo);
+			pdsService.updateimageUser(uploadimage,uservo.getImage_idx(),map,uservo);
+		 }else {
+				 
+			  userMapper.updateUser(uservo); 
+		 }	
+		
+
 
 		
     ModelAndView mv = new ModelAndView();		

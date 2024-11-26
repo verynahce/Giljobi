@@ -79,4 +79,10 @@ public class Community {
 		this.comHit = comHit+1;
 		
 	}
+
+	public void patch(Community community, Duty duty) {
+		this.duty = duty;
+		this.comTitle = community.comTitle;
+		this.comContent = community.comContent;	
+	}
 }
