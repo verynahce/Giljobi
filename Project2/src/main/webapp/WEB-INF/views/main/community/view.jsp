@@ -29,7 +29,7 @@
  /*body*/
 .inner {
   display:flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 main {
