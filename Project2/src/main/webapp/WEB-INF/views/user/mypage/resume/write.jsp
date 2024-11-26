@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://cdn.jsdelivr.net/npm/browser-scss@1.0.3/dist/browser-scss.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -428,7 +428,7 @@ textarea {
       <div class="sub-filed">
         <h4 class="sub-title">업무 및 스킬</h4>
         <hr>
-   <input class="input-size2" id="skill" type="text" value="" placeholder="스킬을 영어로 입력해주세요" list="skillOptions"/>
+   		<input class="input-size2" id="skill" type="text" value="" placeholder="스킬을 영어로 입력해주세요" list="skillOptions"/>
          <div id='techList'></div>
          <datalist id ="skillOptions">
        <c:forEach var="skill" items="${Skill}">
@@ -436,7 +436,6 @@ textarea {
          </c:forEach>
          </datalist>
       </div>
-
       <div class="sub-filed">
 	    <h4 class="sub-title">희망 근무조건</h4>
 	    <hr> 

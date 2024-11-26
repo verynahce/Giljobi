@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer ></script>
@@ -158,7 +158,7 @@ margin:30px 10px 15px 10px;
 			<div class="banner-inner">
 				<a href="/Main/Community/WriteForm" class="phone review-mybtn"><img src="/images/review/phone2.png"></a>
 				<div class="banner-title">
-					<h2 id="blue">커리어 고민될 땐,</h2><h2 id="yellow"> 커리어 피드!</h2>
+					<h2 id="blue">궁금한 JOB을 물어보는곳!</h2><h2 id="yellow"> JOB담소</h2>
 					<p id="yellow2">현업자들의 속 시원한 대답!</p>
 					<span class="myreview"><a href="MyReview" class="review-mybtn">내가 한 질문</a></span>
 				</div>

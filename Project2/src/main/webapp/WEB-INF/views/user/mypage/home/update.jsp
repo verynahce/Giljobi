@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer></script>
@@ -150,21 +150,30 @@
    border:1px solid silver;
    border-radius:5px;
    width:100%;
-
  }
+ 
+ .updateinputs td {
+   height:45px;
+   padding-left:10px;
+   }
+  
  .inputs {
    border:none;
    outline:none;
+   padding-right:10px;
  }
-
- .underline {
+  .underline {
    border-bottom: 1px solid silver;
    border-collapse:collapse;
-   padding:15px;
  }
- 
+
  .updateinputs tr:last-child .underline {
    border-bottom: none;
+ }
+ 
+ #search-address {
+  width:100%;
+  height:30px;   
  }
  
  .btn-layout {
@@ -287,6 +296,9 @@ height: 100px;
       	  	<tr>
       	   	  <td>이메일</td>
       	  	</tr>
+      	  	<tr>
+      	   	  <td>주소</td>
+      	  	</tr>
       	  </table>
       	  <table class="updateinputs">
       	  	<tr>
@@ -296,12 +308,12 @@ height: 100px;
       	   	  <td colspan="2" class="underline"><input type="text" class="inputs"name="user_birthdate" id="bdate"value="${userVo.user_birthdate}"required></td>
       	  	</tr>
     	  	<tr>
-      	   	  <td colspan="2" class="underline"><input type="text" class="inputs" name="user_tel"id="tel" value="${userVo.user_tel}"required></td>
+      	   	  <td colspan="2" class="underline"><input type="text" class="inputs" name="user_tel"id="tel" value="${userVo.user_tel}"required/></td>
       	  	</tr>
       	  	<tr>
-      	   	  <td  colspan="2" class="underline">             
-              <input type="email" id="user_email" class="inputs" name="user_email" placeholder="이메일 입력" value="${userVo.user_email}"required/>
-                <select id="email_domain" class="inputs" onchange="updateEmail()">
+      	   	  <td colspan="2" class="underline">
+      	   	   <input type="email" id="user_email" class="inputs" name="user_email" placeholder="이메일 입력" value="${userVo.user_email}"required/>
+      	   	   <select id="email_domain" class="inputs" onchange="updateEmail()">
                 	<option value="" selected>직접입력</option>
                     <option value="gmail.com">gmail.com</option>
                     <option value="naver.com">naver.com</option>
@@ -315,7 +327,7 @@ height: 100px;
 	            <td class="under-line">
 	             <input type="text" name="user_address" class="inputs" id="roadFullAddr" placeholder="주소 검색을 해주세요" value="${userVo.user_address}"readonly required/>
 	            </td>
-	            <td class="inputs"><button type="button" onclick="searchAddress()">주소 검색</button></td>
+	            <td class="inputs"><button id="search-address" type="button" onclick="searchAddress()">주소 검색</button></td>
 	          </tr>
       	  </table>     	 
       	</div>
