@@ -53,7 +53,7 @@ public class JopsController {
 		List<SkillVo> 	skillList 	= mainMapper.getSkillList();
 	
 		
-		List<PostListVo> postList = mainMapper.getPostList();
+		List<PostListVo> postList = mainMapper.getPostList(); 
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("postList",	postList);
 		mv.addObject("cityList",	cityList);
@@ -115,7 +115,7 @@ public class JopsController {
 			mv.addObject("clickList",list);
              if(userVo != null ) {	
 				
-				List<ResumeListVo> resumeVo = mainMapper.getUserResume(userVo.getUser_idx());
+				List<ResumeListVo> resumeVo = mainMapper.getUserResumeIdx(userVo.getUser_idx());
 				String ub_idx = mainMapper.getBookU(userVo.getUser_idx(),vo.getCompany_idx());
 				mv.addObject("cb_idx",ub_idx);
 				mv.addObject("resumeVo",resumeVo);

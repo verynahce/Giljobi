@@ -22,6 +22,7 @@ import com.prj.main.vo.ReviewCompanyListVo;
 import com.prj.main.vo.SkillVo;
 import com.prj.main.vo.UserReviewVo;
 import com.prj.users.vo.ApplicationVo;
+import com.prj.users.vo.ResumeSkillVo;
 import com.prj.users.vo.UserScoutVo;
 
 @Mapper
@@ -97,6 +98,9 @@ public interface MainMapper {
 	List<ResumeClickVo> getResumeClickListR(int resume_idx, int company_idx, int duty_id);
 	ResumeClickVo getResumeClick(int resume_idx, int company_idx);
 	void insertResumeClick(int resume_idx, int company_idx);
+	List<ResumeSkillVo> getResumeSkillListLong();
+	List<PostListVo> getCompanyPostIdx(int company_idx);
+	List<ResumeListVo> getUserResumeIdx(int user_idx);
 
 
 

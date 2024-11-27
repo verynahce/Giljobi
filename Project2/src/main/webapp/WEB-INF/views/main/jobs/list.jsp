@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,12 @@
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer></script>
+<style>
+.stack-line{
+margin-top:6px;
+margin-left: -8px;
+}
+</style>
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp" %>
@@ -73,7 +80,13 @@
                   <li class="post-card-img"><a href="/Main/Jobs/View?post_idx=${card.post_idx}"><img src="/images/duty/${card.duty_id}.png"></a></li>
                   <li class="post-card-company">${card.company_name}</li>
                   <li class="post-card-title"><a href="/Main/Jobs/View?post_idx=${card.post_idx}">${card.post_title}</a></li>
-                  <li class="post-card-info">${card.city_name}, ${card.duty_name},${card.career_name},${card.emp_name} <span class="postSkill">${card.skill_name}</span></li>
+                  <li class="post-card-info">${card.city_name}, ${card.duty_name},${card.career_name},${card.emp_name}  </li>               
+                 <li class="post-card-info stack-line">
+                        <c:set var="skills" value="${fn:split(card.skill_name, ',')}" />
+                       <c:forEach var="skill" items="${skills}">
+                            <span class="postSkill">${skill}</span>&nbsp;
+                       </c:forEach>
+                 </li>
                 </ul>
               </div>
           	</c:when>
@@ -197,7 +210,13 @@ document.addEventListener('keydown', function(event) {
 	                $('.main-post-list').html("");
 	                response.postList.forEach(a => {
 	                	console.log(a.post_idx)
-	                	if (a.skill_name) {
+	              let res = "";
+						if (a.skill_name) {
+						    const skillnameList = a.skill_name.split(",");
+						    skillnameList.forEach(skill => {
+						        res += `<span class="postSkill">\${skill}</span> &nbsp;`;
+						    });
+	                		
 						    $('.main-post-list').append(
 						        '<div class="post-card">' +
 						            '<ul>' +
@@ -206,9 +225,9 @@ document.addEventListener('keydown', function(event) {
 						                '<li class="post-card-title"><a href="/Main/Jobs/View?post_idx=' + a.post_idx + '">' + a.post_title + '</a></li>' +
 						                '<li class="post-card-info">' +
 						                    a.city_name + ', ' + a.duty_name + ',' + a.career_name + ' ,' + a.emp_name +
-						                    '<span class="postSkill">' + a.skill_name + '</span>' +
-						                '</li>' +
-						            '</ul>' +
+
+						                '</li><li class="post-card-info stack-line">' + res +
+						            '</li></ul>' +
 						        '</div>'
 						    );
 						} else {

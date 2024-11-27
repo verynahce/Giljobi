@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResumeSkillVo {
+public class reviewImageVo {
 
-	private int resume_skill_idx;
-	private int resume_idx;
-	private int skill_id;
-	private String skill_name;
 
+	private int	 image_idx;
+	private String imagePath;
+	
 }

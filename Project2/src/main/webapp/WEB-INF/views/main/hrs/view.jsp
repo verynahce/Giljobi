@@ -496,7 +496,7 @@ height: 28px;
         </tr>
         </table>
       </div>
-     <c:if test="${vo.skill_name }">
+     <c:if test="${not empty SkillList }">
       <div class="sub-filed">
         <h4 class="sub-title">업무 및 스킬</h4>
         <hr>
@@ -504,8 +504,9 @@ height: 28px;
          <tr>
 		   <td colspan="2" class="sub-skill">
            <div class="sub-skill-layout">
-
-              <div>${vo.skill_name }</div>
+          <c:forEach var="skill" items="${SkillList}">
+              <div>${skill.skill_name}</div> 
+          </c:forEach>
            </div> 
          </td>
 		</tr>

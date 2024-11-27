@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResumeSkillVo {
+public class ResumeSkillFormVo {
 
-	private int resume_skill_idx;
 	private int resume_idx;
-	private int skill_id;
 	private String skill_name;
 
 }
