@@ -1,6 +1,7 @@
 package com.prj.users.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.prj.companys.mapper.CompanyMapper;
 import com.prj.companys.vo.CompanyVo;
+import com.prj.companys.vo.PostSkillVo;
 import com.prj.main.mapper.MainMapper;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.ClarificationVo;
@@ -30,6 +33,7 @@ import com.prj.users.mapper.UserMapper;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.EduVo;
 import com.prj.users.vo.ResumeCareerVo;
+import com.prj.users.vo.ResumeSkillFormVo;
 import com.prj.users.vo.ResumeSkillVo;
 import com.prj.users.vo.ResumeVo;
 import com.prj.users.vo.ScoreVo;
@@ -54,6 +58,8 @@ public class MyPageController {
 	private PdsService pdsService;
 	@Autowired
 	private ClickService clickService;
+	@Autowired
+	private CompanyMapper companyMapper;
 	@RequestMapping("/Home/View")
 	public ModelAndView homeview(HttpServletRequest request, HttpServletResponse responese) {		
 		
@@ -198,7 +204,8 @@ public class MyPageController {
 		}else {
 			imagePath = ifvo.getImage_path().replace("\\", "/");
 		}				
-		
+		//스킬 정보
+		List <PostSkillVo> SkillList = companyMapper.getPostSkillList(post_idx);
 		//이력서 도출
 		List<ResumeVo> SRList = userMapper.getSRList(user_idx);
 		
@@ -211,6 +218,7 @@ public class MyPageController {
 		mv.addObject("pcount",pcvo);
 		mv.addObject("cfvo",cfvo);
 		mv.addObject("imagePath",imagePath);
+		mv.addObject("SkillList",SkillList);
 		mv.addObject("score",score.getScore());	
 			return mv;
 }
@@ -245,6 +253,9 @@ public class MyPageController {
 		CompanyVo cvo= userMapper.getCompany(post_idx);
 		ScoreVo score = userMapper.getReviewScore(post_idx);
 		
+		//스킬 정보
+		List <PostSkillVo> SkillList = companyMapper.getPostSkillList(post_idx);
+		
 	    //공고수 , 인사담당자톡
 		PostCountVo pcvo = mainMapper.getPostCount(String.valueOf(post_idx));
 		ClarificationVo cfvo = mainMapper.getClarification(post_idx);
@@ -269,6 +280,7 @@ public class MyPageController {
 		mv.addObject("pcount",pcvo);
 		mv.addObject("cfvo",cfvo);
 		mv.addObject("imagePath",imagePath);
+		mv.addObject("SkillList",SkillList);
 		mv.addObject("score",score.getScore());	
 		return mv;
 	}
@@ -342,7 +354,8 @@ public class MyPageController {
 	
 	//이력서 정보
 	ResumeListVo vo  =userMapper.getResumeLong(resume_idx);
-	
+	//스킬 정보
+	List <ResumeSkillVo> SkillList = userMapper.getResumeSkillList(resume_idx);
 	//경로설정을 위한 user_idx 구하기
 	ResumeVo rvo = userMapper.getResume(resume_idx);
 	
@@ -363,6 +376,7 @@ public class MyPageController {
 	mv.addObject("user_idx",rvo.getUser_idx());
 	mv.addObject("imagePath",imagePath);
 	mv.addObject("pfvoList",pfvoList);
+	mv.addObject("SkillList",SkillList);
 	mv.setViewName("user/mypage/resume/view");
 	return mv;
 	}
@@ -372,6 +386,9 @@ public class MyPageController {
 	
 	//이력서 정보
 	ResumeListVo vo  =userMapper.getResumeLong(resume_idx);
+	
+	//스킬 정보
+	List <ResumeSkillVo> SkillList = userMapper.getResumeSkillList(resume_idx);
 	
 	//경로 설정을 위한 user_idx 구하기
 	ResumeVo rvo = userMapper.getResume(resume_idx);
@@ -411,8 +428,6 @@ public class MyPageController {
 	mv.addObject("eMonth",eMonth);
 	
 	}
-	
-
 	mv.addObject("resumeVo",vo);
 	mv.addObject("user_idx",rvo.getUser_idx());
 	mv.addObject("Edu",edVo);
@@ -423,6 +438,7 @@ public class MyPageController {
 	mv.addObject("imagePath",imagePath);
 	mv.addObject("pfvoList",pfvoList);
 	mv.addObject("ifvo",ifvo);
+	mv.addObject("SkillList",SkillList);
 	
 	mv.setViewName("user/mypage/resume/update");
 	return mv;
@@ -431,7 +447,7 @@ public class MyPageController {
 	@RequestMapping("/Resume/Update")
 	public ModelAndView resumeUpdate(ResumeVo resumeVo, 
 			                         @RequestParam(value="skill_name", 
-			                        		       required = false) String skill_name,
+			                        		       required = false) String[] skill_name,
 			                         @RequestParam(value="career_cname",required = false) String career_cname,
 			                         @RequestParam(value="career_description",required = false) String career_description,
 			                         @RequestParam(value="career_sdate",required = false) String career_sdate,
@@ -461,18 +477,18 @@ public class MyPageController {
 	pdsService.serWrite(map,uploadfiles);
 
     //기술 정보 업데이트   	
-	  //기술이 이미 INSERT 되있는지 확인-> skill_name 값이 존재할때 : 있으면 UPDATE / 없으면 INSERT 진행
-	  //                              -> 값이추가 되지 않은경우(null) : 원래 값이 있다면 DELETE 진행
-	ResumeSkillVo svo = userMapper.getSkill(resumeVo);	 	
-	if(skill_name != null ) {
-	  if(svo != null) {
-	     userMapper.updateSkill(skill_name,resumeVo.getResume_idx()); 
-	  }else if(svo == null) {		
-	     userMapper.insertSkill2(resumeVo.getResume_idx(),skill_name);	
-	    }
-	}else {				
-		userMapper.deleteSkill(resumeVo.getResume_idx());
-		
+	//List <ResumeSkillVo> svo = userMapper.getSkill(resumeVo);	
+	userMapper.deleteSkill(resumeVo.getResume_idx());		
+	if(skill_name != null ) {		
+	   List<ResumeSkillFormVo> skillList = new ArrayList<>();
+	   
+    for (String skill : skill_name) {
+    	ResumeSkillFormVo skillVo = new ResumeSkillFormVo(resumeVo.getResume_idx(), skill);
+        skillList.add(skillVo);           
+    }	
+    userMapper.updateSkillList(skillList); 
+
+
 	}
 	
 	//경력 정보 업데이트
@@ -530,21 +546,20 @@ public class MyPageController {
 	
 	@RequestMapping("/Resume/Write")
 	public ModelAndView resumeWrite(ResumeVo resumeVo, 
-            						@RequestParam(value="skill_name", 
-            									  required = false) String skill_name,
+            						@RequestParam(value="skill_name", required = false) String[] skill_name,
             						@RequestParam(value="career_cname",required = false) String career_cname,
             						@RequestParam(value="career_description",required = false) String career_description,
             						@RequestParam(value="career_sdate",required = false) String career_sdate,
             						@RequestParam(value="career_edate",required = false) String career_edate,
             						@RequestParam(value="upfile",required = false) MultipartFile[] uploadfiles,
             						HashMap<String, Object> map,
-            						@RequestParam(value="upimage",required = false) MultipartFile uploadimage) {
+            						@RequestParam(value="upimage",required = false) MultipartFile uploadimage
+            						) {
 		
 	   //uploadfiles null 오류 처리
 		if (uploadfiles == null) {
 	        uploadfiles = new MultipartFile[0]; 
-	    }
-		
+	    }		
 		//유저 변수 
 		int user_idx =resumeVo.getUser_idx();
 		
@@ -555,8 +570,15 @@ public class MyPageController {
 		
 		// 이력서 , 스킬, 경력 인서트
 		userMapper.insertResume(resumeVo);		
-		if(skill_name != null ) {
-		userMapper.insertSkill(user_idx,skill_name); }
+		if(skill_name != null ) {			
+			List<ResumeSkillFormVo> skillList = new ArrayList<>();
+        for (String skill : skill_name) {
+        	ResumeSkillFormVo skillVo = new ResumeSkillFormVo(resumeVo.getResume_idx(), skill);
+            skillList.add(skillVo);           
+        }		
+		userMapper.insertSkillList(skillList);				
+		//userMapper.insertSkill(user_idx,skill_name); 
+		}
 		if(career_cname != null) {
 		userMapper.insertCarrer(user_idx,career_cname,career_description,career_sdate,career_edate);
 		}

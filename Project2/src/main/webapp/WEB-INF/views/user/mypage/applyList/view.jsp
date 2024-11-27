@@ -236,8 +236,9 @@ p {
      background-color:#EBECF1; 
      border-radius: 8px;
      color:#555555px;
-     font-size: 12px;
+     font-size: 13px;
      font-weight: 400;
+     letter-spacing: 0.5px;
      }
      
      div:nth-child(1) {
@@ -453,8 +454,10 @@ p {
 		<tr>
 		  <td colspan="2" class="sub-skill">업무스킬
            <div class="sub-skill-layout">
-            <c:if test="${not empty postVo.skill_name}">
-              <div>${postVo.skill_name} </div> 
+            <c:if test="${not empty SkillList}">
+            <c:forEach var="skill" items="${SkillList}">
+              <div>${skill.skill_name} </div> 
+             </c:forEach>
            </c:if>
            </div> 
          </td>

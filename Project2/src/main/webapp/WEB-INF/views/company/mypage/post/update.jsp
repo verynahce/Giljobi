@@ -427,12 +427,14 @@ align-items: baseline;
 	      <input class="input-size2" id="skill" type="text" value="" placeholder="스킬을 영어로 입력해주세요" list="skillOptions"/>
          <div id='techList'>
        
-      <c:if test="${not empty vo.skill_name}">
+      <c:if test="${not empty pSkillList}">
+      <c:forEach var="skill" items="${pSkillList}">
            <div class="pSkill">
-           ${vo.skill_name}
+            ${skill.skill_name}
             <p class="skillDelete"> &nbsp; x &nbsp; </p>
-            <input type="hidden" name="skill_name" value="${vo.skill_name}"/>
+            <input type="hidden" name="skill_name" value="${skill.skill_name}"/>
            </div>
+          </c:forEach> 
          </c:if>         
          
          </div>

@@ -996,7 +996,7 @@ footer {
 
     & .company-content{display: flex; gap: 50px;
       & .company-img{
-        width: 120px; height: 120px; background: #F8F8F8;
+        width: 120px; height: 120px;
         text-align: center; line-height: 120px;
         border-radius: 16px;
       }
@@ -1153,7 +1153,6 @@ footer {
         & .company-image {
           width: 120px;
           height: 120px;
-          background: #F8F8F8;
           line-height: 120px;
           text-align: center;
           border-radius: 16px;

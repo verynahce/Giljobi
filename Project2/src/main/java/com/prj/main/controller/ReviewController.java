@@ -1,11 +1,11 @@
 package com.prj.main.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,14 +13,16 @@ import org.springframework.web.servlet.ModelAndView;
 import com.prj.companys.mapper.CompanyMapper;
 import com.prj.main.mapper.MainMapper;
 import com.prj.main.mapper.PagingMapper;
+import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.Pagination;
 import com.prj.main.vo.PagingResponse;
-import com.prj.main.vo.PostVo;
 import com.prj.main.vo.ReviewCompanyInfoVo;
 import com.prj.main.vo.ReviewCompanyListVo;
 import com.prj.main.vo.SearchVo;
 import com.prj.main.vo.UserReviewVo;
+import com.prj.service.PdsService;
 import com.prj.users.vo.UserVo;
+import com.prj.users.vo.reviewImageVo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -37,6 +39,8 @@ public class ReviewController {
 	
 	@Autowired
 	private CompanyMapper companyMapper;
+	@Autowired
+	private PdsService pdsService;
 	
 	/* review 관련 */
 	/*================================================================================*/
@@ -66,11 +70,12 @@ public class ReviewController {
 
     	List<ReviewCompanyListVo> list = pagingMapper.getCompanyPagingList(offset,recordSize);;
 	    response = new PagingResponse<>(list, pagination);
+	    
 	    System.out.println("response : " + response);
 	    mv.addObject("count",count);
 		mv.addObject("response",response);
 		mv.addObject("nowpage",nowpage);		
-		mv.addObject("searchVo",searchVo);		
+		mv.addObject("searchVo",searchVo);				
 		mv.setViewName("main/review/list");
 		return mv;
 	}
@@ -81,10 +86,20 @@ public class ReviewController {
 		Integer count = mainMapper.getReviewCount(company_idx);
 		List<UserReviewVo> userReview = mainMapper.getUserReview(company_idx);
 		int  countP = mainMapper.countP(company_idx);
+		
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}
+		
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("countP", countP);
 		mv.addObject("vo",vo);
 		mv.addObject("count",count);
+		mv.addObject("imagePath",imagePath);
 		mv.addObject("userReview",userReview);
 		mv.setViewName("main/review/view");
 		return mv;

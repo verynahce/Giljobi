@@ -90,7 +90,9 @@
 		          <td>
 		            <div><a href="View?resume_idx=${resume.resume_idx}">${resume.resume_title}</a></div>
 		            <ul class="stack-list">
-		              <c:if test="${not empty resume.skill_name}"><li>${resume.skill_name}</li></c:if>
+		            <c:forEach var ="rs" items="${rSkillList}">
+		              <c:if test="${rs.resume_idx == resume.resume_idx}"><li>${rs.skill_name}</li>&nbsp;&nbsp;</c:if>
+		             </c:forEach>     
 		            </ul>
 		          </td>
 		          <td>
@@ -117,7 +119,7 @@
   const $skillUl    = document.querySelector(".skill-div ul");
   const $skills     = document.querySelectorAll(".skill-div ul li");
   const $stackList  = document.querySelector(".stack-list");
-
+  
   // 검색 인풋 focus
   $skillInput.addEventListener("focus", function(){
     $skillUl.style.display = "block"
@@ -135,6 +137,7 @@ $skillInput.addEventListener("input", function(e) {
     	$skillInput.style.background = "url('/images/icon/stack.png') no-repeat 12px center";
     }
 
+
     // 모든 스킬을 순회하며 입력값과 일치하는 스킬 찾기
     $skills.forEach(skill => {
         let skillStr = skill.innerText.toUpperCase();
@@ -148,8 +151,9 @@ $skillInput.addEventListener("input", function(e) {
 
     // 필터링된 스킬 목록 업데이트
     $skillUl.innerHTML = html;
+   
 });
-
+ 
 // 스킬 목록에서 클릭 이벤트 처리
 $skillUl.addEventListener("click", function(e) {
     if (e.target.tagName === 'LI') {
@@ -167,10 +171,6 @@ $("main").on('click', function(e) {
     }
 	
 	})
-
-
-
-
 
 // 스택에 스킬 추가
 function addSkillToStack(skillName, skillId) {
@@ -200,7 +200,8 @@ document.addEventListener('keydown', function(event) {
 	    });
   
   function fillterAjax(skill){
-  	   let cityId = $("#cityId").val();
+  	        let cityId = $("#cityId").val();
+  	        console.log(cityId);
 	        let dutyId = $("#dutyId").val();
 	        let careerId= $("#careerId").val();
 	        let empId = $("#empId").val();
@@ -214,13 +215,19 @@ document.addEventListener('keydown', function(event) {
 	                $('.resume-list').html("");
 	                let html = "";
 	                response.resumeList.forEach(function(a) {
+	                	
+	                	
+
 	                    html += "<tr>";
 	                    html += "<td>" + a.user_name + "<span>(" + a.user_gender + ", " + a.user_age + "세)</span></td>";
 	                    html += "<td>";
 	                    html += "<div><a href='View?resume_idx=" + a.resume_idx + "'>" + a.resume_title + "</a></div>";
 	                    html += "<ul class='stack-list'>";
 	                    if (a.skill_name) {
-	                        html += "<li>" + a.skill_name + "</li>";
+	                    	const skillnameList =  a.skill_name.split(",");
+	                    	skillnameList.forEach(skill => {
+		                     html += "<li>" + skill + "</li>&nbsp;&nbsp;";		                    		
+	                    	})
 	                    }
 	                    html += "</ul>";
 	                    html += "</td>";

@@ -83,9 +83,7 @@
           WHERE RESUME_IDX IN (
                     SELECT RESUME_IDX
                     FROM  RESUME 
-                    WHERE USER_IDX = #{user_idx})
-            
-    
+                    WHERE USER_IDX = #{user_idx})               
     </select>
     
     <select id="getApply">
@@ -125,7 +123,6 @@
 	    E.EMP_NAME,
 	    C.CITY_NAME,
 	    ED.EDU_NAME,
-	    S.SKILL_NAME,
 	    POST_TITLE,
 	    POST_CONTENT,
 	    POST_SALARY,
@@ -140,8 +137,6 @@
 	           LEFT JOIN EMP E ON P.EMP_ID = E.EMP_ID
 	           LEFT JOIN EDU ED ON P.EDU_ID = ED.EDU_ID 
 	           LEFT JOIN COMPANYS CO ON P.COMPANY_IDX = CO.COMPANY_IDX
-	           LEFT JOIN POST_SKILL PS ON P.POST_IDX = PS.POST_IDX
-             LEFT JOIN SKILL S ON PS.SKILL_ID = S.SKILL_ID  
     WHERE P.POST_IDX = #{post_idx}                
      </select>
      
@@ -235,7 +230,6 @@
     RESUME_TITLE,
     EB_NAME,
     ED.EDU_NAME,
-    S.SKILL_NAME,
     C.CITY_NAME,
     D.DUTY_NAME,
     E.EMP_NAME,
@@ -254,8 +248,6 @@
 	           LEFT JOIN EMP E ON R.EMP_ID = E.EMP_ID
 	           LEFT JOIN EDU ED ON R.EDU_ID = ED.EDU_ID 
 	           LEFT JOIN USERS U ON R.USER_IDX = U.USER_IDX
-               LEFT JOIN RESUME_SKILL RS ON R.RESUME_IDX = RS.RESUME_IDX
-               LEFT JOIN SKILL S ON RS.SKILL_ID = S.SKILL_ID
                LEFT JOIN RESUME_CAREER RC ON R.RESUME_IDX = RC.RESUME_IDX
     WHERE R.RESUME_IDX=#{resume_idx}               
      </select>
@@ -307,14 +299,6 @@
      WHERE  RESUME_IDX=#{resume_idx}
      </update>  
      
-     <update id="updateSkill">
-		UPDATE RESUME_SKILL
-		SET  SKILL_ID = (
-		SELECT SKILL_ID
-		FROM SKILL
-		WHERE SKILL_NAME = #{arg0})
-		WHERE RESUME_IDX = #{arg1}
-     </update>
      
      <update id="updateCareer">
 		UPDATE RESUME_CAREER
@@ -503,6 +487,39 @@
     WHERE USER_IDX = #{user_idx}	
  	</update>
  	
+ 	   <!-- 스킬 여러개 저장 -->
+  <insert id="insertSkillList">
+  <foreach collection="skillList" item="skill" index="i" 
+         open="INSERT ALL" 
+         close="SELECT * FROM DUAL" 
+         separator="">
+    INTO RESUME_SKILL VALUES (
+        (SELECT NVL(MAX(RESUME_SKILL_IDX), 0) FROM RESUME_SKILL) + #{i} + 1,
+       (SELECT NVL(MAX(RESUME_IDX),0) FROM RESUME ),
+       (SELECT SKILL_ID FROM SKILL WHERE SKILL_NAME= #{skill.skill_name} ) )
+  </foreach>
+  </insert>
+  
+  <select id="getResumeSkillList">
+     SELECT SKILL_NAME ,RS.SKILL_ID
+    FROM RESUME_SKILL RS JOIN SKILL S ON RS.SKILL_ID = S.SKILL_ID
+    WHERE RS.RESUME_IDX =#{resume_idx}
+  
+  </select>
+   	   <!-- 스킬 여러개 저장 (수정버전) -->
+  <insert id="updateSkillList">
+  <foreach collection="skillList" item="skill" index="i" 
+         open="INSERT ALL" 
+         close="SELECT * FROM DUAL" 
+         separator="">
+    INTO RESUME_SKILL VALUES (
+        (SELECT NVL(MAX(RESUME_SKILL_IDX), 0) FROM RESUME_SKILL) + #{i} + 1,
+       #{skill.resume_idx} ,
+       (SELECT SKILL_ID FROM SKILL WHERE SKILL_NAME= #{skill.skill_name} ) )
+  </foreach>
+  </insert>
+
+  
 </mapper>
 
 

@@ -150,7 +150,7 @@ height: 110px;
          <img src="/image/read?path=${imagePath}" alt="User Image" class="profileSize">
        </c:when> 
        <c:otherwise>
-         <img src="/images/icon/user-profile.png" alt="User Image" class="profileSize" >
+         <img src="/images/icon/company-profile.png" alt="User Image" class="profileSize" >
        </c:otherwise>
        </c:choose>
   		  <div class="text-box">
