@@ -133,21 +133,16 @@ public class MyPageController {
 	@RequestMapping("/Home/update")
 	public ModelAndView homeupdate(UserVo uservo,@RequestParam(value="upimage",required = false) MultipartFile uploadimage) {
 	
-		HashMap<String, Object> map = new HashMap<>();
-	     //이미지 업데이트	
-		if(uploadimage != null && !uploadimage.isEmpty()) {	
-			 String type ="USERS";
-	         map.put("type", type );	
-	         System.out.println("!!!!!!!!!!!!!!!!!!!" + uservo);
-			pdsService.updateimageUser(uploadimage,uservo.getImage_idx(),map,uservo);
-		 }else {
-				 
-			  userMapper.updateUser(uservo); 
-		 }	
-		
-
-
-		
+	HashMap<String, Object> map = new HashMap<>();
+     //이미지 업데이트	
+	if(uploadimage != null && !uploadimage.isEmpty()) {	
+		 String type ="USERS";
+         map.put("type", type );	
+		pdsService.updateimageUser(uploadimage,uservo.getImage_idx(),map,uservo);
+	 }else {
+			 
+		  userMapper.updateUser(uservo); 
+	 }	
     ModelAndView mv = new ModelAndView();		
 	 mv.setViewName("redirect:/User/MyPage/Home/View");
     return mv;

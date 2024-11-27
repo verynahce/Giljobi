@@ -210,7 +210,7 @@
        	   ${b.cyears}년 ${b.cmonths}개월
        	   </c:when>
        	   <c:otherwise>
-       	   신입</td>
+       	   신입
        	   </c:otherwise>
        	   </c:choose>
        	   </td>

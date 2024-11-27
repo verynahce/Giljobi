@@ -13,7 +13,8 @@
 
 .innercontents {
    display:flex;
-   gap:30px;
+   gap:110px;
+
  }
  
  .sidebar {
@@ -71,6 +72,8 @@
    flex-direction:column;
    align-items:left;
    width: 100%;
+   gap:30px;
+
  }
  
  .title {
@@ -88,6 +91,7 @@
  
  .contents {
    width:550px;
+
  }
  
  .info {

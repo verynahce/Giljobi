@@ -20,6 +20,8 @@ import com.prj.users.mapper.UserMapper;
 import com.prj.users.vo.ResumeVo;
 import com.prj.users.vo.UserVo;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class PdsServiceimpl implements PdsService {
      

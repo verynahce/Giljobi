@@ -374,7 +374,7 @@
          <table class="post-box">
          <tr>
           <td id="postname"><a href="/Main/Review/View?company_idx=${item.company_idx}">${item.company_name}</a></td>
-          <td class="postbook"><input type="image" src="/images/bookmark/staron.png" class="star" alt="${item.ub_idx}"data-co="${item.company_idx}" data-user="${item.user_idx}"/></td>
+          <td class="postbook"><input type="image" src="/images/bookmark/staron.png" class="star" alt="${item.ub_idx}"data-co="${item.company_idx}" data-user="${item.user_idx}" data-count="on"/></td>
          </tr>
          <tr>
           <td id="posteddate">${item.company_area}</td>
@@ -433,14 +433,15 @@ $(function(){
     });
     
     // 북마크 색 변환
-          let count = 0; 	 
+ 	 
          const stars = $('.star'); 
          
         
          for (let i = 0; i < stars.length; i++) {
              $(stars[i]).on('click', function() {
-            	 
-            	 if (count === 0) {
+            	  let count = $(stars[i]).data('count')
+            	
+            	 if (count === "on") {
             		 $(stars[i]).attr('src', '/images/bookmark/staroff.png');
                      count = 1;                    
                      console.log($(stars[i]).attr('alt'))
@@ -448,12 +449,14 @@ $(function(){
                  	$.ajax({
             			url:'/User/MyPage/BookMark/Off',
             			data:{ub_idx: $(stars[i]).attr('alt')}
-            		}).done(function(data){           			
-            			console.log()
+            		}).done(function(result){  
+            	   $(stars[i]).data('count', 'off');
+            			console.log($(stars[i]).data('count'))
             		}).fail(function(err){
             			console.log(err)
             		})
                      
+            		
                      
                  } else {   	
                 	 $(stars[i]).attr('src', '/images/bookmark/staron.png');
@@ -466,7 +469,8 @@ $(function(){
              			data:{company_idx: $(stars[i]).data('co'),
              				  user_idx: $(stars[i]).data('user')
              			}
-             		}).done(function(data){           			
+             		}).done(function(data){ 
+             			 $(stars[i]).data('count', 'on');
              			console.log()
              		}).fail(function(err){
              			console.log(err)

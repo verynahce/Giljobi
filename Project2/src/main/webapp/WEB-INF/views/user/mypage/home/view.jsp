@@ -100,7 +100,7 @@
  .text-box {
    margin-top:10px;
    margin-right:auto;
-   margin-left: 10px;
+   margin-left: 15px;
  }
 
  .settings-image {
@@ -165,7 +165,7 @@ height: 110px;
          <img src="/image/read?path=${imagePath}" alt="User Image" class="profileSize">
        </c:when> 
        <c:otherwise>
-         <img src="/images/icon/user-profile.png" alt="User Image" >
+         <img src="/images/icon/user-profile.png" alt="User Image"  class="profileSize">
        </c:otherwise>
        </c:choose>
        
