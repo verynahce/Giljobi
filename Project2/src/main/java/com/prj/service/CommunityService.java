@@ -14,9 +14,11 @@ import com.prj.dto.CommunityReplyDTO;
 import com.prj.entity.Community;
 import com.prj.entity.CommunityReply;
 import com.prj.entity.Duty;
+import com.prj.entity.Notice;
 import com.prj.entity.Users;
 import com.prj.repository.CommunityRepository;
 import com.prj.repository.DutyRepository;
+import com.prj.repository.NoticeRepository;
 import com.prj.repository.ReplyRepository;
 import com.prj.repository.UsersRepository;
 
@@ -35,6 +37,8 @@ public class CommunityService {
 	private DutyRepository dutyRepository;
 	@Autowired
 	private ReplyRepository replyRepository;
+	@Autowired
+	private NoticeRepository noticeRepository;
 
 	public List<Community> getCommunityList() {
 		List<Community> CommunityList =  cRepository.findAll();
@@ -82,8 +86,8 @@ public class CommunityService {
 		 Users user = usersRepository.findById(crDto.getUserIdx()).orElseThrow(null);
          Duty duty = dutyRepository.findById(crDto.getDutyId()).orElseThrow(null);    
         
-		 System.out.println("유저값 "+user);
-		 System.out.println("유저값 "+duty);
+		 System.out.println("게시글 쓴 유저값 "+user);
+		 System.out.println("게시글 직무값 "+duty);
 		
          LocalDateTime cdate = LocalDateTime.now();
                 
@@ -232,6 +236,37 @@ public class CommunityService {
 		//수정 후 다시 저장
 		target.patch(community,duty);  
 		Community updated = cRepository.save(target);
+		
+	}
+
+	public void insertNoticeReply(CommunityReplyDTO crDto, CommunityReplyDTO created) {
+		System.out.println("댓글 확인 좀 " + crDto.getCommunityIdx());
+		//1.게시물이 있는지 조회
+		Community community = cRepository.findById(crDto.getCommunityIdx()).orElseThrow( () -> new IllegalArgumentException(
+					"메시지 전송실패! 대상 게시물이 없습니다" ) );
+		System.out.println("유저값 "+community.getUsers());
+		 //2. 칼럼 값 구하기
+        
+         CommunityReply reply = replyRepository.findById(created.getReplyIdx()).orElseThrow( () -> new IllegalArgumentException(
+					"메시지 전송실패! 대상 댓글이 없습니다" ) );		
+         LocalDateTime cdate = LocalDateTime.now();
+         String type = "REPLY";
+         String notification ="커뮤니티글에 유저가 댓글을 등록했습니다! 확인해보세요";
+         String subnoti = "댓글등록";
+         Long senderIdx = reply.getUsers().getUserIdx();
+        
+         
+         Long cUser = community.getUsers().getUserIdx();
+         Long rUser = reply.getUsers().getUserIdx();
+ 		 System.out.println("유저값 "+ cUser);
+		 System.out.println("유저값 "+ rUser);
+         // 게시물유저 = 댓글 유저 동일 제외
+         if (!cUser.equals(rUser)) {
+             Notice notice = new Notice(community.getUsers(),reply,cdate,type,notification,subnoti,community,senderIdx);           
+             Notice send = noticeRepository.save(notice); 
+	 
+         }
+
 		
 	}
 	

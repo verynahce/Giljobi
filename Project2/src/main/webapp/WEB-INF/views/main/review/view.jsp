@@ -64,7 +64,7 @@ height: 100px;
 		 <div class="company-history">
 		  <p><img src="/images/review/location.png">${vo.company_address }</p>
 		  <p><img src="/images/review/Building.png">${vo.company_birthdate }</p>
-		  <p><img src="/images/review/Clipboard.png">공고수${countP}</p>
+		  <p><img src="/images/review/Clipboard.png">공고수 &nbsp; ${countP}개</p>
 		 </div>
         </div>
       </div>
