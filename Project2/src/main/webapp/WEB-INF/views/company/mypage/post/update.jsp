@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://cdn.jsdelivr.net/npm/browser-scss@1.0.3/dist/browser-scss.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -427,12 +427,14 @@ align-items: baseline;
 	      <input class="input-size2" id="skill" type="text" value="" placeholder="스킬을 영어로 입력해주세요" list="skillOptions"/>
          <div id='techList'>
        
-      <c:if test="${not empty vo.skill_name}">
+      <c:if test="${not empty pSkillList}">
+      <c:forEach var="skill" items="${pSkillList}">
            <div class="pSkill">
-           ${vo.skill_name}
+            ${skill.skill_name}
             <p class="skillDelete"> &nbsp; x &nbsp; </p>
-            <input type="hidden" name="skill_name" value="${vo.skill_name}"/>
+            <input type="hidden" name="skill_name" value="${skill.skill_name}"/>
            </div>
+          </c:forEach> 
          </c:if>         
          
          </div>

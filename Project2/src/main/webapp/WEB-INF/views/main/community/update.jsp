@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>길JOB이</title>
+<title>잡덕</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://cdn.jsdelivr.net/npm/browser-scss@1.0.3/dist/browser-scss.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -22,26 +22,22 @@
             automatic_uploads: true,  // 자동 업로드 활성화
             images_upload_url: '/upload-image',  // 이미지 업로드 URL
             images_upload_base_path: '/images',  // 이미지 저장 경로
+            setup: function (editor) {
+                editor.on('change', function () {
+                    editor.save(); // 에디터의 내용을 textarea에 저장
+                });}
         });
     </script>
 <style>
-/*오버레이*/
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display:none;
-  transition: all 0.3s  ease-in;
- }
+
+
 
  /*body*/
 .inner {
   display:flex;
-  justify-content: space-between;
+  justify-content: center;
+
+  
 }
 
 main {
@@ -50,34 +46,33 @@ main {
 
  .innercontents {
   display:flex;
-  gap:30px;
+justify-content:center;
   font-family: pretendard; 
   padding-top:30px; 
   padding-bottom:60px; 
-}
 
- .container {
-  width:  100%;
-  display:flex;
-  flex-direction: column; 
-  justify-content: center;
-}
- 
+
 .contain-body {
+  border: 1px solid #cccccc;
   width:940px;
   min-height: 1200px;
   background-color: white;
   border-radius: 20px;
-  margin: 0px auto 60px  auto  ;
+  margin: 0px auto;
   padding: 0 60px 50px 60px;
 }
 
 .main-title {
-  color: #ccc;
-  font-size: 36px; 
-  font-weight: 600; 
-  line-height: 15.40px;
-  height:70px;
+ margin-top: 25px;
+  input[type="text"] {
+    margin-bottom:10px;
+    color: #333333;
+    font-size: 36px; 
+    font-weight: 600; 
+    height: 70px;
+    border: none;
+    width:640px;
+  }
 }
 
 .title-text {
@@ -150,8 +145,10 @@ main {
 /*버튼*/
 
 .btn-layout {  
- width:fit-content;
- margin: 80px auto 0 auto;
+padding-top: 40px;
+display: flex;
+justify-content: center;
+
 }
  .btn {
    display: inline-block;
@@ -172,12 +169,14 @@ main {
   background: #fff; 
   color: #7C7373;
   border: 1px solid #ccc;
+  font-size: 16px;
 }
  
  .btn-apply {
    
    background:#2F9EFF;
    color: #fff;
+   font-size: 16px;
    border : 1px solid #ccc;
 }
 
@@ -216,7 +215,27 @@ main {
   align-items:center;
   justify-content:center;
 }
+textarea {
+height: 1000px;
+}
 
+.contain-header {
+display: flex;
+justify-content: space-between;
+align-items:baseline;
+select{
+width: 130px;
+height: 30px;
+    border: 1px solid #cccccc;
+    color: #333333;
+    font-size:16px;
+    border-radius: 7px;
+}
+p{
+ font-size:16px;
+ font-weight: 400;
+}
+}
 </style>
 
 </head>
@@ -226,31 +245,29 @@ main {
 
 <main>
   <div class="inner">  
-  <form action="/Main/Community/Write" method="POST">
-      <div class="innercontents">
-      <div class="container" >
-      <div class="contain-body">       
-      <h2 class="main-title"><textarea name="comTitle" class="title-text" placeholder="제목을 입력하세요."></textarea></h2>
-      <hr class="divider">
-      <div id="info">
-        <span><a class="upload" href=""><img src="/images/community/link.png">링크</a></span>&nbsp;
-        <span><a class="upimage upload" href=""><img src="/images/community/photo.png">사진</a></span>
-      </div>
-      <hr class="divider">
-      <div class="sub-filed">
-	    <textarea id="question-content"  name="comContent" placeholder="질문할 내용을 입력하세요."></textarea>
-	  </div> 
-      <hr class="divider">
-	  <div class="btn-layout">
-              <div class="btn btn-apply"><a href ="#">등록하기</a></div>
-              <div class="btn btn-back"><a href ="/Company/Mypage/Bookmark/List?company_idx=${company_idx}">취소</a></div>
-         </div>  
-                 <label for="content">내용:</label>
-        <textarea id="content" name="content" required></textarea>
-           
-          </div>
-      </div>
-   </div>
+  <form action="/Main/Community/Update" method="POST">
+    <div class="innercontents">
+      <div class="contain-body">   
+        <div class="contain-header">   
+        <h2 class="main-title"><input type="text" name="comTitle" placeholder="제목을 입력하세요" value="${community.comTitle}"></h2>
+        <p>분야&nbsp;</p>
+        <select name="dutyId">
+        <c:forEach var="d" items="${dutyList}">
+          <option  <c:if test="${community.duty.dutyId == d.dutyId}"> selected </c:if> value="${d.dutyId}">${d.dutyName}</option>
+        </c:forEach>
+       </select>
+       </div> 
+     <hr class="divider">
+       <textarea id="content" name="comContent" required>${community.comContent}</textarea>
+       <hr class="divider">
+	   <div class="btn-layout">
+	   <input type="hidden" name="communityIdx" value="${community.communityIdx}">
+	   <input type="hidden" name="userIdx" value="${userIdx}">
+              <div><input class="btn btn-apply"type="submit"value="등록하기"></div>
+              <div class="btn btn-back"><a href ="/Main/Community/List">취소</a></div>
+       </div>
+     </div>                    
+    </div>   
    </form>
  </div>
 
@@ -261,9 +278,17 @@ main {
  
  <script>
  
- //오버레이 
+
  $(function(){
 	 
+	 //tiny 커스텀
+	 tinymce.init({
+		  selector: 'textarea',  
+		  max_height: 500,
+		  max_width: 500,
+		  min_height: 100,
+		  min_width: 400
+		}); 
 
 
 

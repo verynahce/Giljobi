@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>    
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="/js/common.js" defer></script>
@@ -261,7 +261,10 @@ justify-content: flex-end;
        	   <br>
        	   <c:choose>      	    
 			<c:when test="${not empty a.skill_name}">
-			    <span class="stacks">${a.skill_name}</span>&nbsp;
+		        <c:set var="skills" value="${fn:split(a.skill_name, ',')}" />
+		        <c:forEach var="skill" items="${skills}">
+		            <span class="stacks">${skill}</span>&nbsp;
+		        </c:forEach>
 			</c:when>
 			<c:otherwise>
 			     <span class="stacks">미기입</span>&nbsp;

@@ -53,7 +53,7 @@ public class JopsController {
 		List<SkillVo> 	skillList 	= mainMapper.getSkillList();
 	
 		
-		List<PostListVo> postList = mainMapper.getPostList();
+		List<PostListVo> postList = mainMapper.getPostList(); 
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("postList",	postList);
 		mv.addObject("cityList",	cityList);
@@ -88,11 +88,10 @@ public class JopsController {
 		mainMapper.updatePostHit(post_idx);
 		PostListVo vo = mainMapper.getPost(post_idx);
 		Double    totPoint = (Double) mainMapper.getTotPoint(post_idx);
-		System.out.println(totPoint);
 		HttpSession session = request.getSession();
 		Object userObject = session.getAttribute("login");
 		
-		/*추가*/
+		/*추가 지원자-인담자톡-이미지*/
 		PostCountVo pcvo = mainMapper.getPostCount(post_idx);
 		ClarificationVo cfvo = mainMapper.getClarification(Integer.parseInt(post_idx));
 		//이미지 정보
@@ -108,18 +107,15 @@ public class JopsController {
 		
 		ModelAndView mv = new ModelAndView();
 		if (userObject instanceof UserVo) {
-			UserVo userVo = (UserVo) session.getAttribute("login");
-			System.out.println("userlogin : " + userVo);			
-			/*추가*/
-			List<PostClickListVo> list =	mainMapper.getPostClickList(userVo.getUser_idx(),post_idx);
+			UserVo userVo = (UserVo) session.getAttribute("login");			
+			/*추가 클릭-산업군 추천공고*/
+			List<PostClickListVo> list =	mainMapper.getPostClickList(userVo.getUser_idx(),post_idx,vo.getDuty_id());
 			postClickService.insertPostClick(userVo.getUser_idx(),Integer.parseInt(post_idx));
-			/* 여기 까지*/
-			
+			/* 여기 까지*/			
 			mv.addObject("clickList",list);
-			System.out.println("clickList : " + list);
              if(userVo != null ) {	
 				
-				List<ResumeListVo> resumeVo = mainMapper.getUserResume(userVo.getUser_idx());
+				List<ResumeListVo> resumeVo = mainMapper.getUserResumeIdx(userVo.getUser_idx());
 				String ub_idx = mainMapper.getBookU(userVo.getUser_idx(),vo.getCompany_idx());
 				mv.addObject("cb_idx",ub_idx);
 				mv.addObject("resumeVo",resumeVo);

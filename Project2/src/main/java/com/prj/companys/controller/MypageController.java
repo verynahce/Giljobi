@@ -1,5 +1,6 @@
 package com.prj.companys.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.prj.companys.mapper.CompanyMapper;
 import com.prj.companys.vo.ComApplyVo;
 import com.prj.companys.vo.CompanyVo;
+import com.prj.companys.vo.PostSkillFormVo;
 import com.prj.companys.vo.PostSkillVo;
 import com.prj.companys.vo.PostWriteVo;
 import com.prj.main.mapper.MainMapper;
@@ -30,6 +32,8 @@ import com.prj.main.vo.PostVo;
 import com.prj.main.vo.SkillVo;
 import com.prj.service.PdsService;
 import com.prj.users.vo.EduVo;
+import com.prj.users.vo.ResumeSkillFormVo;
+import com.prj.users.vo.ResumeSkillVo;
 import com.prj.users.vo.ScoreVo;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -63,12 +67,20 @@ public class MypageController {
 		CompanyVo vo = companyMapper.getCompany(login);		
 		ScoreVo score = companyMapper.getReviewScore(Company_idx);
 		
-		
+		//이미지 정보
+		ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+		String imagePath = "";
+		if(ifvo==null) {
+			 imagePath = "0";
+		}else {
+			imagePath = ifvo.getImage_path().replace("\\", "/");
+		}
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("companyVo" , vo);
 		mv.addObject("CountP", countP);
 		mv.addObject("CountB", countB);
 		mv.addObject("CountA", countA);
+		mv.addObject("imagePath",imagePath);
 		mv.addObject("score", score.getScore());
 		mv.setViewName("/company/mypage/home/view");
 		return mv;
@@ -82,19 +94,43 @@ public class MypageController {
 	CompanyVo vo = companyMapper.getCompany(companyVo);
 	System.out.println(vo);
 	
+	//이미지 정보
+	ImagefileVo ifvo = pdsService.getImagefile(vo.getImage_idx());
+	String imagePath = "";
+	if(ifvo==null) {
+		 imagePath = "0";
+	}else {
+		imagePath = ifvo.getImage_path().replace("\\", "/");
+	}
+	
 	int company_idx = companyVo.getCompany_idx();
 	ModelAndView mv = new ModelAndView();
 	mv.addObject("companyVo", vo);
+	mv.addObject("imagePath",imagePath);
+	mv.addObject("company_idx",company_idx);
+	mv.addObject("ifvo",ifvo);
 	mv.setViewName("company/mypage/home/update");
 	return mv;
 	}
 	
 	@RequestMapping("/Home/Update")
-	public ModelAndView homeupdate(CompanyVo companyVo) {
+	public ModelAndView homeupdate(CompanyVo companyVo,
+			@RequestParam(value="upimage",required = false) MultipartFile uploadimage) {
 		
-	companyMapper.updateCompany(companyVo);
-	System.out.println(companyVo);
+
+
 	
+	HashMap<String, Object> map = new HashMap<>();		
+    //이미지 업데이트	
+	if(uploadimage != null && !uploadimage.isEmpty()) {	
+		String type ="COMPANYS";
+        map.put("type", type );	
+		pdsService.updateimageCompany(uploadimage,companyVo.getImage_idx(),map,companyVo);
+	 }else {
+		//이력서 정보 업데이트
+     companyMapper.updateCompany(companyVo);	 		 
+	 }
+
 	int company_idx = companyVo.getCompany_idx();
 	ModelAndView mv = new ModelAndView();
 	mv.setViewName("redirect:/Company/Mypage/Home/View");
@@ -130,13 +166,18 @@ public class MypageController {
 	}else {
 		imagePath = ifvo.getImage_path().replace("\\", "/");
 	}
-		
+	
+	//스킬 정보
+	List <PostSkillVo> SkillList = companyMapper.getPostSkillList(Integer.parseInt(postIdx));
+	
+	
 	ModelAndView mv = new ModelAndView();
 	mv.addObject("vo",vo);
 	mv.addObject("score",score.getScore());
 	mv.addObject("pcount",pcvo);
 	mv.addObject("cfvo",cfvo);
 	mv.addObject("imagePath",imagePath);
+	mv.addObject("SkillList",SkillList);
 	mv.setViewName("company/mypage/post/view");
 	return mv;
 	}
@@ -168,6 +209,7 @@ public class MypageController {
 	
 	@RequestMapping("/Post/Write")
 	public ModelAndView postWrite(PostWriteVo postWriteVo,
+			                      @RequestParam(value="skill_name", required = false) String[] skill_name,
 			                      @RequestParam(value="upimage",required = false) MultipartFile uploadimage,
 			                      ClarificationVo carificationVo) {
 	
@@ -176,11 +218,19 @@ public class MypageController {
 	map.put("type", type );
 	pdsService.setimageWrite(map, uploadimage);
 	companyMapper.insertPost(postWriteVo);
-	mainMapper.inserCarification(carificationVo);
-	if (postWriteVo.getSkill_name() != null) {
-        companyMapper.insertPostSkill(postWriteVo);
-    }	
-
+	
+	if(carificationVo.getCloth() != null ) {
+	mainMapper.inserCarification(carificationVo);			
+	}
+	//스킬 확인
+	if (skill_name != null) {
+		List<PostSkillFormVo> skillList = new ArrayList<>();
+        for (String skill : skill_name) {
+        	PostSkillFormVo skillVo = new PostSkillFormVo(postWriteVo.getPost_idx(), skill);
+            skillList.add(skillVo);           
+        }		
+		companyMapper.insertSkillList(skillList);		
+    }
 	
 	ModelAndView mv = new ModelAndView();
 	mv.setViewName("redirect:/Company/Mypage/Post/List?company_idx=" + postWriteVo.getCompany_idx());
@@ -205,6 +255,9 @@ public class MypageController {
 	}	
 	//인담자 톡
 	ClarificationVo cvo = mainMapper.getClarification(Integer.parseInt(postIdx));
+	
+	//스킬 정보
+	List <PostSkillVo> SkillList = companyMapper.getPostSkillList(Integer.parseInt(postIdx));
 	
 	ModelAndView mv = new ModelAndView();
 	List<DutyVo> dutyList = companyMapper.getDuty();
@@ -237,6 +290,7 @@ public class MypageController {
 	mv.addObject("cvo",cvo);
 	mv.addObject("ifvo",ifvo);
 	mv.addObject("skillList", skillList);
+	mv.addObject("pSkillList", SkillList);
 	mv.setViewName("company/mypage/post/update");
 	return mv;
 	
@@ -244,6 +298,7 @@ public class MypageController {
 	
 	@RequestMapping("/Post/Update")
 	public ModelAndView postUpdate(PostWriteVo vo,
+                                  @RequestParam(value="skill_name", required = false) String[] skill_name,
 			                      @RequestParam(value="upimage",required = false) MultipartFile uploadimage,
 			                      ClarificationVo clarificationVo) {
 		
@@ -283,18 +338,15 @@ public class MypageController {
 		}
 	}
 	
-	//기술 정보 업데이트
-	PostSkillVo svo = companyMapper.getSkillIDX(vo.getPost_idx());	
-	// 기술이 기존에 없으면 - insert  있으면 -update 기존에 있지만 지웠다면 - delete 진행
+     //기술업데이트 (1.기존 제거 -> 2.새로 추가)
+	 companyMapper.deleteSkill(vo.getPost_idx());
 	if(vo.getSkill_name() != null ) {
-	  if(svo != null) {
-		  companyMapper.updatePostSkill(vo);
-	  }else if(svo == null) {		
-		  companyMapper.insertSkill(vo);	
-	    }
-	}else {				
-		companyMapper.deleteSkill(vo.getPost_idx());
-		
+		List<PostSkillFormVo> skillList = new ArrayList<>();
+        for (String skill : skill_name) {
+        	PostSkillFormVo skillVo = new PostSkillFormVo(vo.getPost_idx(), skill);
+            skillList.add(skillVo);           
+        }		
+		companyMapper.updateSkillList(skillList);		
 	}
 	
 	ModelAndView mv = new ModelAndView();

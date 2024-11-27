@@ -15,6 +15,7 @@ public class UserVo {
 	private String 	user_tel;
 	private String 	user_address;
 	private String  role;
+	private int image_idx;
 	
 	public UserVo() {
 		this.role = "개인회원";
@@ -22,7 +23,7 @@ public class UserVo {
 		
 	
 	public UserVo(int user_idx, String user_id, String user_name, String user_pw, String user_birthdate,
-			String user_gender, String user_email, String user_tel, String user_address,String role) {
+			String user_gender, String user_email, String user_tel, String user_address,int image_idx,String role) {
 		this.user_idx = user_idx;
 		this.user_id = user_id;
 		this.user_name = user_name;
@@ -32,6 +33,7 @@ public class UserVo {
 		this.user_email = user_email;
 		this.user_tel = user_tel;
 		this.user_address = user_address;
-		this.role = role != null ? role : "기업회원";
+		this.image_idx =image_idx;
+		this.role = role != null ? role : "기업회원";		
 	}
 }

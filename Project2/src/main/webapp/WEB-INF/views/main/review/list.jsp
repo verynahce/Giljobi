@@ -5,10 +5,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer ></script>
+<style>
+.profileSize{
+width: 100px;
+height: 100px;
+}
+</style>
 </head>
 <body>
 	<%@include file="/WEB-INF/include/header.jsp"%>
@@ -40,8 +46,20 @@
 					<div class="company-content">
 						<div class="company-img">
 							<a href="View?company_idx=${vo.company_idx}">
-								  <img src="/images/icon/company-profile.png" alt="회사 이미지"/>
-							</a>
+							
+					
+			
+
+			<c:choose>
+	      <c:when test="${not empty vo.image_path}">
+	         <img src="/image/read?path=${vo.image_path}" alt="User Image" class="profileSize">
+	       </c:when> 
+	       <c:otherwise>
+	         <img src="/images/icon/company-profile.png" alt="Company Image"  class="profileSize">
+	       </c:otherwise>
+	       </c:choose>
+	       					
+			</a>
 						</div>
 						<div class="company-text">
 							<div class="company-info">

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="/js/common.js" defer></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
