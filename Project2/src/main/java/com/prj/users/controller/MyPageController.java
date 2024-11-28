@@ -219,6 +219,7 @@ public class MyPageController {
 		mv.addObject("cfvo",cfvo);
 		mv.addObject("imagePath",imagePath);
 		mv.addObject("SkillList",SkillList);
+		mv.addObject("user_idx",user_idx);
 		mv.addObject("score",score.getScore());	
 			return mv;
 }
