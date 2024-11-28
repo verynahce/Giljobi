@@ -108,11 +108,11 @@ align-items: center;}
  </header>
  <script>
 
- const links = document.querySelectorAll(".alerts");
+ const bell = document.querySelectorAll(".alerts");
 
 //사이드 바 클릭시
 
-   links.forEach(link => {
+   bell.forEach(link => {
        const img = link.querySelector(".alert-size");
        const originalSrc = img.src;
        const hoverSrc = img.getAttribute("data-hover");

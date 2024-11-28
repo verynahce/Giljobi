@@ -354,6 +354,21 @@ textarea {
 #improvedText {
     color: gray; /* 색상을 회색으로 설정 */
 }
+#improve-button {
+width: 120px;
+height: 30px;
+padding: 0;
+background-color: #FFFCEA;
+border: 1px solid #CCCCCC;
+border-radius: 4px;
+ cursor: pointer;
+margin-bottom: 9px;
+
+}
+.improve_layout{
+display: flex;
+justify-content: flex-end;
+}
 </style>
 
 </head>
@@ -370,7 +385,7 @@ textarea {
          <tr><td><a href="/User/MyPage/Resume/List?user_idx=${user_idx}" class="active-color"><img src="/images/icon22.svg" class="img">이력서</a></td></tr>
          <tr><td><a href="/User/MyPage/BookMark/List?user_idx=${user_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심기업 / 받은제의</a></td></tr>
          <tr><td><a href="/User/MyPage/ApplyList/List?user_idx=${user_idx}" class="link"><img src="/images/arrow.svg" class="img" data-hover="/images/arrow2.svg">지원내역</a></td></tr>
-         <tr><td><a href="/api/notice/list?user_idx=${user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/mail3.svg">수신함</a></td></tr>
+         <tr><td><a href="/User/MyPage/Notice?user_idx=${user_idx}"class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/mail3.svg">수신함</a></td></tr>
         </table>
       </div>
       
@@ -519,7 +534,7 @@ textarea {
 	    <hr>
 	    <textarea id="cover" name="cover_letter" placeholder="나에 대해 자유롭게 설명하고 채용 기회의 확률을 높이세요" rows="10" cols="50">${resumeVo.cover_letter}</textarea>
 	    <br>
-	    <button id="improve-button" type="button">개선 요청</button>
+	    <div class="improve_layout"><button id="improve-button" type="button">개선 요청</button></div>
 	    <hr>
 	    <div id="wait-time" style="display: none;">응답 대기 시간: <span id="time"></span>초</div>
 	    <div>
@@ -584,7 +599,8 @@ textarea {
 	 
 		let num =1;
 		$('#btnAddFile').on('click',function(){
-	  	  alert('파일추가');
+	  	 
+			alert('파일추가');
 		  let tag ='<div class="file1"><input id="input-file'+num +'" type="file" name="upfile" class="upfile" multiple style="display:none"/> <div class="file-output" ><label class="input-file-button" for="input-file'+num +'">첨부파일</label><div class="file-name">선택된 파일이 없습니다.</div></div></div>';
 		  $('.file').append(tag);
 		  
@@ -898,8 +914,6 @@ $(formEl).on('keydown', function(event) {
 	});
 
 	function improveCoverLetter() {
-	    const coverLetter = document.getElementById("cover").value;
-	    const coverLetter = document.getElementById("cover").value;
 	    const coverLetter = document.getElementById("cover").value;
 
 	    if (!coverLetter.trim()) {

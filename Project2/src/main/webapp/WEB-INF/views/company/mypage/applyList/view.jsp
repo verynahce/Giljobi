@@ -429,12 +429,12 @@ p {
 }
 .evaluation-container th:nth-child(1), /* 항목 열 */
 .evaluation-container td:nth-child(1) {
-    width: 25%; /* 항목 열 넓이 조정 */
+    width: 17%; /* 항목 열 넓이 조정 */
 }
 
 .evaluation-container th:nth-child(2), /* 평가기준 열 */
 .evaluation-container td:nth-child(2) {
-    width: 35%; /* 평가기준 열 넓이 조정 */
+    width: 25%; /* 평가기준 열 넓이 조정 */
 }
 
 .evaluation-container th:nth-child(3), /* 점수 열 */
@@ -773,6 +773,10 @@ cursor: pointer;
     font-weight: 300;
     font-size: 24px;
 }
+.note-size {
+width: 100%
+
+}
 
 </style>
 
@@ -815,7 +819,7 @@ cursor: pointer;
                                         <td rowspan="5">학력</td>
                                         <td>고졸이하:1</td>
                                         <td rowspan="5"><input type="number" name="edu_score" min="0" max="5" value="${evaluate.edu_score != null ? evaluate.edu_score : 0}"></td>
-                                        <td rowspan="5"><textarea name="edu_note">${evaluate.edu_note}</textarea></td>
+                                        <td rowspan="5"><textarea name="edu_note" class="note-size">${evaluate.edu_note}</textarea></td>
                                     </tr>
                                     <tr><td>전문학사:2</td></tr>
                                     <tr><td>학사:3</td></tr>
@@ -825,14 +829,14 @@ cursor: pointer;
                                         <td>자격증 또는 기술</td>
                                         <td>인사담당자 재량</td>
                                         <td><input type="number" name="skill_score" min="0" max="5" value="${evaluate.skill_score != null ? evaluate.skill_score : 0}"></td>
-                                        <td><textarea name="skill_note">${evaluate.skill_note}</textarea></td>
+                                        <td><textarea name="skill_note" class="note-size">${evaluate.skill_note}</textarea></td>
                                     </tr>
 
                                     <tr>
                                         <td rowspan="5">경력</td>
                                         <td>1년이상:1</td>
                                         <td rowspan="5"><input type="number" name="career_score" min="0" max="5" value="${evaluate.career_score != null ? evaluate.career_score : 0}"></td>
-                                        <td rowspan="5"><textarea name="career_note">${evaluate.career_note}</textarea></td>
+                                        <td rowspan="5"><textarea name="career_note" class="note-size">${evaluate.career_note}</textarea></td>
                                     </tr>
                                     <tr><td>3년이상:2</td></tr>
                                     <tr><td>5년이상:3</td></tr>
@@ -843,7 +847,7 @@ cursor: pointer;
                                         <td rowspan="5">자기소개서</td>
                                         <td>직무관련 경험</td>
                                         <td><input type="number" name="score4" min="0" max="5" value="0"></td>
-                                        <td rowspan="5"><textarea name="letter_note">${evaluate.letter_note}</textarea></td>
+                                        <td rowspan="5"><textarea name="letter_note" class="note-size">${evaluate.letter_note}</textarea></td>
                                     </tr>
                                     <tr><td>성격 및 장단점</td><td><input type="number" name="score5" min="0" max="5" value="0"></td></tr>
                                     <tr><td>가치관</td><td><input type="number" name="score6" min="0" max="5" value="0"></td></tr>
@@ -854,13 +858,13 @@ cursor: pointer;
                                         <td>포트폴리오</td>
                                         <td>인사담당자 재량</td>
                                         <td><input type="number" name="portfolio_score" min="0" max="5" value="${evaluate.portfolio_score != null ? evaluate.portfolio_score : 0}"></td>
-                                        <td><textarea name="portfolio_note">${evaluate.portfolio_note}</textarea></td>
+                                        <td><textarea name="portfolio_note" class="note-size">${evaluate.portfolio_note}</textarea></td>
                                     </tr>
                                     <tr>
                                         <td>가점</td>
                                         <td>인사담당자 재량</td>
                                         <td><input type="number" name="ext_score" min="0" max="5" value="${evaluate.ext_score != null ? evaluate.ext_score : 0}"></td>
-                                        <td><textarea name="ext_note">${evaluate.ext_note}</textarea></td>
+                                        <td><textarea name="ext_note" class="note-size" >${evaluate.ext_note}</textarea></td>
                                     </tr>
                                 </tbody>
                             </table>

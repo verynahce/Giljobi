@@ -24,7 +24,8 @@
    border-radius:15px;
    overflow:hidden;
    margin:0;
-   position:sticky;
+   max-height:fit-content;
+      position:sticky;
    top:124px;
  }
  

@@ -181,6 +181,7 @@ p {
    				 padding-top: 10px;
     			color: #767676;
    				 border-bottom: 1px solid #CCCCCC;
+   				 overflow: auto;
 }
 /*서브 - 소제목*/
 .sub-title {
@@ -273,7 +274,10 @@ p {
     font-size: 16px;
     font-weight: 400;
 }
-
+  .sub-content pre {
+    white-space: pre-wrap; /* 긴 텍스트가 줄바꿈 되도록 설정 */
+    word-wrap: break-word; /* 긴 단어가 줄바꿈 되도록 설정 */
+  }
 
 </style>
 
@@ -291,7 +295,7 @@ p {
          <tr><td><a href="/User/MyPage/Resume/List?user_idx=${user_idx}" class="active-color"><img src="/images/icon22.svg" class="img">이력서</a></td></tr>
          <tr><td><a href="/User/MyPage/BookMark/List?user_idx=${user_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심기업 / 받은제의</a></td></tr>
          <tr><td><a href="/User/MyPage/ApplyList/List?user_idx=${user_idx}" class="link"><img src="/images/arrow.svg" class="img" data-hover="/images/arrow2.svg">지원내역</a></td></tr>
-         <tr><td><a href="/api/notice/list?user_idx=${user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/mail3.svg">수신함</a></td></tr>
+         <tr><td><a href="/User/MyPage/Notice?user_idx=${user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/mail3.svg">수신함</a></td></tr>
         </table>
       </div>
       
@@ -406,7 +410,7 @@ p {
       <div class="sub-filed">
 	    <h4 class="sub-title" >자기소개서</h4>
 	    <hr> 
-	    <div class ="sub-content"><pre>${resumeVo.cover_letter}</pre>    </div>
+	    <div class ="sub-content"><pre>${resumeVo.cover_letter}</pre></div>
 	  </div>     
 	  
 	  <c:if test="${not empty pfvoList}">
