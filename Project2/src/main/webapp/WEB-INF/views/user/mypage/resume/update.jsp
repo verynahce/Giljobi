@@ -435,14 +435,17 @@ textarea {
       <div class="sub-filed">
         <h4 class="sub-title">업무 및 스킬</h4>
         <hr>
-   <input class="input-size2" id="skill" type="text" value="" placeholder="스킬을 영어로 입력해주세요" list="skillOptions"/>
+     <input class="input-size2" id="skill" type="text" value="" placeholder="스킬을 영어로 입력해주세요" list="skillOptions"/>
          <div id='techList'>  
-         <c:if test="${not empty resumeVo.skill_name}">
+         <c:if test="${not empty SkillList}">         
+      <c:forEach var="skill" items="${SkillList}">   
            <div class="pSkill">
-           ${resumeVo.skill_name}
+           ${skill.skill_name}
             <p class="skillDelete"> &nbsp; x &nbsp; </p>
-            <input type="hidden" name="skill_name" value="${resumeVo.skill_name}"/>
+            <input type="hidden" name="skill_name" value="${skill.skill_name}"/>
            </div>
+     </c:forEach> 
+           
          </c:if> 
          
          </div>       

@@ -31,7 +31,10 @@
   font-size:18px;
   font-weight:500;
 }
-
+.photoimage{
+width: 100px;
+height: 100px;
+}
 </style>
 <script src="/js/common.js" defer></script>
 </head>
@@ -41,7 +44,16 @@
  <div class="inner rview">
       <a class="back-btn" href="List">back</a>
       <div class="review-company-profile">
-        <div class="company-image"><img src="/images/icon/company-profile.png" alt="회사 이미지"/></div>
+        <div class="company-image">
+              <c:choose>
+      <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" class="photoimage">
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/company-profile.png"alt="Company Image"class="photoimage"> >
+       </c:otherwise>
+       </c:choose> 
+        </div>
         <div class="company-info">
          <div>
           <p class="company-name">${vo.company_name}</p>
@@ -52,7 +64,7 @@
 		 <div class="company-history">
 		  <p><img src="/images/review/location.png">${vo.company_address }</p>
 		  <p><img src="/images/review/Building.png">${vo.company_birthdate }</p>
-		  <p><img src="/images/review/Clipboard.png">공고수${countP}</p>
+		  <p><img src="/images/review/Clipboard.png">공고수 &nbsp; ${countP}개</p>
 		 </div>
         </div>
       </div>

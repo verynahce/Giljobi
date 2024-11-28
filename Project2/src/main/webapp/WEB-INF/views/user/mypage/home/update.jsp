@@ -13,12 +13,13 @@
 
 .innercontents {
    display:flex;
-   gap:30px;
+   gap:110px;
+
  }
  
  .sidebar {
    border :1px solid #ccc;
-   width:300px;
+   width:233px;
    border-radius:15px;
    overflow:hidden;
    margin:0;
@@ -71,6 +72,8 @@
    flex-direction:column;
    align-items:left;
    width: 100%;
+   gap:30px;
+
  }
  
  .title {
@@ -88,6 +91,7 @@
  
  .contents {
    width:550px;
+
  }
  
  .info {
@@ -203,7 +207,11 @@
    margin : 10px;
 
  }
- 
+.preview {
+width: 100px;
+height: 100px;
+
+} 
  
 </style>
 </head>
@@ -222,6 +230,7 @@
          <tr><td><a href="/api/notice/list?user_idx=${user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/mail3.svg">수신함</a></td></tr>
         </table>
        </div>
+    <form action="/User/MyPage/Home/update" method="POST"enctype="multipart/form-data">
        <div class="container">
       	<div class="contents">
       	 <h2 class="title">회원 정보 수정</h2>
@@ -229,15 +238,29 @@
       	 <hr>
       	 <div class="info">
       	  <div class="profile-image">
-      	  	<img src="/images/profile.png"/>
-      	    <span id="profileimage-update"><a href="" id="profileimage-updatebtn">프로필 변경</a></span>
+       <c:choose>
+      <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" class="preview">
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/user-profile.png" alt="User Image" class="preview">
+       </c:otherwise>
+        </c:choose> 
+       <span>
+       <input id="idPhoto" type="file" name="upimage" class="upimage" style="display:none"accept=".jpg, .jpeg, .png"/>
+        <label class="input-file-button idPhto2" for="idPhoto">사진 업로드</label>
+       </span> 
+
+      	  
       	  </div>
       	  <div class="info-content">
       	  	<h3 id="info-title">${userVo.user_name}</h3>
       	    <p id="info-year">${userVo.user_gender}, ${age}세(${UYear}년)</p>
+      	    <input type="hidden" name="image_idx" value="${not empty ifvo.image_idx ? ifvo.image_idx : 0}"> 
+
       	  </div>      	 
       	 </div>
-       <form action="/User/MyPage/Home/update" method="POST">
+
        <input type="hidden" name="user_idx" value="${userVo.user_idx}"/>
       	 <div class="info-sub">
       	  <table class="updatetitles">
@@ -318,9 +341,10 @@
               <input class="btn btn-back" type="submit" value="회원정보 수정"/>             
               <input class="btn btn-delete" type="button" value="회원 탈퇴"/>                        
          </div>
-          </form>
+       
       	</div>
        </div>
+          </form>
       </div>
  </div>
 
@@ -329,8 +353,19 @@
    
 <script>
 $(function() {
-	
-
+	 //이미지추가
+    $('.upimage').on('change', function() {
+               const file = this.files[0];
+               console.log(file)
+               if (file) {
+                   const reader = new FileReader();
+                   reader.onload = function(e) {
+                       $('.preview').attr('src', e.target.result).show(); // 미리보기 이미지 표시
+                   }
+                   reader.readAsDataURL(file); // 파일을 Data URL로 읽기
+               }
+           });
+   //사이드바
     const links = document.querySelectorAll(".link");
 
     links.forEach(link => {

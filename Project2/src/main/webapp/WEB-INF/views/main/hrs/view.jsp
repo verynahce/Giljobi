@@ -496,7 +496,7 @@ height: 28px;
         </tr>
         </table>
       </div>
-     <c:if test="${vo.skill_name }">
+     <c:if test="${not empty SkillList }">
       <div class="sub-filed">
         <h4 class="sub-title">업무 및 스킬</h4>
         <hr>
@@ -504,8 +504,9 @@ height: 28px;
          <tr>
 		   <td colspan="2" class="sub-skill">
            <div class="sub-skill-layout">
-
-              <div>${vo.skill_name }</div>
+          <c:forEach var="skill" items="${SkillList}">
+              <div>${skill.skill_name}</div> 
+          </c:forEach>
            </div> 
          </td>
 		</tr>
@@ -586,7 +587,7 @@ height: 28px;
     </main>
     <div class="btn-back"><a href ="List">돌아가기</a></div>
    </div>
-
+   <div>
     <div id="side-menu">
        <div id ="side-frame">
          <p>최종수정일 : ${vo.resume_fdate}<p>
@@ -613,15 +614,31 @@ height: 28px;
          </div>
        </div>
     </div>
-    
-    
-    
-    
-   </div>
-   
 
-   
-   
+   <c:if test="${not empty clickList}">
+    <div class="side-recommend">
+    <h4>추천공고</h4>
+    <p>해당 공고를 본 유저들이 <span style="color: #4876EF;">클릭한</span> 공고<p>
+    <hr>
+    
+    <c:forEach var="c"  items="${clickList}">
+     <a class="side-hover" href="/Main/Hrs/View?resume_idx=${c.resume_idx}" style="display: block;"> 
+     <div class="side-post" >
+       <div class="side-pcontent" >${c.user_name}</div>
+       <div class="side-ptitle">${c.resume_title}</div>
+       <div class="side-pcontent2" >${c.duty_name}&nbsp;<span>|</span>&nbsp;${c.duration}&nbsp;</div>
+    </div>
+   </a>
+    </c:forEach>
+    </div>
+    </c:if>
+
+    
+    
+    
+    
+    </div>    
+   </div>
  </div>
  
      <%@include file="/WEB-INF/include/footer.jsp" %>

@@ -23,6 +23,7 @@ public class ResumeListVo {
 	private String 	skill_name;
 	private String 	city_name;
 	private String 	duty_name;
+	private int 	duty_id;
 	private String 	emp_name;
 	private String 	career_cname;
 	private String 	career_sdate;

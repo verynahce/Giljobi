@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ page import="com.prj.users.notification.dao.AnnounceDao" %>
+<%@ page import="com.prj.users.notification.service.Announce" %>
+<%@ page import="jakarta.servlet.http.HttpServletRequest" %>
+<%@ page import="jakarta.servlet.http.HttpServletResponse" %>
+<%@ page import="org.springframework.jdbc.core.JdbcTemplate" %>
+<%@ page import="org.springframework.web.context.WebApplicationContext" %>
+<%@ page import="org.springframework.web.context.support.WebApplicationContextUtils" %>
 <!DOCTYpE html>
 <html>
 <head>
@@ -220,8 +228,9 @@ p {
      background-color:#EBECF1; 
      border-radius: 8px;
      color:#555555px;
-     font-size: 12px;
+     font-size: 13px;
      font-weight: 400;
+     letter-spacing: 0.5px;
      }
      
      div:nth-child(1) {
@@ -732,6 +741,7 @@ cursor: pointer;
 
 }
 
+/* 평가 */
 .popup-evaluate {
     display: none; /* 기본적으로 숨김 */
     position: fixed;
@@ -874,46 +884,46 @@ cursor: pointer;
 </form>
 	
 	<!-- 알림창 -->
-	<form action="/api/announce" method="POST" enctype="multipart/form-data">
-	<input type="hidden" name="companyIdx" value="${company_idx}">
-	<input type="hidden" name="post_idx" value="${post_idx}">
-	<input type="hidden" name="userIdx" value="${resumeVo.user_idx}">
-	<div class="overlay-notice">
-	<c:choose>
-		<c:when test="${not empty company_idx}">
-			 <div class="notice"> 
-			   <div class="n-header">
-			      <h2 class="n-title">알림보내기</h2><span class="n-delete">x</span>
-			   </div>
-				<div class="notice-container">
-				    <select id="status-select">
-				    	<option value="default">제목을 선택해주세요</option>
-				        <option value="document">서류합격</option>
-				        <option value="interview">면접합격</option>
-				    </select>
-				
-				    <div class="noti" id="notification">
-				    	<p>응애 합격하였습니다.</p>
-		                <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
-		                <p>일시: <input type="date" name="scadule"></p>
-		                <p>장소: <input type="text" name="location"></p>
-		                <p>안내사항: <textarea name="information"></textarea></p>
-				    </div>
-				</div>
-			   <div class="n-btn" >
-			   <button type="submit" onclick="alert('알림보내기를 완료했습니다.')" class="notice-val">알림 전송<img src="/images/SendMessage.svg" class="img"></button>
-			   </div> 
-			</div>
-		</c:when>
-		  <c:otherwise>
-		  	<div class="notice login-alter">
-		      <h2 class="n-title">기업회원 로그인이 필요합니다.</h2>
-			  <a href ="/Company/LoginForm">로그인</a>
-		   </div>
-		  </c:otherwise>
-	</c:choose>	
-	</div>
-	</form>
+
+<form action="/api/announce" id="notificationForm" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="companyIdx" id="companyIdx" value="${company_idx}">
+    <input type="hidden" name="post_idx" id="postIdx" value="${post_idx}">
+    <input type="hidden" name="userIdx" id="userIdx" value="${resumeVo.user_idx}">
+    <div class="overlay-notice">
+        <c:choose>
+            <c:when test="${not empty company_idx}">
+                <div class="notice"> 
+                    <div class="n-header">
+                        <h2 class="n-title">알림보내기</h2><span class="n-delete">x</span>
+                    </div>
+                    <div class="notice-container">
+                        <select id="status-select" name="type" required>
+                            <option value="default">제목을 선택해주세요</option>
+                            <option value="document">서류합격</option>
+                            <option value="interview">면접합격</option>
+                        </select>
+                        <div class="noti" id="notification">
+                            <p>응애 합격하였습니다.</p>
+                            <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
+                            <p>일시: <input type="date" name="scadule"></p>
+                            <p>장소: <input type="text" name="location"></p>
+                            <p>안내사항: <textarea name="information"></textarea></p>
+                        </div>
+                    </div>
+                    <div class="n-btn">
+                        <button type="submit" class="notice-val">알림 전송<img src="/images/SendMessage.svg" class="img"></button>
+                    </div> 
+                </div>
+            </c:when>
+            <c:otherwise>
+                <div class="notice login-alter">
+                    <h2 class="n-title">기업회원 로그인이 필요합니다.</h2>
+                    <a href="/Company/LoginForm">로그인</a>
+                </div>
+            </c:otherwise>
+        </c:choose>    
+    </div>
+</form>
 
 <main>
   <div class="inner">  
@@ -924,7 +934,7 @@ cursor: pointer;
          <tr><td><a href="/Company/Mypage/Home/View?company_idx=${company_idx}" class="link"><img src="/images/myhome2.svg" class="img" data-hover="/images/myhome.svg">MY홈</a></td></tr>
          <tr><td><a href="/Company/Mypage/Post/List?company_idx=${company_idx}" class="link"><img src="/images/icon2.svg" class="img" data-hover="/images/icon22.svg">채용공고</a></td></tr>
          <tr><td><a href="/Company/Mypage/Bookmark/List?company_idx=${company_idx}" class="link"><img src="/images/icon3.svg" class="img" data-hover="/images/icon33.svg">관심인재</a></td></tr>
-         <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${company_idx}" class="active-color2"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
+         <tr><td><a href="/Company/Mypage/ApplyList/PostList?company_idx=${company_idx}"  class="active-color2" data-company-idx="${company_idx}"><img src="/images/arrow2.svg" class="img">지원내역</a></td></tr>
         </table>
         
 	      <div id="side-menu">
@@ -983,17 +993,17 @@ cursor: pointer;
         </table>
       </div>
      
-    <c:if test="${not empty resumeVo.skill_name}">
+    <c:if test="${not empty SkillList}">
       <div class="sub-filed">
         <h4 class="sub-title">업무 및 스킬</h4>
         <hr>
         <table class="sub-topic"> 
          <tr>
 		   <td colspan="2" class="sub-skill">
-           <div class="sub-skill-layout">
-     
-              <div>${resumeVo.skill_name}</div> 
-          
+           <div class="sub-skill-layout">  
+          <c:forEach var="skill" items="${SkillList}">
+              <div>${skill.skill_name}</div> 
+          </c:forEach>          
            </div> 
          </td>
 		</tr>
@@ -1230,7 +1240,7 @@ $(function () {
         });
 
         // 총점 계산
-        let total = validInputFound ? (totalsum / 15).toFixed(2) : '0.00'; // 유효한 입력이 없으면 0.00
+        let total = validInputFound ? (totalsum / 10).toFixed(2) : '0.00'; // 유효한 입력이 없으면 0.00
         $('input[name="total_score"]').val(total); // 총점을 입력 필드에 업데이트
     }
 
@@ -1239,7 +1249,7 @@ $(function () {
 <!-- 알림함 -->
 
 <script type="text/javascript">
-<!--
+
 document.addEventListener('DOMContentLoaded', function() {
     const selectElement = document.getElementById('status-select');
     const notificationDiv = document.getElementById('notification');
@@ -1257,27 +1267,121 @@ document.addEventListener('DOMContentLoaded', function() {
             notificationDiv.innerHTML = `
                 <p>서류에 합격하였습니다.</p>
                 <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
-                <p>일시: 2024/12/21 10:00 AM</p>
-                <p>장소: 그린아카데미 402호</p>
-                <p>안내사항: 이력서, 포트폴리오 지참, 말씀한 복장 준수</p>
+                <p>일시: <input type="date" name="scadule"></p>
+                <p>장소: <input type="text" name="location"></p>
+                <p>안내사항: <textarea name="information"></textarea></p>
             `;
             notice.style.backgroundColor = '#ffffff'; 
         } else if (selectedValue === 'interview') {
             notificationDiv.innerHTML = `
                 <p>면접에 합격하였습니다.</p>
                 <p>입사 OT에 대해 다음과 같이 안내드립니다.</p>
-                <p>일시: 2024/12/21 10:00 AM</p>
-                <p>장소: 그린아카데미 402호</p>
-                <p>안내사항: 이력서, 포트폴리오 지참, 말씀한 복장 준수</p>
+                <p>일시: <input type="date" name="scadule"></p>
+                <p>장소: <input type="text" name="location"></p>
+                <p>안내사항: <textarea name="information"></textarea></p>
             `;
-            notice.style.backgroundColor = '#D8D8D8';
+            notice.style.backgroundColor = '#EBECF1';
         }
         notificationDiv.style.display = 'block';
     }
 });
--->
+
+</script>
+<!----------------------------------------------------- 알림 전송 ------------------------------------------------------>
+
+<%
+    // 요청 방식이 POST인지 확인
+    Integer announcementIdx = null;
+    if ("POST".equalsIgnoreCase(request.getMethod())) {
+        // WebApplicationContext: ServletContext에 대한 접근을 제공하여, 웹 애플리케이션의 전역 설정이나 리소스에 접근할 수 있게함.
+        WebApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(application);
+        AnnounceDao announceDao = (AnnounceDao) context.getBean("announceDao");
+
+        Announce announce = new Announce();
+        announce.setCompanyIdx(Integer.valueOf(request.getParameter("companyIdx")));
+        announce.setUserIdx(Integer.valueOf(request.getParameter("userIdx")));
+        announce.setScadule(request.getParameter("scadule"));
+        announce.setLocation(request.getParameter("location"));
+        announce.setInformation(request.getParameter("information"));
+
+        announceDao.save(announce);
+
+        announcementIdx = announce.getAnnouncementIdx(); // 이제 null이 아님
+        out.println("Generated announcement_idx: " + (announcementIdx != null ? announcementIdx : "null"));
+    }
+%>
+
+<script>
+//폼 제출 시 알림 전송 API 호출
+document.getElementById('notificationForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // 기본 폼 제출 동작 방지
+
+    const formData = new FormData(event.target); // 폼 데이터 수집
+    console.log([...formData.entries()]);
+    const userIdx = document.getElementById('userIdx').value;
+    const postIdx = document.getElementById('postIdx').value;
+        const companyLink = document.querySelector('a.active-color2');
+        const companyIdx = companyLink.getAttribute('data-company-idx');
+        const type = document.getElementById('status-select').value;
+
+    // 1단계: @PostMapping 메서드 호출
+    fetch('/api/announce', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+    	console.log('Response status:', response.status);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json(); // 서버로부터 announcementIdx를 응답받음
+    })
+    .then(data => {
+    	console.log('Response data:', data);
+        const announcementIdx = data.announcementIdx; // Controller에서 응답한 ID
+        console.log("Generated announcementIdx:", announcementIdx);
+        if (!announcementIdx) {
+            alert('공지사항 ID가 유효하지 않습니다.');
+            return;
+        }
+
+        // 2단계: 알림 전송 API 호출
+<%--         const notification = generateNotificationTitle(type);
+        const subnoti = generateSubNotification(type); --%>
+
+        const noticeData = {
+            userIdx: userIdx,
+            companyIdx: companyIdx,
+            announcementIdx: announcementIdx,
+            type: type
+        };
+        console.log("Notice Data:", noticeData);
+        return fetch('/api/send-notification', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(noticeData)
+        });
+    })
+    .then(response => {
+    	console.log('Response status:', response.status);
+        if (!response.ok) {
+            throw new Error('Notification sending failed');
+        }
+        alert('알림이 성공적으로 전송되었습니다.');
+        // 리다이렉트
+        window.location.href = "/Company/Mypage/ApplyList/ApplyList?company_idx=" + companyIdx + "&post_idx=" + postIdx;
+    })
+    .catch(error => {
+        alert('작업 중 오류가 발생했습니다.');
+        console.error('Error:', error);
+    });
+});
+
 </script>
 
- 
+<!----------------------------------------------------- 알림 전송 ------------------------------------------------------>
+
 </body>
 </html>

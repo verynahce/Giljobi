@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewCompanyInfoVo {
 	private int 	company_idx;
+	private int 	image_idx;
 	private String  company_name;
 	private String  company_tel;
 	private String  company_email;

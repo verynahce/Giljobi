@@ -285,19 +285,28 @@ WHERE PS.POST_IDX = #{post_idx}
        CB.RESUME_IDX,
        CB.COMPANY_IDX,
        RE.RESUME_TITLE,
-       SK.SKILL_NAME,
+       LISTAGG(SK.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY SK.SKILL_NAME) AS SKILL_NAME,
        U.USER_NAME,
        U.USER_GENDER,
        FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(U.USER_BIRTHDATE, 'YYYYMMDD')) / 12) AS AGE,
-       FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, CAREER_SDATE) / 12) AS CYEARS,
-        MOD(FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, CAREER_SDATE)), 12) AS CMONTHS     
-  FROM RESUME RE LEFT JOIN USERS U ON RE.USER_IDX = U.USER_IDX 
-               LEFT JOIN RESUME_SKILL RS ON RE.RESUME_IDX = RS.RESUME_IDX
-               LEFT JOIN RESUME_CAREER RC ON RE.RESUME_IDX = RC.RESUME_IDX
-               LEFT JOIN COMPANY_BOOKMARK CB ON RE.RESUME_IDX = CB.RESUME_IDX
-               LEFT JOIN SKILL SK ON RS.SKILL_ID = SK.SKILL_ID
-  WHERE CB.COMPANY_IDX = #{company_idx}
-  
+       FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE) / 12) AS CYEARS,
+       MOD(FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE)), 12) AS CMONTHS
+  FROM RESUME RE
+       LEFT JOIN USERS U ON RE.USER_IDX = U.USER_IDX
+       LEFT JOIN RESUME_SKILL RS ON RE.RESUME_IDX = RS.RESUME_IDX
+       LEFT JOIN RESUME_CAREER RC ON RE.RESUME_IDX = RC.RESUME_IDX
+       LEFT JOIN COMPANY_BOOKMARK CB ON RE.RESUME_IDX = CB.RESUME_IDX
+       LEFT JOIN SKILL SK ON RS.SKILL_ID = SK.SKILL_ID
+ WHERE CB.COMPANY_IDX = #{company_idx}
+ GROUP BY CB.CB_IDX, 
+          CB.RESUME_IDX, 
+          CB.COMPANY_IDX, 
+          RE.RESUME_TITLE, 
+          U.USER_NAME, 
+          U.USER_GENDER, 
+          U.USER_BIRTHDATE, 
+          RC.CAREER_SDATE, 
+          RC.CAREER_EDATE
   </select>
 
   <insert id="insertBook">
@@ -497,8 +506,82 @@ VALUES (#{total_score})
     </foreach>
 </select>
 
+  <update id="updateCompanyMax">
+  UPDATE COMPANYS
+  SET
+  	COMPANY_NAME = #{company_name},
+  	COMPANY_TEL = #{company_tel},
+  	COMPANY_AREA = #{company_area},
+  	REP_NAME = #{rep_name},
+  	COMPANY_EMAIL = #{company_email},
+  	COMPANY_BRNUM = #{company_brnum},
+  	IMAGE_IDX = ( SELECT NVL(MAX(IMAGE_IDX), 1) FROM  IMAGEFILE  )
+  WHERE COMPANY_IDX = #{company_idx}
+  </update>
+  
+   <!-- 스킬 여러개 저장 -->
+  <insert id="insertSkillList">
+  <foreach collection="skillList" item="skill" index="i" 
+         open="INSERT ALL" 
+         close="SELECT * FROM DUAL" 
+         separator="">
+    INTO POST_SKILL VALUES (
+        (SELECT NVL(MAX(POST_SKILL_IDX), 0) FROM POST_SKILL) + #{i} + 1,
+       (SELECT NVL(MAX(POST_IDX),0) FROM POST ),
+       (SELECT SKILL_ID FROM SKILL WHERE SKILL_NAME= #{skill.skill_name} ) )
+  </foreach>
+  </insert>
+  
+  <select id="getPostSkillList">
+  SELECT PS.SKILL_ID, S.SKILL_NAME
+  FROM POST_SKILL PS JOIN SKILL S ON PS.SKILL_ID = S.SKILL_ID
+  WHERE POST_IDX = #{post_idx}
+  </select>
+  
+     	   <!-- 스킬 여러개 저장 (수정버전) -->
+  <insert id="updateSkillList">
+  <foreach collection="skillList" item="skill" index="i" 
+         open="INSERT ALL" 
+         close="SELECT * FROM DUAL" 
+         separator="">
+    INTO POST_SKILL VALUES (
+        (SELECT NVL(MAX(POST_SKILL_IDX), 0) FROM POST_SKILL) + #{i} + 1,
+       #{skill.post_idx} ,
+       (SELECT SKILL_ID FROM SKILL WHERE SKILL_NAME= #{skill.skill_name} ) )
+  </foreach>
+  </insert>
+  
+   <select id="getapplyListSkill">
+	SELECT AP.APPLI_IDX,
+	       AP.RESUME_IDX,
+	       AP.POST_IDX,
+	       AP.APPLI_DATE,
+	       AP.APPLI_STATUS,
+	       RE.RESUME_TITLE,
+	       LISTAGG(SK.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY SK.SKILL_NAME) AS SKILL_NAME,
+	       U.USER_IDX,
+	       U.USER_NAME,
+	       U.USER_GENDER,
+	       EV.TOTAL_SCORE,
+	       FLOOR(MONTHS_BETWEEN(SYSDATE, TO_DATE(U.USER_BIRTHDATE, 'YYYYMMDD')) / 12) AS AGE,
+	       FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE) / 12) AS CYEARS,
+	       MOD(FLOOR(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE)), 12) AS CMONTHS
+	FROM APPLICATION AP
+	LEFT JOIN RESUME RE ON AP.RESUME_IDX = RE.RESUME_IDX
+	LEFT JOIN RESUME_SKILL RS ON RE.RESUME_IDX = RS.RESUME_IDX
+	LEFT JOIN SKILL SK ON RS.SKILL_ID = SK.SKILL_ID
+	LEFT JOIN USERS U ON RE.USER_IDX = U.USER_IDX
+	LEFT JOIN RESUME_CAREER RC ON RE.RESUME_IDX = RC.RESUME_IDX
+	LEFT JOIN EVALUATE EV ON AP.APPLI_IDX = EV.APPLI_IDX
+	WHERE AP.POST_IDX = #{post_idx} AND AP.REMOVE IS NULL
+	GROUP BY AP.APPLI_IDX, AP.RESUME_IDX, AP.POST_IDX, AP.APPLI_DATE, AP.APPLI_STATUS, 
+	         RE.RESUME_TITLE, U.USER_IDX, U.USER_NAME, U.USER_GENDER, EV.TOTAL_SCORE, 
+	         U.USER_BIRTHDATE, RC.CAREER_EDATE, RC.CAREER_SDATE
+	ORDER BY AP.APPLI_IDX
+  </select>
 
-
+  
+  
 </mapper>
 
 

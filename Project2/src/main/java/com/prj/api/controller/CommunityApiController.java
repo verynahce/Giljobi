@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.prj.dto.CommunityReplyDTO;
 import com.prj.entity.Community;
 import com.prj.entity.CommunityReply;
+import com.prj.entity.Notice;
 import com.prj.service.CommunityService;
 
 
@@ -29,7 +30,10 @@ public class CommunityApiController {
 	 
 
          CommunityReplyDTO  created = communityService.insertCoummunityReply(crDto);
-
+        
+         //댓글
+         communityService.insertNoticeReply(crDto,created);
+         
 		return    ResponseEntity.status(HttpStatus.OK).body( created );
 	}
 	
@@ -95,5 +99,6 @@ public class CommunityApiController {
 		
 		return  result;
 	}
+	
 	
 }

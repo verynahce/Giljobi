@@ -13,8 +13,18 @@ public class AnnounceDao {
     private JdbcTemplate jdbcTemplate;
 
     public void save(Announce announce) {
-        String sql = "INSERT INTO ANNOUNCEMENT (announcement_idx, company_idx, user_idx, scadule, location, information, writedate)";
-        	   sql += "VALUES (ANNOUNCEMENT_SEQ.NEXTVAL, ?, ?, ?, ?, ?, SYSDATE)";
-        jdbcTemplate.update(sql, announce.getCompanyIdx(), announce.getUserIdx(), announce.getScadule(), announce.getLocation(), announce.getInformation());
+        // 시퀀스에서 다음 값을 가져오는 쿼리
+        String sequenceSql = "SELECT ANNOUNCEMENT_SEQ.NEXTVAL FROM DUAL";
+        Integer announcementIdx = jdbcTemplate.queryForObject(sequenceSql, Integer.class);
+
+        String sql = "INSERT INTO ANNOUNCEMENT (announcement_idx, company_idx, user_idx, scadule, location, information, writedate) "
+                + "VALUES (?, ?, ?, ?, ?, ?, SYSDATE)";
+
+        jdbcTemplate.update(sql, announcementIdx, announce.getCompanyIdx(), announce.getUserIdx(), 
+                            announce.getScadule(), announce.getLocation(), announce.getInformation());
+
+        // announcement_idx를 Announce 객체에 설정
+        announce.setAnnouncementIdx(announcementIdx);
     }
+
 }

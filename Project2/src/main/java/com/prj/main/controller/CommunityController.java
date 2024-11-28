@@ -158,5 +158,65 @@ public class CommunityController {
 		return mv;
 	}
 
+	@RequestMapping("/MyReview")
+	public ModelAndView myReview(HttpServletRequest request) {
+		
+		//로그인 세션 및 mav 불러오기
+		ModelAndView mv = new ModelAndView();
+		HttpSession session = request.getSession();
+		Object userObject = session.getAttribute("login");
+		
+		if (userObject instanceof UserVo) {
+			UserVo userVo = (UserVo) session.getAttribute("login");
+             if(userVo != null ) {	
+            
+            	 
+         	List <Community> CommunityList = communityService.getCommunityU(userVo.getUser_idx());	
+            mv.addObject("userIdx",userVo.getUser_idx());           	
+            mv.addObject("cList",CommunityList);           	
+            mv.setViewName("/main/community/myCommunity");
+            	 
+			}						
+	   }else {
+		   mv.setViewName("/user/loginForm");   
+		   
+	   }
+		return mv;		
+	}
+	
+	@RequestMapping("/UpdateForm")
+	public ModelAndView updateForm (Community community,@RequestParam (value="userIdx")Long userIdx) {
+		
+	    Community Community = communityService.getCommunity(community.getCommunityIdx());		
+	    List <Duty> dutyList = communityService.getDutyList();
+	    
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("community", Community);
+		mv.addObject("dutyList", dutyList);
+		mv.addObject("userIdx", userIdx);
+		mv.setViewName("/main/community/update");  
+		return mv;	
+	}
+	
+	@RequestMapping("/Delete")
+	public ModelAndView delete (Community community) {
+		
+	    communityService.deleteCommunity(community.getCommunityIdx());		
+	    
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Main/Community/MyReview");  
+		return mv;	
+	}
+	
+	@RequestMapping("/Update")
+	public ModelAndView update (Community community,@RequestParam("userIdx") Long userIdx,
+                                                    @RequestParam("dutyId") Long dutyId) {
+		
+	    communityService.updateCommunity(community,dutyId);		
+	    
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Main/Community/MyReview");  
+		return mv;	
+	}
 	
 }

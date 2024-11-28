@@ -12,4 +12,5 @@ public class PostSkillVo {
 	private int post_skill_idx;
 	private int post_idx;
 	private int skill_id;
+	private String skill_name;
 }

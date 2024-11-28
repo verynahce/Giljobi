@@ -9,6 +9,7 @@ import com.prj.companys.vo.ComApplyVo;
 import com.prj.companys.vo.ComBookmarkVo;
 import com.prj.companys.vo.CompanyVo;
 import com.prj.companys.vo.EvaluateVo;
+import com.prj.companys.vo.PostSkillFormVo;
 import com.prj.companys.vo.PostSkillVo;
 import com.prj.companys.vo.PostWriteVo;
 import com.prj.companys.vo.RConutVo;
@@ -127,6 +128,16 @@ public interface CompanyMapper {
 	void insertTotalScore(EvaluateVo evaluate);
 
 	void updateTotalScore(EvaluateVo evaluate);
+
+	void updateCompanyMax(CompanyVo companyVo);
+
+	void insertSkillList( @Param("skillList") List<PostSkillFormVo> skillList);
+
+	List<PostSkillVo> getPostSkillList(int post_idx);
+
+	void updateSkillList( @Param("skillList")List<PostSkillFormVo> skillList);
+
+	List<ComApplyVo> getapplyListSkill(int post_idx);
 
 
 
