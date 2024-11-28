@@ -617,8 +617,8 @@ height: 28px;
 
    <c:if test="${not empty clickList}">
     <div class="side-recommend">
-    <h4>추천공고</h4>
-    <p>해당 공고를 본 유저들이 <span style="color: #4876EF;">클릭한</span> 공고<p>
+    <h4>추천 이력서</h4>
+    <p>해당 이력서를 본 유저들이 <span style="color: #4876EF;">클릭한</span> 이력서<p>
     <hr>
     
     <c:forEach var="c"  items="${clickList}">
