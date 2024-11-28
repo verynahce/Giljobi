@@ -81,14 +81,11 @@ public class Notice {
     @Column(name = "SUBNOTI", nullable = false)
     private String subnoti;
 
-	public Notice(Users user, CommunityReply reply, LocalDateTime cdate, String type, String notification,
-			String subnoti,Community community,Long senderIdx) {
+	public Notice(Users user, CommunityReply reply, LocalDateTime cdate, String type, Community community,Long senderIdx) {
 		this.users = user;
 		this.communityReply =reply;
 		this.recieveddate =cdate;
 		this.type= type;
-		this.notification= notification;
-		this.subnoti = subnoti;
 		this.state = "0";
 		this.community = community;
 		this.senderIdx = senderIdx;

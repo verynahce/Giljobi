@@ -1346,8 +1346,6 @@ document.getElementById('notificationForm').addEventListener('submit', function(
         }
 
         // 2단계: 알림 전송 API 호출
-<%--         const notification = generateNotificationTitle(type);
-        const subnoti = generateSubNotification(type); --%>
 
         const noticeData = {
             userIdx: userIdx,

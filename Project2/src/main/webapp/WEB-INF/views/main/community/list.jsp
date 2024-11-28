@@ -207,7 +207,7 @@ margin:30px 10px 15px 10px;
 		<c:set var="startNum" value="${response.pagination.startPage}"/>
 		<c:set var="endNum" value="${response.pagination.endPage}"/>
 		<c:set var="totalpagecount" value="${response.pagination.totalPageCount}"/>
-
+      <c:set var="totalPages" value="${totalPages != null && totalPages > 0 ? totalPages : 1}" />
 	<!-- 페이징 UI -->
 	<div class="pagination">
 	    <!-- 이전 페이지 버튼 -->

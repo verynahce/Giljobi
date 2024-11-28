@@ -79,7 +79,7 @@ public class NotificationApiController {
     
     
     //알림삭제
-    @DeleteMapping("/notifications/remove/{noticeIdx}")
+    @DeleteMapping("/notification/remove/{noticeIdx}")
     public ResponseEntity<String> deleteNotification(@PathVariable("noticeIdx") Integer noticeIdx) {
     	noticeService.deleteNotification(noticeIdx);
     	return ResponseEntity.ok("알림이 삭제되었습니다.");
