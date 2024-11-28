@@ -15,6 +15,6 @@ import com.prj.entity.Users;
 public interface NoticeRepository extends JpaRepository<Notice, Long> {
 	 
 
-	
+	 List<Notice> findByCommunityReplyReplyIdx(Long replyIdx);
 
 }

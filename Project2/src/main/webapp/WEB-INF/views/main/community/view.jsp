@@ -696,8 +696,7 @@ $('.reply-register').on('click', function(e){
 	                	                
 	                //dutyid -> name으로 바꾸기 
 					const duty = dutyList.find(item => item.dutyId === reply.dutyId); 
-					const dutyName = duty ? duty.dutyName : '미정';  
-						                  
+					const dutyName = duty ? duty.dutyName : '미정';            
 	                  
 	                //추가할 답변 모양   
 				       const result = `

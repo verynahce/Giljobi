@@ -280,11 +280,23 @@ public class CommunityService {
          if (!cUser.equals(rUser)) {
              Notice notice = new Notice(community.getUsers(),reply,cdate,type,community,senderIdx);           
              Notice send = noticeRepository.save(notice); 
+    		
 	 
          }
 
 		
 	}
+
+	public void deleteNoticeReply(Long replyIdx) {
+              
+		//1.메시지 있는지 확인		
+		List<Notice> notice =noticeRepository.findByCommunityReplyReplyIdx(replyIdx);	
+		   noticeRepository.deleteAll(notice);
+		   System.out.println("!!!!!!!!!!!!!!삭제 완료 대상 : "+ notice);	
+		 
+		}
+
+	
 	
 
     

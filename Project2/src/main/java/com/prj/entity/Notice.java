@@ -75,13 +75,15 @@ public class Notice {
     @Column(name = "STATE")
     private String state;
     
-    @Column(name = "NOTIFICATION", nullable = false)
+    @Column(name = "NOTIFICATION")
     private String notification;
     
-    @Column(name = "SUBNOTI", nullable = false)
+    @Column(name = "SUBNOTI")
     private String subnoti;
 
-	public Notice(Users user, CommunityReply reply, LocalDateTime cdate, String type, Community community,Long senderIdx) {
+
+	public Notice(Users user, CommunityReply reply, LocalDateTime cdate, String type,Community community,Long senderIdx) {
+
 		this.users = user;
 		this.communityReply =reply;
 		this.recieveddate =cdate;
