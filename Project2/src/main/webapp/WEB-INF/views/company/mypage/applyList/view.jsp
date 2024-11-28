@@ -634,15 +634,21 @@ width: 170px;
    &:hover {
     background-color: #4A4A4A;
    }
-   a{ 
+   button { 
    display: block;
-    text-decoration: none; 
+    text-decoration: none;
+    background-color: #333333;
     color: white; 
     width: 100%; 
     height: 100%;
     text-align: center;
     line-height: 33px;
    gap: 10px;
+   border-style: none;
+      &:hover {
+    background-color: #4A4A4A;
+    border-style: none;
+   }
    }   
  }
 .n-delete {
@@ -777,10 +783,9 @@ cursor: pointer;
 	
 	<!-- 평가창 -->
 <form action="/Company/Mypage/ApplyList/Evaluate" method="POST">
-    <c:forEach items="${appli_idx}" var="apply">
-        <input type="hidden" name="appli_idx" value="${apply.appli_idx}">
-    </c:forEach>
+        <input type="hidden" name="appli_idx" value="${appli_idx}">
     <input type="hidden" name="company_idx" value="${company_idx}">
+    <input type="hidden" name="appli_status" value="${appli_status}">
     <input type="hidden" name="post_idx" value="${post_idx}">
     <input type="hidden" name="resume_idx" value="${vo.resume_idx}">
     <input type="hidden" name="evaluate_idx" value="${evaluate.evaluate_idx}">
@@ -903,8 +908,8 @@ cursor: pointer;
                             <option value="interview">면접합격</option>
                         </select>
                         <div class="noti" id="notification">
-                            <p>응애 합격하였습니다.</p>
-                            <p>면접정보에 대해 다음과 같이 안내드립니다.</p>
+                            <p>일반 알림입니다</p>
+                            <p>이 이력서의 작성자에게 전달하고 싶으신 내용을 작성해주세요</p>
                             <p>일시: <input type="date" name="scadule"></p>
                             <p>장소: <input type="text" name="location"></p>
                             <p>안내사항: <textarea name="information"></textarea></p>
@@ -1346,8 +1351,6 @@ document.getElementById('notificationForm').addEventListener('submit', function(
         }
 
         // 2단계: 알림 전송 API 호출
-<%--         const notification = generateNotificationTitle(type);
-        const subnoti = generateSubNotification(type); --%>
 
         const noticeData = {
             userIdx: userIdx,

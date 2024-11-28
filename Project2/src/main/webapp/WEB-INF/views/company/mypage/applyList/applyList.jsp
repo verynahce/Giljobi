@@ -257,7 +257,7 @@ justify-content: flex-end;
 	       	   <td>${a.user_name}<br><span class="namebot">(${a.user_gender},${a.age}세)</span></td>
        	    </c:otherwise>
        	   </c:choose>
-       	   <td><a href="/Company/Mypage/ApplyList/View?resume_idx=${a.resume_idx}&company_idx=${company_idx}&post_idx=${post_idx}&appli_idx=${a.appli_idx}">${a.resume_title}</a>
+       	   <td><a href="/Company/Mypage/ApplyList/View?resume_idx=${a.resume_idx}&company_idx=${company_idx}&post_idx=${post_idx}&appli_idx=${a.appli_idx}&appli_status=${a.appli_status}">${a.resume_title}</a>
        	   <br>
        	   <c:choose>      	    
 			<c:when test="${not empty a.skill_name}">

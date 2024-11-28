@@ -17,6 +17,8 @@
     COMPANY_NAME,
     COMPANY_BRNUM,
     COMPANY_TEL,
+    COMPANY_BIRTHDATE,
+    COMPANY_ADDRESS,
     COMPANY_AREA,
     REP_NAME,
     COMPANY_EMAIL
@@ -27,6 +29,8 @@
     #{company_name},
     #{company_brnum},
     #{company_tel},
+    #{company_birthdate},
+    #{company_address},
     #{company_area},
     #{rep_name},
     #{company_email}
@@ -136,6 +140,8 @@ WHERE P.POST_IDX = #{post_idx}
   	COMPANY_AREA = #{company_area},
   	REP_NAME = #{rep_name},
   	COMPANY_EMAIL = #{company_email},
+  	COMPANY_BIRTHDATE = #{company_birthdate},
+  	COMPANY_ADDRESS = #{company_address},
   	COMPANY_BRNUM = #{company_brnum}
   WHERE COMPANY_IDX = #{company_idx}
   
@@ -363,6 +369,12 @@ WHERE PS.POST_IDX = #{post_idx}
 	 SET APPLI_STATUS =#{arg1}
 	 WHERE APPLI_IDX = #{arg0}
 	 </update>
+    <update id="updateApplyByEvaluate">
+        UPDATE APPLICATION
+        SET APPLI_STATUS = #{appli_status, jdbcType=VARCHAR}
+        WHERE APPLI_IDX =#{appli_idx}
+    </update>
+
 	 
 	<delete id="deleteApply">   
 	DELETE FROM APPLICATION
@@ -495,15 +507,20 @@ VALUES (#{total_score})
     FROM APPLICATION AP LEFT JOIN RESUME RE ON RE.RESUME_IDX = AP.RESUME_IDX
   WHERE RE.RESUME_IDX =#{resume_idx}
 </select>
+<select id="getAppliStatus">
+      SELECT 
+    AP.APPLI_IDX,
+    AP.RESUME_IDX,
+    AP.APPLI_STATUS
+    FROM APPLICATION AP LEFT JOIN RESUME RE ON RE.RESUME_IDX = AP.RESUME_IDX
+  WHERE AP.APPLI_IDX =#{appli_idx}
+</select>
 
 <select id="getEvaluateIdx" resultType="Integer">
     SELECT E.EVALUATE_IDX
     FROM EVALUATE E
     JOIN APPLICATION A ON A.APPLI_IDX = E.APPLI_IDX
-    WHERE A.APPLI_IDX IN 
-    <foreach item="item" index="index" collection="appliIdxList" open="(" separator="," close=")">
-        #{item}
-    </foreach>
+    WHERE A.APPLI_IDX =#{appli_idx}
 </select>
 
   <update id="updateCompanyMax">

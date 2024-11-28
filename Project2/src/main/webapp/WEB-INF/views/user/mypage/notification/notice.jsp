@@ -487,6 +487,8 @@ cursor: pointer;
 					<option value="all">전체</option>
 					<option value="document">서류 합격 알림</option>
 					<option value="interview">면접 합격 알림</option>
+					<option value="resume">이력서 알림</option>
+					<option value="post">공고 알림</option>
 					<option value="reply">댓글 알림</option>
 				</select>
 					<ul id="noticeList">
@@ -569,13 +571,13 @@ cursor: pointer;
  </script>
  
  <script>
+ const userLink = document.querySelector('a.active-color');
+ const userIdx = userLink.getAttribute('data-user-idx');
  $(document).ready(function() {
 	    // 페이지가 로드될 때 기본적으로 전체 알림을 표시
 	    filterByType('all');
 	});
  
- const userLink = document.querySelector('a.active-color');
- const userIdx = userLink.getAttribute('data-user-idx');
  const noticeList = document.getElementById("noticeList");
  
  function filterByType(type) {
@@ -597,21 +599,24 @@ cursor: pointer;
 	            return response.json();
 	        })
 .then(notices => {
-    console.log('Notices:', notices); 
     noticeList.innerHTML = '';  // 기존 알림 초기화
     if (notices.length === 0) {
         noticeList.innerHTML = '<li>알림이 없습니다.</li>';
     } else {
         notices.forEach(notice => {
-            console.log('Notice:', notice);  // 확인: 개별 알림 출력
             const li = document.createElement('li');
             li.className = 'notice-item';
             li.setAttribute('data-notice-idx', notice.noticeIdx);
             li.setAttribute('data-community-idx', notice.communityIdx);
+            li.setAttribute('data-resume-idx', notice.resumeIdx);
+            li.setAttribute('data-post-idx', notice.postIdx);
+            li.setAttribute('data-type', notice.type);
+            li.setAttribute('data-recieveddate', notice.recieveddate);
 
             // 값이 null이면 기본값을 사용하도록 처리
             const notification = notice.notification || '알림 내용 없음';
             const subnoti = notice.subnoti || '추가 정보 없음';
+            const noticeIdx = notice.noticeIdx;
             
             
             console.log("sef",notification);
@@ -624,8 +629,8 @@ cursor: pointer;
                    <p></p>
                    <p>상태:<span class="state"> </span></p>
                    <p>수신일:<span class="recieveddate"> </span></p>
-                   <p class="remove" onclick="deleteNotice(noticeIdx)">🗑️</p>
                 </a>
+                   <p class="remove" onclick="deleteNotice(noticeIdx)">🗑️</p>
             `;
             li.querySelector('a h3').innerHTML = notification;
 			li.querySelector('a p').innerHTML = subnoti;
@@ -634,29 +639,52 @@ cursor: pointer;
             noticeList.appendChild(li);
             
             
+            
+            
         });
         
         // 클릭 이벤트 리스너 등록
         document.querySelectorAll('.notice-item').forEach(item => {
             item.addEventListener('click', () => {
                 const noticeIdx = item.getAttribute('data-notice-idx');
-                const communityIdx = item.getAttribute('data-community-idx'); // communityIdx 가져오기
+                const communityIdx = item.getAttribute('data-community-idx'); 
+                const resumeIdx = item.getAttribute('data-resume-idx'); 
+                const postIdx = item.getAttribute('data-post-idx');
                 const type = item.getAttribute('data-type'); // type 가져오기
 
                 console.log("노티스", noticeIdx);
 
-                if (type === 'reply') {
-                    handleCommentNotification(communityIdx);
-                } else {
-                    getNoticeDetail(noticeIdx); // noticeIdx를 매개변수로 전달
+                if (type == "reply") {
+                	handleCommentNotification(communityIdx),markNoticeAsRead(noticeIdx);
+                } else if(type== "resume") {
+                	handleResumeNotification(resumeIdx),markNoticeAsRead(noticeIdx);			
+                } else if(type=="post"){
+					handlePostNotification(postIdx),markNoticeAsRead(noticeIdx);			
+                }
+                	
+                else {
+                    getNoticeDetail(noticeIdx),markNoticeAsRead(noticeIdx); // noticeIdx를 매개변수로 전달
                 }
             });
         });
+        document.querySelectorAll('.remove').forEach(del => {
+        	del.addEventListener('click', () => {
+                const noticeIdx = del.getAttribute('data-notice-idx');
+
+                console.log("노티스", noticeIdx);
+
+                deleteNotice(noticeIdx);
+            });
+        });
+
     }
 })
 
 	        .catch(error => console.error('Error:', error));
 	}
+ setInterval(() => filterByType(type), 10000); // userIdx를 동적으로 설정 */
+
+
  
 
  
@@ -669,7 +697,7 @@ document.querySelector('.n-delete').addEventListener('click', () => {
 
 function getNoticeDetail(noticeIdx) { // noticeIdx를 매개변수로 받음
     console.log("getNoticeDetail 호출, noticeIdx:", noticeIdx); // 여기서 noticeIdx 확인
-    fetch(`/api/notifications/${noticeIdx}`)
+    fetch(`/api/notifications/\${noticeIdx}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -680,6 +708,7 @@ function getNoticeDetail(noticeIdx) { // noticeIdx를 매개변수로 받음
             console.log(data);
             const overlay = document.querySelector('.overlay-notice');
             const container = document.getElementById('notice-container');
+            
             container.innerHTML = `
                 <div class="noti" id="notification">
                     <h3>안내</h3>
@@ -697,26 +726,54 @@ function getNoticeDetail(noticeIdx) { // noticeIdx를 매개변수로 받음
 			
 //댓글 게시글로 이동
 function handleCommentNotification(communityIdx) {
-    location.href = `/Main/Community/View?communityIdx=${communityIdx}`;
+    location.href = `/Main/Community/View?communityIdx=`+communityIdx;
+}
+function handleResumeNotification(resumeIdx) {
+    location.href = `/User/MyPage/Resume/View?resume_idx=`+resumeIdx;
+}
+function handlePostNotification(postIdx) {
+    location.href = `/Main/Jobs/View?post_idx=`+postIdx;
 }
 
+$(document).ready(function() {
+    // 페이지가 로드될 때 모든 알림 항목에 대해 자동 삭제 시도
+    document.querySelectorAll('.notice-item').forEach(item => {
+        const noticeIdx = item.getAttribute('data-notice-idx');
+        const receivedDate = item.getAttribute('data-received-date'); // 수정: data-received-date로 변경
+        autoDelete(noticeIdx, receivedDate);
+    });
+});
 
-			
-			//알림 삭제
-			function deleteNotice(noticeIdx) {
-			    if (confirm('정말로 삭제하시겠습니까?')) {
-			        fetch(`/api/notification/remove/${notice.noticeIdx}`, { method: 'DELETE' })
-			            .then(response => response.text())
-			            .then(message => {
-			                alert(message);
-			                location.reload(); // 새로고침
-			            })
-			            .catch(error => console.error('Error:', error));
-			    }
-			}
-//새알림 체크
+
+//알림 삭제
+function autoDelete(noticeIdx, receivedDate) {
+    // 현재 날짜와 30일 전 날짜 계산
+    const currentDate = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+
+    // receivedDate를 Date 객체로 변환
+    const noticeDate = new Date(receivedDate);
+
+    // 30일 이전인지 확인
+    if (noticeDate < thirtyDaysAgo) {
+        // 30일 이전이면 바로 삭제
+        deleteNotice(noticeIdx);
+    } 
+}
+function deleteNotice(noticeIdx) {
+        fetch(`/api/notification/remove/\${noticeIdx}`, { method: 'DELETE' })
+            .then(response => response.text())
+            .then(message => {
+            	 console.log(message);
+                location.reload(); // 새로고침
+            })
+            .catch(error => console.error('Error:', error));
+}
+
+//읽음상태 변경
 function markNoticeAsRead(noticeIdx) {
-    fetch(`/api/notifications/read/${noticeIdx}`, {
+    fetch(`/api/notifications/read/\${noticeIdx}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json' // 서버에 JSON 형식으로 데이터 전송
@@ -730,38 +787,13 @@ function markNoticeAsRead(noticeIdx) {
     })
     .then(message => {
         console.log(message); // 성공 메시지 출력
-        // 여기서 UI를 업데이트하거나 추가적인 처리를 할 수 있습니다.
     })
     .catch(error => {
         console.error('Error:', error); // 에러 처리
     });
 }
 
-function fetchRecentNotifications(user_idx) {
-    fetch(`/api/notifications/recent/${user_idx}`)
-        .then(response => response.json())
-        .then(notifications => {
-            const noticeList = document.querySelector('.notice-list');
-            notifications.forEach(notice => {
-                const li = document.createElement('li');
-                li.className = 'notice-item unread';
-                li.innerHTML = `
-                    <div class="notice-info">
-                        <p class="notice-title">${notice.notification}</p>
-                        <p class="notice-desc">${notice.subnoti}</p>
-                    </div>
-                    <div class="notice-actions">
-                        <span class="notice-date">${notice.recieveddate}</span>
-                        <button onclick="deleteNotice(${notice.noticeIdx})">🗑️</button>
-                    </div>`;
-                noticeList.prepend(li); // 새 알림을 목록 상단에 추가
-            });
-        })
-        .catch(error => console.error('Error:', error));
-}
-
-/* // 10초마다 새 알림 체크
-setInterval(() => fetchNewNotifications(1), 10000); // userIdx를 동적으로 설정 */
+setInterval(() => filterByType(type), 10000); // userIdx를 동적으로 설정 */
 </script>
 
 </body>

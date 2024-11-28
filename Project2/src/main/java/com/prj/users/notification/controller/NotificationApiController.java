@@ -79,7 +79,7 @@ public class NotificationApiController {
     
     
     //알림삭제
-    @DeleteMapping("/notifications/remove/{noticeIdx}")
+    @DeleteMapping("/notification/remove/{noticeIdx}")
     public ResponseEntity<String> deleteNotification(@PathVariable("noticeIdx") Integer noticeIdx) {
     	noticeService.deleteNotification(noticeIdx);
     	return ResponseEntity.ok("알림이 삭제되었습니다.");
@@ -183,7 +183,7 @@ public class NotificationApiController {
     }
     
     //새알림 
-    @GetMapping("/recent/{userId}")
+    @GetMapping("/notifications/recent/{userIdx}")
     public ResponseEntity<List<Notice>> getNewNotifications(@PathVariable("userIdx") Integer userIdx) {
     	String sql = "SELECT * FROM NOTICE WHERE USER_IDX = ? AND STATE = 0";
     	List<Notice> newNotifications = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Notice.class), userIdx);
