@@ -12,6 +12,7 @@ import com.prj.main.vo.EmpVo;
 import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.main.vo.SkillVo;
+import com.prj.users.notification.service.Notice;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.EduVo;
 import com.prj.users.vo.ResumeCareerVo;
@@ -135,6 +136,16 @@ public interface UserMapper {
 	List<ResumeSkillVo> getResumeSkillList(int resume_idx);
 
 	void updateSkillList(@Param("skillList") List<ResumeSkillFormVo> skillList);
+
+	Notice getNoticeClick(Notice notice);
+
+	void insertNoticeClick(Notice notice);
+
+	List<UserBookmarkVo> getNoticeBookmark(int company_idx);
+
+	void insertNoticeBookmark(Notice notice);
+
+
 
 
 

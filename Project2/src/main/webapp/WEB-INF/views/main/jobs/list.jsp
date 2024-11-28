@@ -200,7 +200,7 @@ document.addEventListener('keydown', function(event) {
 	        let dutyId = $("#dutyId").val();
 	        let careerId= $("#careerId").val();
 	        let empId = $("#empId").val();
-					let skillId = $("#skillId").val()
+			let skillId = $("#skillId").val()
 	        $.ajax({
 	            url: '/Main/JobsFilter',
 	            type: 'GET',

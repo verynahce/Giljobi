@@ -18,6 +18,7 @@ import com.prj.companys.vo.CompanyVo;
 import com.prj.companys.vo.PostSkillFormVo;
 import com.prj.companys.vo.PostSkillVo;
 import com.prj.companys.vo.PostWriteVo;
+
 import com.prj.main.mapper.MainMapper;
 import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
@@ -30,8 +31,11 @@ import com.prj.main.vo.PostListVo;
 import com.prj.main.vo.PostVo;
 import com.prj.main.vo.SkillVo;
 import com.prj.service.PdsService;
+import com.prj.users.mapper.UserMapper;
+import com.prj.users.notification.service.Notice;
 import com.prj.users.vo.EduVo;
 import com.prj.users.vo.ScoreVo;
+import com.prj.users.vo.UserBookmarkVo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -51,6 +55,8 @@ public class MypageController {
 	@Autowired
 	private PdsService pdsService;
 	
+	@Autowired
+	private UserMapper userMapper;
 	@RequestMapping("/Home/View")
 	public ModelAndView homeview(HttpServletRequest request, HttpServletResponse responese) {
 		
@@ -228,6 +234,21 @@ public class MypageController {
         }		
 		companyMapper.insertSkillList(skillList);		
     }
+	
+	//메시지 보내기
+	//메시지 보내기
+
+
+	List<UserBookmarkVo> ubvList = userMapper.getNoticeBookmark(postWriteVo.getCompany_idx());
+	
+	for(UserBookmarkVo ubv :ubvList) {
+	Notice notice = new Notice();
+	notice.setUserIdx(ubv.getUser_idx());
+	notice.setCompanyIdx(postWriteVo.getCompany_idx());	
+	notice.setType("post");
+	userMapper.insertNoticeBookmark(notice);
+	}
+	
 	
 	ModelAndView mv = new ModelAndView();
 	mv.setViewName("redirect:/Company/Mypage/Post/List?company_idx=" + postWriteVo.getCompany_idx());

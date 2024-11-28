@@ -519,6 +519,31 @@
   </foreach>
   </insert>
 
+  <insert id="insertNoticeClick">
+  INSERT INTO NOTICE (NOTICE_IDX,POST_IDX,RESUME_IDX, USER_IDX,COMPANY_IDX, TYPE
+  )  VALUES(NOTICE_SEQ.NEXTVAL,#{postIdx},#{resumeIdx},#{userIdx},#{companyIdx},#{type})
+  </insert>
+  
+  <select id="getNoticeClick">
+  SELECT *
+  FROM NOTICE
+  WHERE POST_IDX = #{postIdx} 
+        AND RESUME_IDX= #{resumeIdx}
+        AND USER_IDX= #{userIdx} 
+        AND COMPANY_IDX =#{companyIdx}
+  </select>
+  
+  <select id="getNoticeBookmark">
+    SELECT UB_IDX, USER_IDX,COMPANY_IDX
+    FROM USER_BOOKMARK
+    WHERE COMPANY_IDX =#{company_idx}  
+  </select>
+  
+   <insert id="insertNoticeBookmark">
+  INSERT INTO NOTICE (NOTICE_IDX,POST_IDX, USER_IDX,COMPANY_IDX, TYPE
+  )  VALUES(NOTICE_SEQ.NEXTVAL,(SELECT NVL(MAX(POST_IDX),1 ) FROM POST ),
+  #{userIdx},#{companyIdx},#{type})
+  </insert> 
   
 </mapper>
 
