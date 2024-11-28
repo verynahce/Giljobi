@@ -51,9 +51,10 @@ public class NoticeDao {
     public List<Notice> findNoticesByUserAndType(int userIdx, String type) {
         String sql = "SELECT * FROM NOTICE WHERE USER_IDX = ?";
         if (type != null && !type.isEmpty() && !"all".equals(type)) {
-            sql += " AND TYPE = ?";
+            sql += " AND TYPE = ? ORDER BY RECIEVEDDATE DESC";
             return jdbcTemplate.query(sql, new Object[]{userIdx, type}, new BeanPropertyRowMapper<>(Notice.class));
         } else {
+        	sql += " ORDER BY RECIEVEDDATE DESC";
             return jdbcTemplate.query(sql, new Object[]{userIdx}, new BeanPropertyRowMapper<>(Notice.class));
         }
     }

@@ -156,6 +156,11 @@
  .inputs {
    border:none;
    outline:none;
+   padding-right:10px;
+ }
+  #search-address {
+  width:100%;
+  height:30px;   
  }
 
  .underline {
@@ -286,22 +291,43 @@
       	  	<tr>
       	   	  <td>산업군</td>
       	  	</tr>
+      	  	<tr>
+      	   	  <td>설립년도</td>
+      	  	</tr>
     	  	<tr>
       	   	  <td>사업자 등록번호</td>
       	  	</tr>
       	  </table>
       	  <table class="updateinputs">
       	  	<tr>
-      	   	  <td class="underline"><input type="text" class="inputs" name="company_name" value="${companyVo.company_name}"></td>
+      	   	  <td colspan="2" class="underline"><input type="text" class="inputs" name="company_name" value="${companyVo.company_name}"></td>
       	  	</tr>
       	  	<tr>
-      	   	  <td class="underline"><input type="text" class="inputs" name="company_area" value="${companyVo.company_area}" ></td>
+      	   	  <td colspan="2" class="underline"><input type="text" class="inputs" name="company_area" value="${companyVo.company_area}" ></td>
+      	  	</tr>
+      	  	<tr>
+      	   	  <td colspan="2" class="underline"><input type="text" class="inputs" name="company_birthdate" value="${companyVo.company_birthdate}" ></td>
       	  	</tr>
     	  	<tr>
-      	   	  <td class="underline"><input type="text" class="inputs" name="company_brnum" value="${companyVo.company_brnum}"></td>
+      	   	  <td colspan="2" class="underline"><input type="text" class="inputs" name="company_brnum" value="${companyVo.company_brnum}"></td>
       	  	</tr>
       	  </table>
       	 </div>
+      	 <div class="info-sub">
+      	  <table class="updatetitles">
+      	  	<tr>
+      	   	  <td>회사주소</td>
+      	  	</tr>
+      	  </table>
+      	  <table class="updateinputs">
+      	  	<tr>
+	            <td class="underline">
+	             <input type="text" name="company_address" class="inputs" id="roadFullAddr" placeholder="주소 검색을 해주세요" value="${companyVo.company_address}"readonly required/>
+	            </td>
+	            <td class="inputs"><button id="search-address" type="button" onclick="searchAddress()">주소 검색</button></td>
+	          </tr>
+	       </table>
+	     </div>
       	 <div class="info-sub">
       	  <table class="updatetitles">
       	  	<tr>
@@ -321,8 +347,18 @@
       	  	<tr>
       	   	  <td class="underline"><input type="text" class="inputs" name="company_tel" value="${companyVo.company_tel}"></td>
       	  	</tr>
-    	  	<tr>
-      	   	  <td class="underline"><input type="text" class="inputs" name="company_email" value="${companyVo.company_email}"></td>
+      	  	<tr>
+      	   	  <td colspan="2" class="underline">
+      	   	   <input type="email" id="company_email" class="inputs" name="company_email" placeholder="이메일 입력" value="${companyVo.company_email}"required/>
+      	   	   <select id="email_domain" class="inputs" onchange="updateEmail()">
+                	<option value="" selected>직접입력</option>
+                    <option value="gmail.com">gmail.com</option>
+                    <option value="naver.com">naver.com</option>
+                    <option value="kakao.com">kakao.com</option>
+                    <option value="yahoo.com">yahoo.com</option>
+                    <option value="outlook.com">outlook.com</option>
+                </select>
+             </td>
       	  	</tr>
       	  </table>
       	 </div>
@@ -407,6 +443,28 @@ $(function() {
 
     
 })
+
+/* 주소검색 */
+      function searchAddress() {
+          window.open("/Company/SearchAddress","pop","width=570,height=430, scrollbars=yes, resizable=yes");
+      }
+      function jusoCallBack(roadFullAddr){
+          document.getElementById('roadFullAddr').value = roadFullAddr;
+      }
+        /* 주소검색 */
+/* 이메일 */
+        function updateEmail() {
+            var emailInput = document.getElementById('company_email');
+            var domainSelect = document.getElementById('email_domain');
+
+            var selectedDomain = domainSelect.value;
+
+            if (selectedDomain) {
+                emailInput.value = emailInput.value.split('@')[0] + '@' + selectedDomain;
+            } else {
+                emailInput.value = emailInput.value.split('@')[0]; // 도메인 제거
+            }
+        }      
     
 </script>
 

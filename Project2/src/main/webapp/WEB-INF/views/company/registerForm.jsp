@@ -120,6 +120,8 @@
   	            input.value = cleanedInput; // 11자리가 아닐 경우 하이픈 추가하지 않음
   	        }
   	    } 
+      
+      /* 주소검색 */
       function searchAddress() {
           window.open("/Company/SearchAddress","pop","width=570,height=430, scrollbars=yes, resizable=yes");
       }
@@ -127,7 +129,7 @@
           document.getElementById('roadFullAddr').value = roadFullAddr;
       }
         function updateEmail() {
-            var emailInput = document.getElementById('user_email');
+            var emailInput = document.getElementById('company_email');
             var domainSelect = document.getElementById('email_domain');
 
             var selectedDomain = domainSelect.value;
@@ -138,6 +140,7 @@
                 emailInput.value = emailInput.value.split('@')[0]; // 도메인 제거
             }
         }      
+        /* 주소검색 */
 			</script>
       <script>
       const formEl       		 = document.querySelector('#form');
@@ -226,6 +229,7 @@
                });
         	});
        });
+ 
       </script>
 
       </main>

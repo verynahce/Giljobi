@@ -269,6 +269,8 @@ public class CommunityService {
 					"메시지 전송실패! 대상 댓글이 없습니다" ) );		
          LocalDateTime cdate = LocalDateTime.now();
          String type = "reply";
+         String notification = "⌨️댓글 알림";
+         String subnoti = "작성하신 게시글에 새로운 댓글이 달렸습니다.";
          Long senderIdx = reply.getUsers().getUserIdx();
         
          
@@ -278,7 +280,7 @@ public class CommunityService {
 		 System.out.println("유저값 "+ rUser);
          // 게시물유저 = 댓글 유저 동일 제외
          if (!cUser.equals(rUser)) {
-             Notice notice = new Notice(community.getUsers(),reply,cdate,type,community,senderIdx);           
+             Notice notice = new Notice(community.getUsers(),reply,cdate,type,notification,subnoti,community,senderIdx);           
              Notice send = noticeRepository.save(notice); 
     		
 	 
