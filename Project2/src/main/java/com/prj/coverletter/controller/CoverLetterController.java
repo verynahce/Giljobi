@@ -43,6 +43,7 @@ public class CoverLetterController {
 
         logger.debug("Cover Letter received: {}", request);
 
+        System.out.println("Cover Letter received: {}"+ request);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + openaiApiKey);
         headers.set("Content-Type", "application/json");

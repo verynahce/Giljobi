@@ -251,7 +251,7 @@ public class MypageBookMarkController {
 	        companyMapper.updateEvaluate(evaluateVo);
 	    }
 
-	    if(total_score>=3) {
+	    if(total_score>=2.5) {
 	    	appli_status = "서류합격";
 	    	companyMapper.updateApplyByEvaluate(appli_idx,appli_status);
 	    }
