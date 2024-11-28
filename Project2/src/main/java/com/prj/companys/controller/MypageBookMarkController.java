@@ -25,6 +25,7 @@ import com.prj.main.vo.PostVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.service.PdsService;
 import com.prj.users.mapper.UserMapper;
+import com.prj.users.notification.service.Notice;
 import com.prj.users.vo.ResumeSkillVo;
 import com.prj.users.vo.ResumeVo;
 
@@ -186,8 +187,23 @@ public class MypageBookMarkController {
 		//스킬 정보
 		List <ResumeSkillVo> SkillList = userMapper.getResumeSkillList(resume_idx);
 		
+		//메시지 보내기
+		Notice notice = new Notice();
+		notice.setResumeIdx(resume_idx);
+		notice.setPostIdx(post_idx);
+		notice.setCompanyIdx(company_idx);
+		notice.setUserIdx(vo.getUser_idx());		
+		notice.setType("resume");
+		// 중복 메시지 막기
+		Notice configNotice = userMapper.getNoticeClick(notice);		
+		if (configNotice == null) {
+		userMapper.insertNoticeClick(notice); 
+		}else {
+			
+		}
+		
+		
 		ModelAndView mv = new ModelAndView();
-
 			
 		if (evaluateIdx != null && !evaluateIdx.isEmpty()) {
 		    EvaluateVo evaluate = companyMapper.getEvaluate(evaluateIdx);

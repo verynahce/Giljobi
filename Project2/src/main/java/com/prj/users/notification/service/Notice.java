@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Notice {
 	
+
 	private Integer noticeIdx;
 	private Integer postIdx;
 	private Integer resumeIdx;

@@ -62,8 +62,12 @@ height: 100px;
 		  <p>${vo.company_email }</p>
 		  </div>
 		 <div class="company-history">
+		 <c:if test="${not empty vo.company_address }">
 		  <p><img src="/images/review/location.png">${vo.company_address }</p>
+		 </c:if>
+		 <c:if test="${not empty vo.company_address }">
 		  <p><img src="/images/review/Building.png">${vo.company_birthdate }</p>
+		 </c:if>
 		  <p><img src="/images/review/Clipboard.png">공고수 &nbsp; ${countP}개</p>
 		 </div>
         </div>

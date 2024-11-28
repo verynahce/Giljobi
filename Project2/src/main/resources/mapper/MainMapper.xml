@@ -231,7 +231,15 @@
 		                   LEFT JOIN CITY          CT ON P.CITY_ID          = CT.CITY_ID
 		                   LEFT JOIN POST_SKILL PS  ON P.POST_IDX = PS.POST_IDX
 		                   LEFT JOIN SKILL         S   ON PS.SKILL_ID  = S.SKILL_ID
-		WHERE 1=1 	      AND P.POST_DDATE &gt; SYSDATE 
+		WHERE P.POST_IDX IN (
+        SELECT P.POST_IDX
+        FROM POST P
+        LEFT JOIN POST_SKILL PS ON P.POST_IDX = PS.POST_IDX
+        <if test="skill_id != null and skill_id != ''">
+            WHERE PS.SKILL_ID = #{skill_id}
+        </if>
+                               ) 
+	      AND P.POST_DDATE &gt; SYSDATE 
 	    <if test="city_id != null and city_id != ''">
 	      AND P.city_id = #{city_id}
 	    </if>
@@ -244,10 +252,6 @@
 	    <if test="emp_id != null and emp_id != ''">
 	      AND P.emp_id = #{emp_id}
 	    </if>
-	    <if test="skill_id != null and skill_id != ''">
-	      AND PS.skill_id = #{skill_id}
-	    </if>
- 
           GROUP BY P.POST_IDX,
                  P.COMPANY_IDX,
                  P.POST_TITLE,
@@ -397,7 +401,7 @@
     C.CITY_NAME,
     D.DUTY_NAME,
     E.EMP_NAME,
-    LISTAGG(S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME) AS SKILL_NAME, 
+    LISTAGG( DISTINCT S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME) AS SKILL_NAME, 
     RC.CAREER_CNAME,
     TO_CHAR(RC.CAREER_SDATE, 'YYYY.MM') AS CAREER_SDATE,
     TO_CHAR(RC.CAREER_EDATE, 'YYYY.MM') AS CAREER_EDATE,
@@ -418,7 +422,14 @@
     LEFT JOIN RESUME_SKILL RS ON R.RESUME_IDX = RS.RESUME_IDX
     LEFT JOIN SKILL S ON RS.SKILL_ID = S.SKILL_ID
     LEFT JOIN RESUME_CAREER RC ON R.RESUME_IDX = RC.RESUME_IDX
-  WHERE 1 = 1 
+  WHERE  R.RESUME_IDX IN (
+        SELECT R.RESUME_IDX
+        FROM RESUME R
+        LEFT JOIN RESUME_SKILL RS ON R.RESUME_IDX = RS.RESUME_IDX
+        <if test="skill_id != null and skill_id != ''">
+            WHERE RS.SKILL_ID = #{skill_id}
+        </if>
+    )
     AND U.USER_NAME IS NOT NULL
     <if test="city_id != null and city_id != ''">
       AND R.CITY_ID = #{city_id}
@@ -434,9 +445,6 @@
     </if>
     <if test="emp_id != null and emp_id != ''">
       AND R.EMP_ID = #{emp_id}
-    </if>
-    <if test="skill_id != null and skill_id != ''">
-      AND RS.SKILL_ID = #{skill_id}
     </if>
   GROUP BY
     R.RESUME_IDX,
