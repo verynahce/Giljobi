@@ -81,7 +81,9 @@ public class Notice {
     @Column(name = "SUBNOTI")
     private String subnoti;
 
+
 	public Notice(Users user, CommunityReply reply, LocalDateTime cdate, String type,Community community,Long senderIdx) {
+
 		this.users = user;
 		this.communityReply =reply;
 		this.recieveddate =cdate;

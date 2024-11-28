@@ -569,13 +569,14 @@ cursor: pointer;
  </script>
  
  <script>
+ const userIdx = userLink.getAttribute('data-user-idx');
  $(document).ready(function() {
 	    // 페이지가 로드될 때 기본적으로 전체 알림을 표시
 	    filterByType('all');
+	    fetchRecentNotifications(userIdx);
 	});
  
  const userLink = document.querySelector('a.active-color');
- const userIdx = userLink.getAttribute('data-user-idx');
  const noticeList = document.getElementById("noticeList");
  
  function filterByType(type) {
@@ -612,6 +613,7 @@ cursor: pointer;
             // 값이 null이면 기본값을 사용하도록 처리
             const notification = notice.notification || '알림 내용 없음';
             const subnoti = notice.subnoti || '추가 정보 없음';
+            const noticeIdx = notice.noticeIdx;
             
             
             console.log("sef",notification);
@@ -624,14 +626,16 @@ cursor: pointer;
                    <p></p>
                    <p>상태:<span class="state"> </span></p>
                    <p>수신일:<span class="recieveddate"> </span></p>
-                   <p class="remove" onclick="deleteNotice(noticeIdx)">🗑️</p>
                 </a>
+                   <p class="remove" onclick="deleteNotice(noticeIdx)">🗑️</p>
             `;
             li.querySelector('a h3').innerHTML = notification;
 			li.querySelector('a p').innerHTML = subnoti;
 			li.querySelector('a .state').innerHTML = notice.state == 0 ? '읽지 않음' : '읽음';
 			li.querySelector('a .recieveddate').innerHTML = notice.recieveddate;
             noticeList.appendChild(li);
+            
+            
             
             
         });
@@ -646,10 +650,19 @@ cursor: pointer;
                 console.log("노티스", noticeIdx);
 
                 if (type === 'reply') {
-                    handleCommentNotification(communityIdx);
+                    handleCommentNotification(communityIdx),markNoticeAsRead(noticeIdx);
                 } else {
-                    getNoticeDetail(noticeIdx); // noticeIdx를 매개변수로 전달
+                    getNoticeDetail(noticeIdx),markNoticeAsRead(noticeIdx); // noticeIdx를 매개변수로 전달
                 }
+            });
+        });
+        document.querySelectorAll('.remove').forEach(del => {
+        	del.addEventListener('click', () => {
+                const noticeIdx = del.getAttribute('data-notice-idx');
+
+                console.log("노티스", noticeIdx);
+
+                deleteNotice(noticeIdx);
             });
         });
     }
@@ -669,7 +682,7 @@ document.querySelector('.n-delete').addEventListener('click', () => {
 
 function getNoticeDetail(noticeIdx) { // noticeIdx를 매개변수로 받음
     console.log("getNoticeDetail 호출, noticeIdx:", noticeIdx); // 여기서 noticeIdx 확인
-    fetch(`/api/notifications/${noticeIdx}`)
+    fetch(`/api/notifications/\${noticeIdx}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -700,23 +713,22 @@ function handleCommentNotification(communityIdx) {
     location.href = `/Main/Community/View?communityIdx=${communityIdx}`;
 }
 
+//알림 삭제
+function deleteNotice(noticeIdx) {
+    if (confirm('정말로 삭제하시겠습니까?')) {
+        fetch(`/api/notification/remove/\${noticeIdx}`, { method: 'DELETE' })
+            .then(response => response.text())
+            .then(message => {
+                alert(message);
+                location.reload(); // 새로고침
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
 
-			
-			//알림 삭제
-			function deleteNotice(noticeIdx) {
-			    if (confirm('정말로 삭제하시겠습니까?')) {
-			        fetch(`/api/notification/remove/${notice.noticeIdx}`, { method: 'DELETE' })
-			            .then(response => response.text())
-			            .then(message => {
-			                alert(message);
-			                location.reload(); // 새로고침
-			            })
-			            .catch(error => console.error('Error:', error));
-			    }
-			}
-//새알림 체크
+//읽음상태 변경
 function markNoticeAsRead(noticeIdx) {
-    fetch(`/api/notifications/read/${noticeIdx}`, {
+    fetch(`/api/notifications/read/\${noticeIdx}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json' // 서버에 JSON 형식으로 데이터 전송
@@ -730,15 +742,15 @@ function markNoticeAsRead(noticeIdx) {
     })
     .then(message => {
         console.log(message); // 성공 메시지 출력
-        // 여기서 UI를 업데이트하거나 추가적인 처리를 할 수 있습니다.
     })
     .catch(error => {
         console.error('Error:', error); // 에러 처리
     });
 }
 
-function fetchRecentNotifications(user_idx) {
-    fetch(`/api/notifications/recent/${user_idx}`)
+//새알림 체크
+function fetchRecentNotifications(userIdx) {
+    fetch(`/api/notifications/recent/`+userIdx)
         .then(response => response.json())
         .then(notifications => {
             const noticeList = document.querySelector('.notice-list');
@@ -746,14 +758,20 @@ function fetchRecentNotifications(user_idx) {
                 const li = document.createElement('li');
                 li.className = 'notice-item unread';
                 li.innerHTML = `
-                    <div class="notice-info">
-                        <p class="notice-title">${notice.notification}</p>
-                        <p class="notice-desc">${notice.subnoti}</p>
-                    </div>
-                    <div class="notice-actions">
-                        <span class="notice-date">${notice.recieveddate}</span>
-                        <button onclick="deleteNotice(${notice.noticeIdx})">🗑️</button>
-                    </div>`;
+                    <a href="#" 
+                      >
+                       
+                       <h3></h3> 
+                       <p></p>
+                       <p>상태:<span class="state"> </span></p>
+                       <p>수신일:<span class="recieveddate"> </span></p>
+                    </a>
+                       <p class="remove" onclick="deleteNotice(noticeIdx)">🗑️</p>
+                `;
+            li.querySelector('a h3').innerHTML = notification;
+			li.querySelector('a p').innerHTML = subnoti;
+			li.querySelector('a .state').innerHTML = notice.state == 0 ? '읽지 않음' : '읽음';
+			li.querySelector('a .recieveddate').innerHTML = notice.recieveddate;
                 noticeList.prepend(li); // 새 알림을 목록 상단에 추가
             });
         })
