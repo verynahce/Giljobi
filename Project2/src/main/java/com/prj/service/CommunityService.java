@@ -4,20 +4,26 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.prj.dto.CommunityReplyDTO;
 import com.prj.entity.Community;
 import com.prj.entity.CommunityReply;
 import com.prj.entity.Duty;
+import com.prj.entity.Notice;
 import com.prj.entity.Users;
 import com.prj.repository.CommunityRepository;
 import com.prj.repository.DutyRepository;
+import com.prj.repository.NoticeRepository;
 import com.prj.repository.ReplyRepository;
 import com.prj.repository.UsersRepository;
-import com.prj.users.notification.service.Notice;
 import com.prj.users.notification.service.NoticeService;
 
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -34,6 +40,8 @@ public class CommunityService {
 	private ReplyRepository replyRepository;
 	@Autowired
 	private NoticeService noticeService;
+	@Autowired
+	private NoticeRepository noticeRepository;
 
 	public List<Community> getCommunityList() {
 		List<Community> CommunityList =  cRepository.findAll();
@@ -81,8 +89,8 @@ public class CommunityService {
 		 Users user = usersRepository.findById(crDto.getUserIdx()).orElseThrow(null);
          Duty duty = dutyRepository.findById(crDto.getDutyId()).orElseThrow(null);    
         
-		 System.out.println("유저값 "+user);
-		 System.out.println("유저값 "+duty);
+		 System.out.println("게시글 쓴 유저값 "+user);
+		 System.out.println("게시글 직무값 "+duty);
 		
          LocalDateTime cdate = LocalDateTime.now();
                 
@@ -148,6 +156,136 @@ public class CommunityService {
 
     // 댓글 리스트 반환
     return target.getReplies();
+	}
+
+	public CommunityReply updateRLikeOn(Long replyIdx) {
+		CommunityReply target = replyRepository.findById(replyIdx).orElseThrow(()-> 
+        new  IllegalArgumentException("좋아요수 off업데이트 실패! 댓글이 없습니다"));
+		
+		target.patchOn();
+		CommunityReply reply = replyRepository.save(target);
+		return reply;
+	}
+
+	public CommunityReply updateRLikeOff(Long replyIdx) {
+		CommunityReply target = replyRepository.findById(replyIdx).orElseThrow(()-> 
+        new  IllegalArgumentException("좋아요수 off업데이트 실패! 댓글이 없습니다"));
+		
+		target.patchOff();
+		CommunityReply reply = replyRepository.save(target);
+		return reply;
+	}
+
+	public Long getReplyCountForCommunity(Long communityIdx) {
+		Long count = replyRepository.countByCommunityCommunityIdx(communityIdx);
+		return count;
+	}
+	@Transactional 
+	public CommunityReply deleteReply(CommunityReplyDTO crDto) {
+		
+		//타겟 조회
+		CommunityReply target = replyRepository.findById(crDto.getReplyIdx()).orElseThrow(()-> 
+        new  IllegalArgumentException("삭제 실패! 댓글이 없습니다"));
+		//없는 자료 처리
+		if( target == null  )
+			return  null;		
+		// 3. 실제 삭제		
+		replyRepository.delete( target );
+		//삭제					
+		return target;
+	}
+
+	public void updateHit(Long communityIdx) {
+		//타겟 조회
+		 Community target = cRepository.findById(communityIdx).orElseThrow(() -> 
+	        new IllegalArgumentException("조회수 업데이트 실패! 게시물이 없습니다"));
+		
+		target.updateHit();
+		cRepository.save(target);
+		
+	}
+
+// 리스트 -기본 , 최신순, 추천순
+	public Page<Community> getPageCommunityList(int page, int size) {
+		  Pageable pageable = PageRequest.of(page, size);
+		return cRepository.findAll(pageable);
+	}
+
+	public Page<Community> getPageListdata(int page, int size) {
+	    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("comRegdate")));
+	    return cRepository.findAll(pageable);
+	}
+
+	public Page<Community> getPageListHit(int page, int size) {
+	    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("comLike")));
+	    return cRepository.findAll(pageable);
+	}
+
+	//조회수
+	public List<Community> getCommunityU(int user_idx) {
+		
+		 //유저 조회
+		 Long userIdx = (long) user_idx;
+		 Users user = usersRepository.findById(userIdx).orElseThrow(()->
+		 new IllegalArgumentException("글 업로드 실패! 등록된 유저가 아닙니다") );
+		 
+		 List <Community> CommunityList = cRepository.findByUsers(user);		 
+		return CommunityList;
+		
+		
+	}
+
+	public void  deleteCommunity(Long communityIdx) {
+		//게시물이 있는지 조회
+	    Community target = cRepository.findById(communityIdx).orElseThrow(()-> 
+				  new  IllegalArgumentException("삭제 실패! 게시물이 없습니다"));
+		
+	    cRepository.delete(target);
+	}
+   
+	public void updateCommunity(Community community, Long dutyId) {
+		
+		//게시물이 있는지 조회
+		Community target = cRepository.findById(community.getCommunityIdx()).orElseThrow(()-> 
+		                   new  IllegalArgumentException("업데이트 실패! 게시물이 없습니다"));
+       //직무
+		Duty duty = dutyRepository.findById(dutyId).orElseThrow(null);    
+        
+		//수정 후 다시 저장
+		target.patch(community,duty);  
+		Community updated = cRepository.save(target);
+		
+	}
+
+	public void insertNoticeReply(CommunityReplyDTO crDto, CommunityReplyDTO created) {
+		System.out.println("댓글 확인 좀 " + crDto.getCommunityIdx());
+		//1.게시물이 있는지 조회
+		Community community = cRepository.findById(crDto.getCommunityIdx()).orElseThrow( () -> new IllegalArgumentException(
+					"메시지 전송실패! 대상 게시물이 없습니다" ) );
+		System.out.println("유저값 "+community.getUsers());
+		 //2. 칼럼 값 구하기
+        
+         CommunityReply reply = replyRepository.findById(created.getReplyIdx()).orElseThrow( () -> new IllegalArgumentException(
+					"메시지 전송실패! 대상 댓글이 없습니다" ) );		
+         LocalDateTime cdate = LocalDateTime.now();
+         String type = "REPLY";
+         String notification ="커뮤니티글에 유저가 댓글을 등록했습니다! 확인해보세요";
+         String subnoti = "댓글등록";
+         Long senderIdx = reply.getUsers().getUserIdx();
+        
+         
+         Long cUser = community.getUsers().getUserIdx();
+         Long rUser = reply.getUsers().getUserIdx();
+ 		 System.out.println("유저값 "+ cUser);
+		 System.out.println("유저값 "+ rUser);
+         // 게시물유저 = 댓글 유저 동일 제외
+         if (!cUser.equals(rUser)) {
+             Notice notice = new Notice(community.getUsers(),reply,cdate,type,notification,subnoti,community,senderIdx);           
+             Notice send = noticeRepository.save(notice); 
+	 
+         }
+
+		
 	}
 	
 

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="/js/common.js" defer></script>
 <style>
@@ -102,7 +102,7 @@
  .text-box {
    margin-top:10px;
    margin-right:500px;
-
+   margin-left: 20px;
    
  }
    
@@ -123,10 +123,10 @@
    font-weight:450;
    color:#555;
  }
-.lay {
-
-
-} 
+.profileSize {
+width: 110px;
+height: 110px;
+}
 </style>
 </head>
 <body>
@@ -145,7 +145,14 @@
       </div>
       <div class="container">
         <div class="content">
-  		    <img class="profile-image"src="/images/icon/company-profile.png" alt="${companyVo.company_name}이미지"/>
+  	<c:choose>
+      <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" class="profileSize">
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/company-profile.png" alt="User Image" class="profileSize" >
+       </c:otherwise>
+       </c:choose>
   		  <div class="text-box">
            	<span class="highlight">${companyVo.company_name }</span><br>
            	<span><img src="/images/star.png">&nbsp;(${score})</span><br>

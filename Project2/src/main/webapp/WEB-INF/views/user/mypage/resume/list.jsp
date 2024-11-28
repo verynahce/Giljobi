@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer></script>
@@ -23,6 +23,7 @@
    border-radius:15px;
    overflow:hidden;
    margin:0;
+   max-height:fit-content
  }
  
  .sidebar table {

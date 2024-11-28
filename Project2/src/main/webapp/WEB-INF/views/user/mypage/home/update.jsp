@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer></script>
@@ -13,12 +13,13 @@
 
 .innercontents {
    display:flex;
-   gap:30px;
+   gap:110px;
+
  }
  
  .sidebar {
    border :1px solid #ccc;
-   width:300px;
+   width:233px;
    border-radius:15px;
    overflow:hidden;
    margin:0;
@@ -71,6 +72,8 @@
    flex-direction:column;
    align-items:left;
    width: 100%;
+   gap:30px;
+
  }
  
  .title {
@@ -88,6 +91,7 @@
  
  .contents {
    width:550px;
+
  }
  
  .info {
@@ -150,21 +154,30 @@
    border:1px solid silver;
    border-radius:5px;
    width:100%;
-
  }
+ 
+ .updateinputs td {
+   height:45px;
+   padding-left:10px;
+   }
+  
  .inputs {
    border:none;
    outline:none;
+   padding-right:10px;
  }
-
- .underline {
+  .underline {
    border-bottom: 1px solid silver;
    border-collapse:collapse;
-   padding:15px;
  }
- 
+
  .updateinputs tr:last-child .underline {
    border-bottom: none;
+ }
+ 
+ #search-address {
+  width:100%;
+  height:30px;   
  }
  
  .btn-layout {
@@ -194,7 +207,11 @@
    margin : 10px;
 
  }
- 
+.preview {
+width: 100px;
+height: 100px;
+
+} 
  
 </style>
 </head>
@@ -213,6 +230,7 @@
          <tr><td><a href="/api/notice/list?user_idx=${user_idx}" class="link"><img src="/images/Mail.svg" class="img" data-hover="/images/mail3.svg">수신함</a></td></tr>
         </table>
        </div>
+    <form action="/User/MyPage/Home/update" method="POST"enctype="multipart/form-data">
        <div class="container">
       	<div class="contents">
       	 <h2 class="title">회원 정보 수정</h2>
@@ -220,15 +238,29 @@
       	 <hr>
       	 <div class="info">
       	  <div class="profile-image">
-      	  	<img src="/images/profile.png"/>
-      	    <span id="profileimage-update"><a href="" id="profileimage-updatebtn">프로필 변경</a></span>
+       <c:choose>
+      <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" class="preview">
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/user-profile.png" alt="User Image" class="preview">
+       </c:otherwise>
+        </c:choose> 
+       <span>
+       <input id="idPhoto" type="file" name="upimage" class="upimage" style="display:none"accept=".jpg, .jpeg, .png"/>
+        <label class="input-file-button idPhto2" for="idPhoto">사진 업로드</label>
+       </span> 
+
+      	  
       	  </div>
       	  <div class="info-content">
       	  	<h3 id="info-title">${userVo.user_name}</h3>
       	    <p id="info-year">${userVo.user_gender}, ${age}세(${UYear}년)</p>
+      	    <input type="hidden" name="image_idx" value="${not empty ifvo.image_idx ? ifvo.image_idx : 0}"> 
+
       	  </div>      	 
       	 </div>
-       <form action="/User/MyPage/Home/update" method="POST">
+
        <input type="hidden" name="user_idx" value="${userVo.user_idx}"/>
       	 <div class="info-sub">
       	  <table class="updatetitles">
@@ -268,6 +300,9 @@
       	  	<tr>
       	   	  <td>이메일</td>
       	  	</tr>
+      	  	<tr>
+      	   	  <td>주소</td>
+      	  	</tr>
       	  </table>
       	  <table class="updateinputs">
       	  	<tr>
@@ -277,12 +312,12 @@
       	   	  <td colspan="2" class="underline"><input type="text" class="inputs"name="user_birthdate" id="bdate"value="${userVo.user_birthdate}"required></td>
       	  	</tr>
     	  	<tr>
-      	   	  <td colspan="2" class="underline"><input type="text" class="inputs" name="user_tel"id="tel" value="${userVo.user_tel}"required></td>
+      	   	  <td colspan="2" class="underline"><input type="text" class="inputs" name="user_tel"id="tel" value="${userVo.user_tel}"required/></td>
       	  	</tr>
       	  	<tr>
-      	   	  <td  colspan="2" class="underline">             
-              <input type="email" id="user_email" class="inputs" name="user_email" placeholder="이메일 입력" value="${userVo.user_email}"required/>
-                <select id="email_domain" class="inputs" onchange="updateEmail()">
+      	   	  <td colspan="2" class="underline">
+      	   	   <input type="email" id="user_email" class="inputs" name="user_email" placeholder="이메일 입력" value="${userVo.user_email}"required/>
+      	   	   <select id="email_domain" class="inputs" onchange="updateEmail()">
                 	<option value="" selected>직접입력</option>
                     <option value="gmail.com">gmail.com</option>
                     <option value="naver.com">naver.com</option>
@@ -296,7 +331,7 @@
 	            <td class="under-line">
 	             <input type="text" name="user_address" class="inputs" id="roadFullAddr" placeholder="주소 검색을 해주세요" value="${userVo.user_address}"readonly required/>
 	            </td>
-	            <td class="inputs"><button type="button" onclick="searchAddress()">주소 검색</button></td>
+	            <td class="inputs"><button id="search-address" type="button" onclick="searchAddress()">주소 검색</button></td>
 	          </tr>
       	  </table>     	 
       	</div>
@@ -306,9 +341,10 @@
               <input class="btn btn-back" type="submit" value="회원정보 수정"/>             
               <input class="btn btn-delete" type="button" value="회원 탈퇴"/>                        
          </div>
-          </form>
+       
       	</div>
        </div>
+          </form>
       </div>
  </div>
 
@@ -317,8 +353,19 @@
    
 <script>
 $(function() {
-	
-
+	 //이미지추가
+    $('.upimage').on('change', function() {
+               const file = this.files[0];
+               console.log(file)
+               if (file) {
+                   const reader = new FileReader();
+                   reader.onload = function(e) {
+                       $('.preview').attr('src', e.target.result).show(); // 미리보기 이미지 표시
+                   }
+                   reader.readAsDataURL(file); // 파일을 Data URL로 읽기
+               }
+           });
+   //사이드바
     const links = document.querySelectorAll(".link");
 
     links.forEach(link => {

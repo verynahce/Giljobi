@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer ></script>
@@ -36,15 +36,18 @@
 .title-container {
   display:flex;
   align-items:center;
+  height: 100%;
 }
 
 #question-content {
-  margin-left :45px;
+    margin-left :45px;
+     height: 100%;
 }
 
 #duty-area {
   background-color:#EBECF1;
-  max-width:100px;
+
+  max-width:120px;
   text-align:center;
   padding-left:10px;
   padding-right:10px;
@@ -69,7 +72,7 @@
   border-radius:3px;
   padding:4px;
   height:40px;
-  width:90px;
+  width:120px;
   text-align:center;
   font-size:20px;
 }
@@ -78,29 +81,66 @@
   background-color:#779AF6;
   color:#fff;
   border-radius:30px;
-  padding:4px;
+  padding:10px 8px;
   display:flex;
-  gap:10px;
+  gap:7px;
   border-spacing:0;
   font-size:20px;
+
 }
 
 #list-filter-hit {
   background-color:#6E6CDD;
   border-radius:30px;
-  padding:8px;
+  padding:7px 8px;
+    &:hover {
+   background-color:#8886DA;
+  }
 }
 
 #list-filter-date {
   background-color:#6E6CDD;
   border-radius:30px;
-  padding:8px;
+  padding:7px 8px;
+   &:hover {
+   background-color:#8886DA;
+  }
 }
 .addinfo-layout {
 display:flex;
 align-items: center;
 }
 
+.ellipsis {
+  flex-shrink: 1; /* Flex 환경에서 텍스트 줄이기 허용 */
+  min-width: 0; 
+  white-space: nowrap !important;      
+  overflow: hidden !important;          
+  text-overflow: ellipsis !important;
+  width: 150px;  
+  height: 10px;
+
+}
+.pagination {
+display:flex;
+justify-content: center;
+align-items: center;
+
+.center {
+background-color:#E4EBFF;
+}
+.pagingList{
+margin:30px 10px 15px 10px;
+padding:5px 8px;
+border: 1px solid #cccccc;
+}
+.pagingSt {
+margin:15px 10px;
+padding:5px 8px;
+border: 1px solid #cccccc;
+margin:30px 10px 15px 10px;
+}
+}
 
 </style>
 </head>
@@ -118,7 +158,7 @@ align-items: center;
 			<div class="banner-inner">
 				<a href="/Main/Community/WriteForm" class="phone review-mybtn"><img src="/images/review/phone2.png"></a>
 				<div class="banner-title">
-					<h2 id="blue">커리어 고민될 땐,</h2><h2 id="yellow"> 커리어 피드!</h2>
+					<h2 id="blue">궁금한 JOB을 물어보는곳!</h2><h2 id="yellow"> JOB담소</h2>
 					<p id="yellow2">현업자들의 속 시원한 대답!</p>
 					<span class="myreview"><a href="MyReview" class="review-mybtn">내가 한 질문</a></span>
 				</div>
@@ -128,15 +168,19 @@ align-items: center;
 		  <div class="list-filter">
 		  	<select id="list-filter-duty">
 		  	<option>직무</option>
+		  	<c:forEach var="d" items="${dutyList}">
+		  	<option value="${d.dutyId}">${d.dutyName}</option>		  	
+		  	</c:forEach>
 		  	</select>
 		  	<span class="list-filter-hitndate">
-		  	  <span id="list-filter-date">최신순</span>
-		  	  <span id="list-filter-hit">인기순</span>
+		  	  <a href="/Main/Community/List?newhit=1" ><span id="list-filter-date">최신순</span></a>
+		  	  <a href="/Main/Community/List?newhit=2" ><span id="list-filter-hit">인기순</span></a>
+		  	  <a href="/Main/Community/List" ><span id="list-filter-hit">전체</span></a>
 		  	</span>
 		  </div>
 			<div class="company-list2">
 				<c:forEach var="vo" items="${List}">
-					<div class="company-card2">
+					<div class="company-card2" data-duty="${vo.duty.dutyId}">
 					<div class="company-content2">
 						<div class="company-text2">
 							<div class="company-info2">
@@ -145,17 +189,15 @@ align-items: center;
 								<span id="question-indicator">Q</span>
 								<h3><a class="review-list-btn" href="/Main/Community/View?communityIdx=${vo.communityIdx}">${vo.comTitle}</a></h3>
 								</div>
-							<p id="question-content">${vo.comContent}</p>
+							<p id="question-content"class="ellipsis">${vo.comContent}</p>
 							</div>
 							<div class="additional-info">
-							 <span class="addinfo-layout">
+							 <div class="addinfo-layout">
 							    <img src="/images/community/eye.png">&nbsp;${vo.comHit}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
 							    <img src="/images/community/like.png">&nbsp;${vo.comLike}&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;
-							    <img src="/images/community/Message.png">&nbsp;10(댓글수 받아야함)
-							</span>
-							<span id="updelbtn">
-							  <img src="/images/dots.png">
-							</span>
+							    <img src="/images/community/Message.png">&nbsp;${vo.replies.size()}
+							</div>
+							
 							</div>
 						</div>
 					</div>
@@ -165,27 +207,35 @@ align-items: center;
 		<c:set var="startNum" value="${response.pagination.startPage}"/>
 		<c:set var="endNum" value="${response.pagination.endPage}"/>
 		<c:set var="totalpagecount" value="${response.pagination.totalPageCount}"/>
-		<div class="paging-container">
-    <ul>
-        <c:if test="${nowpage ne 1}">
-            <li class="paging-btn">
-                <a href="/Main/Review/List?nowpage=${nowpage-1}">< 이전</a>
-            </li>
-        </c:if>
-        
-        <c:forEach var="pagenum" begin="${startNum}" end="${endNum}" step="1">
-            <li class="paging-list">
-                <a href="/Main/Review/List?nowpage=${pagenum}">${pagenum}</a>
-            </li>
-        </c:forEach>
-        
-        <c:if test="${nowpage lt totalpagecount}">
-            <li class="paging-btn">
-                <a href="/Main/Review/List?nowpage=${nowpage+1}">다음 ></a>
-            </li>
-        </c:if>
-    </ul>
-</div>
+
+	<!-- 페이징 UI -->
+	<div class="pagination">
+	    <!-- 이전 페이지 버튼 -->
+	    <c:if test="${currentPage > 0}">
+	        <a class="pagingSt" href="/Main/Community/List?page=${currentPage - 1}&size=${size}&newhit=${newhit}">이전</a>
+	    </c:if>
+	
+	    <!-- 페이지 번호 링크 -->
+	    <c:forEach begin="0" end="${totalPages - 1}" var="i">
+	        <c:choose>
+	            <c:when  test="${i == currentPage}">
+	                <span class="center pagingList">${i + 1}</span>  <!-- 현재 페이지는 강조 표시 -->
+	            </c:when>
+	            <c:otherwise>
+	                <a class="pagingList" href="/Main/Community/List?page=${i}&size=${size}&newhit=${newhit}">${i + 1}</a>
+	            </c:otherwise>
+	        </c:choose>
+	    </c:forEach>
+	
+	    <!-- 다음 페이지 버튼 -->
+	    <c:if test="${currentPage < totalPages - 1}">
+	        <a class="pagingSt" href="/Main/Community/List?page=${currentPage + 1}&size=${size}&newhit=${newhit}">다음</a>
+	    </c:if>
+	</div>
+
+
+
+
 		</div>
 	</main>
 	<div class="pop-bg">
@@ -195,57 +245,33 @@ align-items: center;
    </div>		
 	</div>
 	<%@include file="/WEB-INF/include/footer.jsp"%>
-	<script>
-	 $(document).ready(function() {
-	        // 서버에서 전달된 sessionScope.login.role 값을 JavaScript 변수로 저장
-	        
+<script>
+ $(document).ready(function() {
+     
+//필터
+$('#list-filter-duty').on('change', function () {
+    //필터의 값을 가져오기
+    let filterValue = $(this).val(); 
+    
+    if (filterValue === '직무') {
+        $('.company-card2').css('display', ''); 
+    } else {        
+        $('.company-card2').each(function () {           
+            let dutyId = $(this).data('duty')
 
-	        $(".review-mybtn").click(function(e) {
-	            // 로그인 상태 확인
-	            if (userRole != "개인회원") { // userRole이 비어있으면 로그인 안 됨
-	                e.preventDefault(); // 기본 동작 막기
-	                $(".pop-bg").css("display","block");
-	            }
-	        });
-	        
-	    	$(".pop-bg").click(()=>{
-	    		$('.pop-bg').hide();	
-	    		$(".login-pop").click(e=>{
-	    			e.stopPropagation();	
-	    		})
-	    	})
-	    	
-	    	$(".paging-list").eq(${nowpage-1}).addClass("paging-active");
-	    	
-	    	console.log("${sessionScope.login.role}")
-	    	
-	    	$(".book-off").each(function(i, a) {
-	    		const userRole = "${sessionScope.login.role}";
-	    		if(userRole == "개인회원"){
-	    		    $(a).on('click', function() {
-		    	        var ub_idx = $(this).attr('alt');
-		    	        $(this).removeClass('book-off')
-		    	        $(this).addClass('book-on')
-		    	        $.ajax({
-		    	            url: '/Main/Review/BookMarkOn',
-		    	            data: { "user_idx": a.dataset.uid,"company_idx": a.dataset.cid },
-		    	            success: function(data) {
-		    	         			
-		    	            },
-		    	            error: function(err) {
-		    	                console.error("북마크 설정 실패:", err);
-		    	            }
-		    	        });
-		    	    	alert("관심기업으로 등록했습니다.")
-		    			});
-	    			
-	    			
-	    		}
-	    	
-	    	    
-				}) 	 
-	        
-	 })
+            //  filterValue가 같으면 표시, 다르면 숨기기 (타입변환 확인 꼭하기)
+            $(this).css('display', (String(dutyId) === String(filterValue)) ? '' : 'none');
+        });
+    }
+});   
+
+
+
+
+    	
+	 
+        
+ })
 	</script>
 </body>
 </html>

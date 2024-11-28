@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="/js/common.js" defer></script>
@@ -196,7 +196,10 @@
    padding: 20px;
    margin : 10px;
  }
- 
+ .preview {
+ width: 100px;
+ height: 100px;
+ }
  
 </style>
 </head>
@@ -216,20 +219,40 @@
        </div>
        <div class="container">
       	<div class="contents">
+      <form action="/Company/Mypage/Home/Update" method="POST" enctype="multipart/form-data">
       	 <h2 class="title">회원 정보 수정</h2>
       	 <h3 class="subtitle">기본정보</h3>
       	 <hr>
       	 <div class="info">
       	  <div class="profile-image">
-      	  	<img src="/images/profile.png"/>
-      	    <span id="profileimage-update"><a href="" id="profileimage-updatebtn">프로필 변경</a></span>
+      	  <c:choose>
+       <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" class="preview">
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/company-profile.png" alt="User Image" class="preview">
+       </c:otherwise>
+       </c:choose>
+      	    <span >
+     <input id="idPhoto" type="file" name="upimage" class="upimage" style="display:none"accept=".jpg, .jpeg, .png"/>
+      <label class="input-file-button2 idPhto2" for="idPhoto">사진 업로드</label>     
+         <input type="hidden" name="image_idx" value="${not empty ifvo.image_idx ? ifvo.image_idx : 0}"> 
+   	  
+      	    </span>
       	  </div>
       	  <div class="info-content">
-      	  	<h3 id="info-title">${login.company_name }</h3>
-      	    <p id="info-year">(창립 연도)</p>
+      	  	<h3 id="info-title">${companyVo.company_name }</h3>
+      	   <c:if test="${not empty companyVo.company_birthdate}">
+      	    <p id="info-year">
+      	      (${companyVo.company_birthdate})
+      	    </p>
+      	    </c:if>
+           <p>${companyVo.company_email}</p>
+           <p>${companyVo.company_tel }<p/>
+           <p>${companyVo.company_address }<p/>
       	  </div>      	 
       	 </div>
-      	<form action="/Company/Mypage/Home/Update" method="POST">
+
       	<input type="hidden" name="company_idx" value="${companyVo.company_idx }">
       	 <div class="info-sub">
       	  <table class="updatetitles">
@@ -318,7 +341,20 @@
    
 <script>
 $(function() {
-	   
+	
+	 //이미지추가
+	 $('.upimage').on('change', function() {
+	            const file = this.files[0];
+	            console.log(file)
+	            if (file) {
+	                const reader = new FileReader();
+	                reader.onload = function(e) {
+	                    $('.preview').attr('src', e.target.result).show(); // 미리보기 이미지 표시
+	                }
+	                reader.readAsDataURL(file); // 파일을 Data URL로 읽기
+	            }
+	        });
+		    
 
     const links = document.querySelectorAll(".link");
 

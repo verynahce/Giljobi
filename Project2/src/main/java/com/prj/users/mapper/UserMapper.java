@@ -3,6 +3,7 @@ package com.prj.users.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.prj.companys.vo.CompanyVo;
 import com.prj.main.vo.CityVo;
@@ -14,6 +15,7 @@ import com.prj.main.vo.SkillVo;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.EduVo;
 import com.prj.users.vo.ResumeCareerVo;
+import com.prj.users.vo.ResumeSkillFormVo;
 import com.prj.users.vo.ResumeSkillVo;
 import com.prj.users.vo.ResumeVo;
 import com.prj.users.vo.ScoreVo;
@@ -79,8 +81,6 @@ public interface UserMapper {
 
 	void updateResume(ResumeVo resumeVo);
 
-	void updateSkill(String skill_name, int resume_idx);
-
 	void updateCareer(String career_cname, String career_description, String career_sdate, String career_edate);
 
 	void updateCareer(String career_cname, String career_description, String career_sdate, String career_edate,
@@ -101,9 +101,7 @@ public interface UserMapper {
 
 	void deleteCarrer(int resume_idx);
 
-	ResumeSkillVo getSkill(ResumeVo resumeVo);
-
-	void insertSkill2(int resume_idx, String skill_name);
+	List<ResumeSkillVo> getSkill(ResumeVo resumeVo);
 
 	ResumeCareerVo getCarrer(ResumeVo resumeVo);
 
@@ -129,6 +127,19 @@ public interface UserMapper {
 	UserVo getUserById(String user_id);
 
 	UserScoutVo getScout(int scout_idx);
+
+	void updateUserMax(UserVo uservo);
+
+	void insertSkillList(@Param("skillList") List<ResumeSkillFormVo> skillList);
+
+	List<ResumeSkillVo> getResumeSkillList(int resume_idx);
+
+	void updateSkillList(@Param("skillList") List<ResumeSkillFormVo> skillList);
+
+
+
+
+
 
 
 

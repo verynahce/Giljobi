@@ -17,14 +17,18 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "COMMUNITY")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"users","replies"})
 public class Community {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,
@@ -70,5 +74,15 @@ public class Community {
 	public void patchOff() {
 		this.comLike = comLike-1;
 		
+	}
+	public void updateHit() {
+		this.comHit = comHit+1;
+		
+	}
+
+	public void patch(Community community, Duty duty) {
+		this.duty = duty;
+		this.comTitle = community.comTitle;
+		this.comContent = community.comContent;	
 	}
 }

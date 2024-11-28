@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="/js/common.js" defer></script>
 <style>
@@ -19,6 +19,7 @@
    border-radius:15px;
    overflow:hidden;
    margin:0;
+   max-height:fit-content;
  }
 
  .sidebar table {
@@ -99,6 +100,7 @@
  .text-box {
    margin-top:10px;
    margin-right:auto;
+   margin-left: 15px;
  }
 
  .settings-image {
@@ -135,7 +137,10 @@
  .headache td:nth-child(4) {
    width:25%;
  }
-
+.profileSize {
+width: 110px;
+height: 110px;
+}
 </style>
 </head>
 <body>
@@ -155,13 +160,29 @@
       </div>
       <div class="container">
         <div class="content">
-                   <img class="profile-image"src="/images/icon/user-profile.png" alt="${userVo.user_name}이미지"/>
+       <c:choose>
+      <c:when test="${imagePath != '0'}">
+         <img src="/image/read?path=${imagePath}" alt="User Image" class="profileSize">
+       </c:when> 
+       <c:otherwise>
+         <img src="/images/icon/user-profile.png" alt="User Image"  class="profileSize">
+       </c:otherwise>
+       </c:choose>
+       
           <div class="text-box">
             <span class="highlight">${userVo.user_name}</span><br>
             <span>${userVo.user_gender}, ${age}세(${UYear}년)</span><br>
-            <span>${userVo.user_email}</span><br>
-            <span>${userVo.user_tel}</span><br>
+            <span>${userVo.user_tel} &nbsp; &nbsp;|&nbsp; &nbsp; ${userVo.user_email}</span><br>
+        <c:choose> 
+        <c:when test="${not empty userVo.user_address}">
+            <span>${userVo.user_address}</span>
+        </c:when>
+        <c:otherwise>
+        <span>주소미기입</span>
+        </c:otherwise>
+        </c:choose> 
           </div>
+          
             <a  class="settings-image" href="/User/MyPage/Home/updateForm?user_idx=${userVo.user_idx}"><img src="/images/settings.png"></a>
        </div>
         <div class="content2">

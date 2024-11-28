@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.prj.companys.vo.CompanyVo;
 import com.prj.companys.vo.PostWriteVo;
 import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PortfolioVo;
 import com.prj.users.vo.ResumeVo;
+import com.prj.users.vo.UserVo;
 
 public interface PdsService {
 
@@ -31,6 +33,10 @@ public interface PdsService {
 	void deleteImage(int image_idx);
 
 	void updateimagePost(MultipartFile uploadimage, int image_idx, HashMap<String, Object> map, PostWriteVo vo);
+
+	void updateimageUser(MultipartFile uploadimage, int image_idx, HashMap<String, Object> map, UserVo uservo);
+
+	void updateimageCompany(MultipartFile uploadimage, int image_idx, HashMap<String, Object> map, CompanyVo companyVo);
 
 
 

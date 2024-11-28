@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>잡덕</title>
+<title>길JOB이</title>
 <link rel="stylesheet" href="/css/common.css" />
 <script src="https://cdn.jsdelivr.net/npm/browser-scss@1.0.3/dist/browser-scss.min.js"></script>
 <script src="/js/common.js" defer></script>
@@ -216,9 +216,10 @@ p {
      margin:6px;
      background-color:#EBECF1; 
      border-radius: 8px;
-     color:#555555px;
-     font-size: 12px;
+     color:#555555;
+     font-size: 13px;
      font-weight: 400;
+     letter-spacing: 0.5px;
      }
      
      div:nth-child(1) {
@@ -335,7 +336,7 @@ p {
         </table>
       </div>
      
-    <c:if test="${not empty resumeVo.skill_name}">
+    <c:if test="${not empty SkillList}">
       <div class="sub-filed">
         <h4 class="sub-title">업무 및 스킬</h4>
         <hr>
@@ -343,9 +344,9 @@ p {
          <tr>
 		   <td colspan="2" class="sub-skill">
            <div class="sub-skill-layout">
-     
-              <div>${resumeVo.skill_name}</div> 
-          
+          <c:forEach var="skill" items="${SkillList}">
+              <div>${skill.skill_name}</div> 
+          </c:forEach>
            </div> 
          </td>
 		</tr>

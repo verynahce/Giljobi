@@ -7,10 +7,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndViewDefiningException;
 
 import com.prj.entity.Community;
 import com.prj.entity.CommunityReply;
@@ -36,14 +38,34 @@ public class CommunityController {
 	private CommunityService  communityService;
 	
 	@RequestMapping("/List")
-	public ModelAndView list() {
+	public ModelAndView list( @RequestParam(name = "page",defaultValue = "0") int page,
+                              @RequestParam(name = "size",defaultValue = "5") int size,
+                              @RequestParam(name = "newhit",defaultValue = "0") int newhit) {
 
+		//duty 정보
+		List <Duty> dutyList = communityService.getDutyList();
+		Page<Community> CommunityList = null;
+		if(newhit == 0){
 		
-		List<Community> CommunityList = communityService.getCommunityList();		
-
+		//리스트 필터	
+		//List<Community> CommunityList = communityService.getCommunityList();		
+	    CommunityList = communityService.getPageCommunityList(page,size);					
+		}else if(newhit == 1) {			
+		CommunityList = communityService.getPageListdata(page,size);				      	
+		}else {
+		CommunityList = communityService.getPageListHit(page,size);					
+		}
 		
 		ModelAndView mv =new ModelAndView();
-		mv.addObject("List", CommunityList);
+		mv.addObject("List",  CommunityList.getContent());
+		mv.addObject("dutyList",dutyList);
+		
+		//페이징 정보
+		mv.addObject("totalPages", CommunityList.getTotalPages());
+		mv.addObject("totalElements", CommunityList.getTotalElements());
+		mv.addObject("currentPage", CommunityList.getNumber());
+		mv.addObject("size", CommunityList.getSize());
+		mv.addObject("newhit", newhit);
 		mv.setViewName("/main/community/list");
 		return mv;
 	}
@@ -59,7 +81,11 @@ public class CommunityController {
 	   
 		//답글
 		List<CommunityReply>communityReply= communityService.getRepliesByCommunityIdx(community.getCommunityIdx());
-		//로그인 정검
+		System.out.println(communityReply);
+		
+		//답글 수
+		Long replyCount = communityService.getReplyCountForCommunity(community.getCommunityIdx());
+		//로그인 점검
 		ModelAndView mv = new ModelAndView();
 		HttpSession session = request.getSession();
 		Object userObject = session.getAttribute("login");
@@ -67,10 +93,15 @@ public class CommunityController {
 		if (userObject instanceof UserVo) {
 			UserVo userVo = (UserVo) session.getAttribute("login");
              if(userVo != null ) {	
-            	 mv.addObject("userIdx",userVo.getUser_idx());
+            	 
+            	//조회수 업데이트
+            	 communityService.updateHit(community.getCommunityIdx());          	            	 
+            	 
+            	mv.addObject("userIdx",userVo.getUser_idx());
          		mv.addObject("ct", Community);
         		mv.addObject("dutyList",dutyList);
         		mv.addObject("replyList",communityReply);
+        		mv.addObject("replyCount",replyCount);
         		mv.setViewName("/main/community/view");
 			}						
 	   }else {
@@ -127,7 +158,65 @@ public class CommunityController {
 		return mv;
 	}
 
+	@RequestMapping("/MyReview")
+	public ModelAndView myReview(HttpServletRequest request) {
+		
+		//로그인 세션 및 mav 불러오기
+		ModelAndView mv = new ModelAndView();
+		HttpSession session = request.getSession();
+		Object userObject = session.getAttribute("login");
+		
+		if (userObject instanceof UserVo) {
+			UserVo userVo = (UserVo) session.getAttribute("login");
+             if(userVo != null ) {	
+            
+            	 
+         	List <Community> CommunityList = communityService.getCommunityU(userVo.getUser_idx());	
+            mv.addObject("userIdx",userVo.getUser_idx());           	
+            mv.addObject("cList",CommunityList);           	
+            mv.setViewName("/main/community/myCommunity");
+            	 
+			}						
+	   }else {
+		   mv.setViewName("/user/loginForm");   
+		   
+	   }
+		return mv;		
+	}
 	
+	@RequestMapping("/UpdateForm")
+	public ModelAndView updateForm (Community community,@RequestParam (value="userIdx")Long userIdx) {
+		
+	    Community Community = communityService.getCommunity(community.getCommunityIdx());		
+	    List <Duty> dutyList = communityService.getDutyList();
+	    
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("community", Community);
+		mv.addObject("dutyList", dutyList);
+		mv.addObject("userIdx", userIdx);
+		mv.setViewName("/main/community/update");  
+		return mv;	
+	}
 	
+	@RequestMapping("/Delete")
+	public ModelAndView delete (Community community) {
+		
+	    communityService.deleteCommunity(community.getCommunityIdx());		
+	    
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Main/Community/MyReview");  
+		return mv;	
+	}
+	
+	@RequestMapping("/Update")
+	public ModelAndView update (Community community,@RequestParam("userIdx") Long userIdx,
+                                                    @RequestParam("dutyId") Long dutyId) {
+		
+	    communityService.updateCommunity(community,dutyId);		
+	    
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("redirect:/Main/Community/MyReview");  
+		return mv;	
+	}
 	
 }

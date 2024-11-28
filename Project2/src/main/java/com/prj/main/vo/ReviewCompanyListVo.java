@@ -12,5 +12,7 @@ public class ReviewCompanyListVo {
 	private String  company_name;
 	private String  company_area;
 	private int     count;
+	private int image_idx;
+	private String image_path;
 
 }

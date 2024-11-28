@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.prj.companys.mapper.CompanyMapper;
+import com.prj.companys.vo.CompanyVo;
 import com.prj.companys.vo.PostWriteVo;
 import com.prj.main.mapper.PdsMapper;
 import com.prj.main.vo.ImagefileVo;
@@ -17,6 +18,9 @@ import com.prj.main.vo.PortfolioVo;
 import com.prj.service.PdsService;
 import com.prj.users.mapper.UserMapper;
 import com.prj.users.vo.ResumeVo;
+import com.prj.users.vo.UserVo;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PdsServiceimpl implements PdsService {
@@ -140,6 +144,61 @@ public class PdsServiceimpl implements PdsService {
 		pdsMapper.setimageWriter(idPhoto);			
 		//resume 업데이트
 		companyMapper.updatePostimage(vo);
+		// 기존 db 삭제
+		pdsMapper.deleteImagefile(image_idx);
+		
+	}
+
+	@Override
+	public void updateimageUser(MultipartFile uploadimage, int image_idx, HashMap<String, Object> map, UserVo uservo) {
+
+		//기존  파일 삭제 
+		ImagefileVo imfo = pdsMapper.getImagefile(image_idx); 				
+	    if(imfo != null) {
+		File file = new File(uploadPath + imfo.getImage_path());
+		if( file.exists()) {
+			file.delete();
+		 }	
+	    }
+		map.put("uploadPath", uploadPath );
+		//새로운 파일 저장
+		PdsFile.getsave(uploadimage,map);
+		
+		//새로운 파일 db 저장
+		ImagefileVo idPhoto = (ImagefileVo) map.get("idPhoto");		
+		if(idPhoto != null)
+		pdsMapper.setimageWriter(idPhoto);	
+		
+		//resume 업데이트
+		userMapper.updateUserMax(uservo);	
+		// 기존 db 삭제
+		pdsMapper.deleteImagefile(image_idx);
+		
+	}
+
+	@Override
+	public void updateimageCompany(MultipartFile uploadimage, int image_idx, HashMap<String, Object> map,
+			CompanyVo companyVo) {
+		
+		//기존  파일 삭제 
+		ImagefileVo imfo = pdsMapper.getImagefile(image_idx); 				
+	    if(imfo != null) {
+		File file = new File(uploadPath + imfo.getImage_path());
+		if( file.exists()) {
+			file.delete();
+		 }	
+	    }
+		map.put("uploadPath", uploadPath );
+		//새로운 파일 저장
+		PdsFile.getsave(uploadimage,map);
+		
+		//새로운 파일 db 저장
+		ImagefileVo idPhoto = (ImagefileVo) map.get("idPhoto");		
+		if(idPhoto != null)
+		pdsMapper.setimageWriter(idPhoto);	
+		
+		//회사 정보 업데이트
+		companyMapper.updateCompanyMax(companyVo);	
 		// 기존 db 삭제
 		pdsMapper.deleteImagefile(image_idx);
 		

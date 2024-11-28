@@ -17,6 +17,7 @@ import com.prj.companys.vo.ComApplyVo;
 import com.prj.companys.vo.ComBookmarkVo;
 import com.prj.companys.vo.CompanyVo;
 import com.prj.companys.vo.EvaluateVo;
+import com.prj.companys.vo.PostSkillVo;
 import com.prj.companys.vo.RConutVo;
 import com.prj.main.vo.ImagefileVo;
 import com.prj.main.vo.PortfolioVo;
@@ -24,6 +25,7 @@ import com.prj.main.vo.PostVo;
 import com.prj.main.vo.ResumeListVo;
 import com.prj.service.PdsService;
 import com.prj.users.mapper.UserMapper;
+import com.prj.users.vo.ResumeSkillVo;
 import com.prj.users.vo.ResumeVo;
 
 @Controller
@@ -44,7 +46,6 @@ public class MypageBookMarkController {
 	public ModelAndView bookmarkList(CompanyVo companyVo) {
 	
     List <ComBookmarkVo> BookList = companyMapper.getBookList(companyVo);	
-    
 		
 	ModelAndView mv = new ModelAndView();	
 	mv.addObject("BookList", BookList);
@@ -59,7 +60,8 @@ public class MypageBookMarkController {
 	ResumeListVo vo  =userMapper.getResumeLong(resume_idx);		
 	//공고 정보	
 	List<PostVo> povo = companyMapper.getPostList(pvo);
-	
+	//스킬 정보
+	List <ResumeSkillVo> SkillList = userMapper.getResumeSkillList(resume_idx);
 	//파일 정보
 	List<PortfolioVo> pfvoList = pdsService.getPortfolio(resume_idx);
 	//이미지 정보
@@ -79,6 +81,7 @@ public class MypageBookMarkController {
 	mv.addObject("company_idx",pvo.getCompany_idx());
 	mv.addObject("imagePath",imagePath);
 	mv.addObject("pfvoList",pfvoList);
+	mv.addObject("SkillList",SkillList);
 	mv.setViewName("/company/mypage/bookmark/view");
 		return mv;
 	}
@@ -129,7 +132,7 @@ public class MypageBookMarkController {
 
 
 	
-    List<ComApplyVo> applyList = companyMapper.getapplyList(post_idx);
+    List<ComApplyVo> applyList = companyMapper.getapplyListSkill(post_idx);
 	
 	ModelAndView mv = new ModelAndView();
 	mv.addObject("company_idx",company_idx);
@@ -180,7 +183,8 @@ public class MypageBookMarkController {
 			imagePath = ifvo.getImage_path().replace("\\", "/");
 		}
 		
-		
+		//스킬 정보
+		List <ResumeSkillVo> SkillList = userMapper.getResumeSkillList(resume_idx);
 		
 		ModelAndView mv = new ModelAndView();
 
@@ -199,6 +203,7 @@ public class MypageBookMarkController {
 		mv.addObject("post_idx",post_idx);
 		mv.addObject("imagePath",imagePath);
 		mv.addObject("pfvoList",pfvoList);
+		mv.addObject("SkillList",SkillList);
 		mv.setViewName("/company/mypage/applyList/view");
 		return mv;
 	}

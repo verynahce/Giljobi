@@ -15,13 +15,18 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "COMMUNITY_REPLY")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"community", "users"}) 
 public class CommunityReply {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE,
@@ -59,15 +64,22 @@ public class CommunityReply {
 		CommunityReplyDTO crdto = new CommunityReplyDTO();
 		crdto.setReplyIdx(this.replyIdx);
 		crdto.setCommunityIdx(community.getCommunityIdx());
-		crdto.setUserIdx(users.getUser_idx()); 
+		crdto.setUserIdx(users.getUserIdx()); 
 		crdto.setReplyContent(this.replyContent);
 		crdto.setReplyRegdate(this.replyRegdate); 
 		crdto.setReplyLike(this.replyLike); 
 		crdto.setCareerSelf(this.careerSelf);
 		crdto.setDutyId(duty.getDutyId());
-	
-		
+			
 		return crdto;
+	}
+
+	public void patchOn() {
+		this.replyLike = replyLike+1;
+		
+	}
+	public void patchOff() {
+		this.replyLike = replyLike-1;		
 	}
 
 
