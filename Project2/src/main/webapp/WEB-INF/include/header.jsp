@@ -53,7 +53,7 @@ align-items: center;}
          <a href="/Main/Review/List?nowpage=1">커뮤니티</a>
          <ul class="community-submenu">
     <li><a href="/Main/Review/List">기업리뷰</a></li>
-    <li><a href="/Main/Community/List">커리어피드</a></li>
+    <li><a href="/Main/Community/List">JOB담소</a></li>
   </ul>
        </li>
        <li><a href="/Main/Cust/Center">고객센터</a></li>

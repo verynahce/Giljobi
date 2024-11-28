@@ -49,35 +49,6 @@
 	            <li><a href="/User/RegisterForm">회원가입</a></li>
 	          </ul>
           </form>
-	  <a href="<%= apiURL%>"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></a>
-            <!-- 네이버 로그인 버튼 노출 영역 -->
-    <div id="naver_id_login"><img height="50" src="http://static.nid.naver.com/oauth/small_g_in.PNG"/></div>
-    
-    
-    
-    <!-- 네이버 로그인 버튼 노출 영역 -->
-    <div id="naver_id_login"></div>
-    <!-- //네이버 로그인 버튼 노출 영역 -->
-    <script type="text/javascript">
-        var naver_id_login = new naver_id_login("iP_8Cv0UhC7RyPImeUL2", "http://localhost:9090/User/LoginForm");
-        var state = naver_id_login.getUniqState();
-        naver_id_login.setButton("white", 2,40);
-        naver_id_login.setDomain("http://localhost:9090/");
-        naver_id_login.setState(state);
-        naver_id_login.setPopup();
-        naver_id_login.init_naver_id_login();
-    </script>
-        </div>
-      </main>
-          <%
-        String loginError = (String) request.getAttribute("loginError");
-        if (loginError != null) {
-    %>
-        <script>
-            alert("<%= loginError %>"); // 알림창 표시
-        </script>
-    <%
-        }
-    %>
+
 </body>
 </html>
