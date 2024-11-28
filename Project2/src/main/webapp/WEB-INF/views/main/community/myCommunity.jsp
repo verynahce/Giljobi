@@ -50,7 +50,7 @@
                     <c:forEach var="c" items="${cList}">
                         <tr>
                             <td>${c.duty.dutyName}</td>
-                            <td class="myReview-title">${c.comTitle}</td>
+                            <td class="myReview-title"><a href="/Main/Community/View?communityIdx=${c.communityIdx}" >${c.comTitle}</a></td>
                             <td class="dateupdate"> <fmt:formatDate value="${c.comRegdate}" pattern="yyyy-MM-dd" /></td>
                             <td class="myReview-btn"><a href="/Main/Community/UpdateForm?communityIdx=${c.communityIdx}&userIdx=${c.users.userIdx}">수정</a></td>
                             <td class="myReview-btn"><a href="/Main/Community/Delete?communityIdx=${c.communityIdx}">삭제</a></td>

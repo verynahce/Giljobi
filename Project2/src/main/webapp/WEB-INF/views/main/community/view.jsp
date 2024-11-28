@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYpE html>
 <html>
 <head>
@@ -326,7 +328,9 @@ background-color: #E4EBFF !important;
         <div class="contain-body">
          <div id="question-duty">${ct.duty.dutyName}</div>       
           <h2 class="main-title"><span id="question-mark">Q</span>&nbsp;&nbsp;${ct.comTitle}</h2>
-           <div id="info"><img src="/images/community/Eye.png">&nbsp;&nbsp;${ct.comHit}<img src="/images/community/divider2.png">${ct.comRegdate}&nbsp;&nbsp;작성</div>
+           <div id="info"><img src="/images/community/Eye.png">&nbsp;&nbsp;${ct.comHit}<img src="/images/community/divider2.png">
+           
+           <fmt:formatDate value="${ct.comRegdate}" pattern="YYYY-MM-dd"/>&nbsp;&nbsp;작성</div>
             <div class="sub-filed">
 	         <div class="sub-content">${ct.comContent}</div>
 	         <div class="nickname">닉네임&nbsp;&nbsp;:&nbsp; ${ct.users.userName}씨</div>
@@ -388,7 +392,7 @@ background-color: #E4EBFF !important;
                ${r.replyContent}
            </div>
            <div class="reply-date">
-               ${r.replyRegdate} 작성
+            ${r.replyRegdate}작성
            </div>
            <div class="reply-frame">
            <div class="reply-like">
