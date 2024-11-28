@@ -115,7 +115,7 @@ public interface CompanyMapper {
 
 	void updateEvaluate(EvaluateVo evaluateVo);
 
-	List<EvaluateVo> getEvaluateIdx(@Param("appliIdxList") List<Integer> appliIdxList);
+	List<EvaluateVo> getEvaluateIdx(@Param("appli_idx") int appli_idx);
 
 	List<ComApplyVo> getAppliIdx(int resume_idx);
 
@@ -138,6 +138,10 @@ public interface CompanyMapper {
 	void updateSkillList( @Param("skillList")List<PostSkillFormVo> skillList);
 
 	List<ComApplyVo> getapplyListSkill(int post_idx);
+
+	void updateApplyByEvaluate(@Param("appli_idx") int appli_idx, @Param("appli_status") String appli_status);
+
+	String getAppliStatus(List<ComApplyVo> appli_idx);
 
 
 

@@ -158,19 +158,22 @@ public class MypageBookMarkController {
 	@RequestMapping("/ApplyList/View")
 	public ModelAndView applyListView(@RequestParam("resume_idx") int resume_idx,
 			                          @RequestParam("company_idx") int company_idx,
-			                          @RequestParam("post_idx") int post_idx
+			                          @RequestParam("post_idx") int post_idx,
+			                          @RequestParam("appli_idx") int appli_idx,
+			                          @RequestParam("appli_status") String appli_status
 			                          ) {
 		
 		List<ComApplyVo> applyList = companyMapper.getapplyList(post_idx);
 		ResumeListVo vo  =userMapper.getResumeLong(resume_idx);	
-		List<ComApplyVo> appli_idx = companyMapper.getAppliIdx(resume_idx);
-	    List<Integer> appliIdxList = appli_idx.stream()
-	    	    .map(ComApplyVo::getAppli_idx)
-	    	    .collect(Collectors.toList());
+		//List<ComApplyVo> appli_idx = companyMapper.getAppliIdx(resume_idx);
+		/*
+		 * List<Integer> appliIdxList = appli_idx.stream()
+		 * .map(ComApplyVo::getAppli_idx) .collect(Collectors.toList());
+		 */
 
-	    List<EvaluateVo> evaluateIdx = companyMapper.getEvaluateIdx(appliIdxList);
+	    List<EvaluateVo> evaluateIdx = companyMapper.getEvaluateIdx(appli_idx);
 
-	    System.out.println("지원 idx 리스트: " + appliIdxList);
+	    //System.out.println("지원 idx 리스트: " + appliIdxList);
 	    System.out.println("평가 idx 리스트: " + evaluateIdx);
 
 		//파일 정보
@@ -212,8 +215,9 @@ public class MypageBookMarkController {
 		    System.out.println("평가 idx 리스트가 비어 있습니다.");
 		}
 
-		mv.addObject("applyList",applyList);
+		//mv.addObject("applyList",applyList);
 		mv.addObject("appli_idx",appli_idx);
+		mv.addObject("appli_status",appli_status);
 		mv.addObject("resumeVo",vo);
 		mv.addObject("company_idx",company_idx);
 		mv.addObject("post_idx",post_idx);
@@ -227,15 +231,17 @@ public class MypageBookMarkController {
 
 	@RequestMapping(value = "/ApplyList/Evaluate")
 	@ResponseBody
-	public ModelAndView register(@RequestParam("appli_idx") List<Integer> appli_idx,
+	public ModelAndView register(@RequestParam("appli_idx") int appli_idx,
 								 @RequestParam("company_idx") int company_idx, 
 	                             @RequestParam("post_idx") int post_idx,
+	                             @RequestParam("appli_status") String appli_status,
+	                             @RequestParam("total_score") Double total_score,
 	                             EvaluateVo evaluateVo) {
 
 		System.out.println("응애"+evaluateVo);
 	    ModelAndView mv = new ModelAndView();
 
-	    
+	    System.out.println("응애2"+appli_idx);
 
 	    if (evaluateVo.getEvaluate_idx() == null) {
 	        companyMapper.insertEvaluate(evaluateVo);
@@ -243,6 +249,14 @@ public class MypageBookMarkController {
 	        companyMapper.updateEvaluate(evaluateVo);
 	    }
 
+	    if(total_score>=3) {
+	    	appli_status = "서류합격";
+	    	companyMapper.updateApplyByEvaluate(appli_idx,appli_status);
+	    }
+	    else {
+	    	appli_status = "서류 탈락";
+	    	companyMapper.updateApplyByEvaluate(appli_idx,appli_status);
+	    }
 	    System.out.println("응애"+evaluateVo);
 	    mv.setViewName("redirect:/Company/Mypage/ApplyList/ApplyList?company_idx= "+company_idx +"&post_idx="+post_idx);
 	    return mv;

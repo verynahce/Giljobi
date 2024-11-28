@@ -487,6 +487,8 @@ cursor: pointer;
 					<option value="all">전체</option>
 					<option value="document">서류 합격 알림</option>
 					<option value="interview">면접 합격 알림</option>
+					<option value="resume">이력서 알림</option>
+					<option value="post">공고 알림</option>
 					<option value="reply">댓글 알림</option>
 				</select>
 					<ul id="noticeList">
@@ -569,14 +571,13 @@ cursor: pointer;
  </script>
  
  <script>
+ const userLink = document.querySelector('a.active-color');
  const userIdx = userLink.getAttribute('data-user-idx');
  $(document).ready(function() {
 	    // 페이지가 로드될 때 기본적으로 전체 알림을 표시
 	    filterByType('all');
-	    fetchRecentNotifications(userIdx);
 	});
  
- const userLink = document.querySelector('a.active-color');
  const noticeList = document.getElementById("noticeList");
  
  function filterByType(type) {
@@ -598,17 +599,18 @@ cursor: pointer;
 	            return response.json();
 	        })
 .then(notices => {
-    console.log('Notices:', notices); 
     noticeList.innerHTML = '';  // 기존 알림 초기화
     if (notices.length === 0) {
         noticeList.innerHTML = '<li>알림이 없습니다.</li>';
     } else {
         notices.forEach(notice => {
-            console.log('Notice:', notice);  // 확인: 개별 알림 출력
             const li = document.createElement('li');
             li.className = 'notice-item';
             li.setAttribute('data-notice-idx', notice.noticeIdx);
             li.setAttribute('data-community-idx', notice.communityIdx);
+            li.setAttribute('data-resume-idx', notice.resumeIdx);
+            li.setAttribute('data-post-idx', notice.postIdx);
+            li.setAttribute('data-type', notice.type);
 
             // 값이 null이면 기본값을 사용하도록 처리
             const notification = notice.notification || '알림 내용 없음';
@@ -644,14 +646,22 @@ cursor: pointer;
         document.querySelectorAll('.notice-item').forEach(item => {
             item.addEventListener('click', () => {
                 const noticeIdx = item.getAttribute('data-notice-idx');
-                const communityIdx = item.getAttribute('data-community-idx'); // communityIdx 가져오기
+                const communityIdx = item.getAttribute('data-community-idx'); 
+                const resumeIdx = item.getAttribute('data-resume-idx'); 
+                const postIdx = item.getAttribute('data-post-idx');
                 const type = item.getAttribute('data-type'); // type 가져오기
 
                 console.log("노티스", noticeIdx);
 
-                if (type === 'reply') {
-                    handleCommentNotification(communityIdx),markNoticeAsRead(noticeIdx);
-                } else {
+                if (type == "reply") {
+                	handleCommentNotification(communityIdx),markNoticeAsRead(noticeIdx);
+                } else if(type= "resume") {
+                	handleResumeNotification(resumeIdx),markNoticeAsRead(noticeIdx);			
+                } else if(type=="post"){
+					handlePostNotification(postIdx),markNoticeAsRead(noticeIdx);			
+                }
+                	
+                else {
                     getNoticeDetail(noticeIdx),markNoticeAsRead(noticeIdx); // noticeIdx를 매개변수로 전달
                 }
             });
@@ -670,6 +680,8 @@ cursor: pointer;
 
 	        .catch(error => console.error('Error:', error));
 	}
+ setInterval(() => filterByType(type), 10000); // userIdx를 동적으로 설정 */
+
  
 
  
@@ -693,6 +705,7 @@ function getNoticeDetail(noticeIdx) { // noticeIdx를 매개변수로 받음
             console.log(data);
             const overlay = document.querySelector('.overlay-notice');
             const container = document.getElementById('notice-container');
+            
             container.innerHTML = `
                 <div class="noti" id="notification">
                     <h3>안내</h3>
@@ -710,7 +723,13 @@ function getNoticeDetail(noticeIdx) { // noticeIdx를 매개변수로 받음
 			
 //댓글 게시글로 이동
 function handleCommentNotification(communityIdx) {
-    location.href = `/Main/Community/View?communityIdx=${communityIdx}`;
+    location.href = `/Main/Community/View?communityIdx=`+communityIdx;
+}
+function handleResumeNotification(resumeIdx) {
+    location.href = `/User/MyPage/Resume/View?resume_idx=`+resumeIdx;
+}
+function handlePostNotification(postIdx) {
+    location.href = `/Main/Jobs/View?post_idx=`+postIdx;
 }
 
 //알림 삭제
@@ -748,38 +767,8 @@ function markNoticeAsRead(noticeIdx) {
     });
 }
 
-//새알림 체크
-function fetchRecentNotifications(userIdx) {
-    fetch(`/api/notifications/recent/`+userIdx)
-        .then(response => response.json())
-        .then(notifications => {
-            const noticeList = document.querySelector('.notice-list');
-            notifications.forEach(notice => {
-                const li = document.createElement('li');
-                li.className = 'notice-item unread';
-                li.innerHTML = `
-                    <a href="#" 
-                      >
-                       
-                       <h3></h3> 
-                       <p></p>
-                       <p>상태:<span class="state"> </span></p>
-                       <p>수신일:<span class="recieveddate"> </span></p>
-                    </a>
-                       <p class="remove" onclick="deleteNotice(noticeIdx)">🗑️</p>
-                `;
-            li.querySelector('a h3').innerHTML = notification;
-			li.querySelector('a p').innerHTML = subnoti;
-			li.querySelector('a .state').innerHTML = notice.state == 0 ? '읽지 않음' : '읽음';
-			li.querySelector('a .recieveddate').innerHTML = notice.recieveddate;
-                noticeList.prepend(li); // 새 알림을 목록 상단에 추가
-            });
-        })
-        .catch(error => console.error('Error:', error));
-}
 
-/* // 10초마다 새 알림 체크
-setInterval(() => fetchNewNotifications(1), 10000); // userIdx를 동적으로 설정 */
+setInterval(() => filterByType(type), 10000); // userIdx를 동적으로 설정 */
 </script>
 
 </body>
