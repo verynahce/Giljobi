@@ -21,7 +21,9 @@ import com.prj.main.vo.ReviewCompanyInfoVo;
 import com.prj.main.vo.ReviewCompanyListVo;
 import com.prj.main.vo.SkillVo;
 import com.prj.main.vo.UserReviewVo;
+import com.prj.users.notification.service.Notice;
 import com.prj.users.vo.ApplicationVo;
+import com.prj.users.vo.NoticeVo;
 import com.prj.users.vo.ResumeSkillVo;
 import com.prj.users.vo.UserScoutVo;
 
@@ -101,6 +103,7 @@ public interface MainMapper {
 	List<ResumeSkillVo> getResumeSkillListLong();
 	List<PostListVo> getCompanyPostIdx(int company_idx);
 	List<ResumeListVo> getUserResumeIdx(int user_idx);
+	List<NoticeVo> getNoticeUser(int user_idx);
 
 
 
