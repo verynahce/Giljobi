@@ -348,7 +348,21 @@ textarea {
 #improvedText {
     color: gray; /* 색상을 회색으로 설정 */
 }
+#improve-button {
+width: 120px;
+height: 30px;
+padding: 0;
+background-color: #FFFCEA;
+border: 1px solid #CCCCCC;
+border-radius: 4px;
+ cursor: pointer;
+margin-bottom: 9px;
 
+}
+.improve_layout{
+display: flex;
+justify-content: flex-end;
+}
 </style>
 
 </head>
@@ -500,7 +514,7 @@ textarea {
 	    <hr>
 	    <textarea id="cover" name="cover_letter" placeholder="나에 대해 자유롭게 설명하고 채용 기회의 확률을 높이세요" rows="10" cols="50">${resumeVo.cover_letter}</textarea>
 	    <br>
-	    <button id="improve-button" type="button">개선 요청</button>
+	    <div class="improve_layout"><button id="improve-button" type="button" >개선 요청</button></div>
 	    <hr>
 	    <div id="wait-time" style="display: none;">응답 대기 시간: <span id="time"></span>초</div>
 	    <div>

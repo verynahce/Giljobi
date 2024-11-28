@@ -888,6 +888,14 @@
   FROM RESUME
   WHERE USER_IDX = #{user_idx}
    </select>
+   
+   <select id="getNoticeUser">
+   SELECT *
+   FROM NOTICE
+   WHERE USER_IDX = #{user_idx} AND STATE ='0'
+   
+   </select>
+   
 </mapper>
 
 

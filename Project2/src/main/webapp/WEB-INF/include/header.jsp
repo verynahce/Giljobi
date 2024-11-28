@@ -33,6 +33,15 @@
 .community-submenu a:hover {
   background-color: #f0f0f0;
 }
+.alert-size{
+width: 30px;
+height: 30px;
+margin-right: 5px;
+
+}
+.alert-baseline {
+display: flex;
+align-items: center;}
 </style>
  <header>
    <div class="inner">
@@ -52,7 +61,24 @@
      <ul class="header-util">
 	     <c:choose>
 	        <c:when test="${sessionScope.login.role == '개인회원'}">
-	           <li class="user-bar">${sessionScope.login.user_name }
+	          <c:choose>
+	        <c:when test="${not empty unreadNotices &&  unreadNotices != null }">
+	          <a href="/User/MyPage/Notice?user_idx=${login.user_idx}" class="alerts">
+	          <img alt="" src="/images/icon/alert-basic-red.png" class="alert-size" data-hover="/images/icon/alert-hover-red.png">
+	          </a> 
+             </c:when>
+             <c:otherwise>
+              <a href="/User/MyPage/Notice?user_idx=${login.user_idx}" class="alerts">
+ 	        <img alt="" src="/images/icon/alert-basic.png" class="alert-size" data-hover="/images/icon/alert-hover.png"> 
+ 	         </a>            
+             </c:otherwise>
+	         </c:choose>
+	           <li class="user-bar">
+	           <div class ="alert-baseline">	           
+	      
+	         
+	        ${sessionScope.login.user_name }
+	           </div>
 	              <ul class="user-login">
 	                 <li><a href="/User/MyPage/Home/updateForm?user_idx=${login.user_idx}">회원정보 수정</a></li>
 	                 <li><a href="/User/MyPage/Home/View">마이페이지</a></li>
@@ -80,3 +106,26 @@
      </ul>
    </div>
  </header>
+ <script>
+
+ const links = document.querySelectorAll(".alerts");
+
+//사이드 바 클릭시
+
+   links.forEach(link => {
+       const img = link.querySelector(".alert-size");
+       const originalSrc = img.src;
+       const hoverSrc = img.getAttribute("data-hover");
+
+       link.addEventListener("mouseover", () => {
+           img.src = hoverSrc;
+       });
+
+       link.addEventListener("mouseout", () => {
+           img.src = originalSrc;
+       });
+   });
+
+
+ 
+ </script>
