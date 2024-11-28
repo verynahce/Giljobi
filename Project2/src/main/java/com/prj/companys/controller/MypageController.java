@@ -246,6 +246,8 @@ public class MypageController {
 	notice.setUserIdx(ubv.getUser_idx());
 	notice.setCompanyIdx(postWriteVo.getCompany_idx());	
 	notice.setType("post");
+	notice.setNotification("🏢공고 알림");
+	notice.setSubnoti("회원님께서 북마크하신 회사의 새로운 공고가 올라왔습니다.");
 	userMapper.insertNoticeBookmark(notice);
 	}
 	

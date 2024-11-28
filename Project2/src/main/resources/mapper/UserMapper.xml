@@ -520,8 +520,8 @@
   </insert>
 
   <insert id="insertNoticeClick">
-  INSERT INTO NOTICE (NOTICE_IDX,POST_IDX,RESUME_IDX, USER_IDX,COMPANY_IDX, TYPE
-  )  VALUES(NOTICE_SEQ.NEXTVAL,#{postIdx},#{resumeIdx},#{userIdx},#{companyIdx},#{type})
+  INSERT INTO NOTICE (NOTICE_IDX,POST_IDX,RESUME_IDX, USER_IDX,COMPANY_IDX, TYPE, NOTIFICATION, SUBNOTI
+  )  VALUES(NOTICE_SEQ.NEXTVAL,#{postIdx},#{resumeIdx},#{userIdx},#{companyIdx},#{type},#{notification},#{subnoti})
   </insert>
   
   <select id="getNoticeClick">
@@ -540,9 +540,9 @@
   </select>
   
    <insert id="insertNoticeBookmark">
-  INSERT INTO NOTICE (NOTICE_IDX,POST_IDX, USER_IDX,COMPANY_IDX, TYPE
+  INSERT INTO NOTICE (NOTICE_IDX,POST_IDX, USER_IDX,COMPANY_IDX, TYPE, NOTIFICATION, SUBNOTI
   )  VALUES(NOTICE_SEQ.NEXTVAL,(SELECT NVL(MAX(POST_IDX),1 ) FROM POST ),
-  #{userIdx},#{companyIdx},#{type})
+  #{userIdx},#{companyIdx},#{type},#{notification},#{subnoti})
   </insert> 
   
 </mapper>
