@@ -516,7 +516,7 @@ justify-content: flex-end;
 	    <br>
 	    <div class="improve_layout"><button id="improve-button" type="button" >개선 요청</button></div>
 	    <hr>
-	    <div id="wait-time" style="display: none;">응답 대기 시간: <span id="time"></span>초</div>
+	    <div id="wait-time" style="display: none;">남은 대기 시간: <span id="time"></span>초</div>
 	    <div>
 	        <h4>추천 자기소개서:</h4>
 	        <p id="improvedText">개선 요청을 클릭해 ai가 추천하는 자기소개서를 받아보세요!</p>
@@ -858,7 +858,32 @@ $(formEl).on('keydown', function(event) {
 	});
 
 	function improveCoverLetter() {
-	    const coverLetter = document.getElementById("cover").value;
+		  const coverLetter = document.getElementById("cover").value;
+		    const skillElements = document.querySelectorAll('.pSkill');
+		    const skills = [];
+
+		    skillElements.forEach((element) => {
+		        skills.push(element.dataset.skill); // data-skill 속성 접근
+		    });
+
+		    console.log(skills);
+		    
+		    const company = document.getElementById("company").value;
+		    const duty = document.getElementById("DutyContent").value;
+			  const eMonth = $('#eMonth').val();
+			    const dYear = $('#dYear').val();
+			    const dMonth = $('#dMonth').val();
+			    const eYear = $('#eYear').val(); 	    
+			    const sval = eYear + eMonth;
+			    const eval = dYear + dMonth;
+			    console.log(sval);
+			    console.log(eval);
+			    const cYear = dYear-eYear;
+			    const cMonth = dMonth-eMonth;
+			    
+			    const career= "회사:"+company+"맡았던 직무:"+duty+"근무기간:"+cYear+"년"+cMonth+"개월";
+
+
 
 	    if (!coverLetter.trim()) {
 	        alert("자기소개서를 입력해주세요");
@@ -876,7 +901,7 @@ $(formEl).on('keydown', function(event) {
 	    // 실시간 업데이트
 	    intervalId = setInterval(() => {
 	        let elapsed = ((Date.now() - startTime) / 1000).toFixed(2); // 경과 시간 계산
-	        timeDisplay.innerText = elapsed;
+	        timeDisplay.innerText = 60-elapsed;
 	    }, 10); // 0.01초마다 업데이트
 
 	    fetch('http://localhost:9090/coverletter/improve', {
@@ -888,11 +913,11 @@ $(formEl).on('keydown', function(event) {
 	            messages: [
 	                {
 	                    role: "system",
-	                    content: "이 자기소개서를 업그레이드 시켜줘."
+	                    content: "이 자기소개서를 경력,기술 등을 참고해서 대기업들의 합격 자소서들을 바탕으로 개선시켜줘."
 	                },
 	                {
 	                    role: "user",
-	                    content: coverLetter
+	                    content: `자기소개서:` + coverLetter + `, 경력: ` + career + `, 기술: `+skills
 	                }
 	            ]
 	        })
