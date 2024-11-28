@@ -9,18 +9,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Notice {
 	
-	public Notice(int int1, String string, String string2, int int2) {
-		// TODO Auto-generated constructor stub
-	}
-	private Integer announcementIdx;
-	private Integer companyIdx;
 	private Integer noticeIdx;
 	private Integer postIdx;
 	private Integer resumeIdx;
-	private Boolean state;
+	private Integer announcementIdx;
 	private Integer userIdx;
-	private String notification;
+	private Integer senderIdx;
+	private Integer companyIdx;
+	private Integer communityIdx;
+	private Integer replyIdx;
 	private String recieveddate;
+	private String type;
+	private String state;
+	private String notification;
 	private String subnoti;
-	
+
 }
