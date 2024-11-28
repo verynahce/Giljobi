@@ -30,8 +30,8 @@
 	<%@include file="/WEB-INF/include/header.jsp" %>
 	<main>
 			 <div class="main-visual">
-           <p><span>구직</span> 과 <span>채용</span>, 망설이고 있진 않나요?</p>
-           <h2>지금 바로 시작하세요</h2>
+           <p><span>구직자</span> 와 <span>기업</span>을 잇는 가장 든든한 길!</p>
+           <h2>길JOB이와 함께하세요!</h2>
            	   <c:choose>
 				        <c:when test="${sessionScope.login.role == '개인회원'}">
 									 <p><a class="resume-add" href="/User/MyPage/Resume/WriteForm?user_idx=${sessionScope.login.user_idx}">이력서 등록</a><a class="post-add">공고 등록</a></p>
