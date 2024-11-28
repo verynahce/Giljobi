@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +31,8 @@ import com.prj.main.vo.SkillVo;
 import com.prj.service.ClickService;
 import com.prj.service.PdsService;
 import com.prj.users.mapper.UserMapper;
+import com.prj.users.notification.service.Notice;
+import com.prj.users.notification.service.NoticeService;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.EduVo;
 import com.prj.users.vo.ResumeCareerVo;
@@ -58,8 +61,13 @@ public class MyPageController {
 	private PdsService pdsService;
 	@Autowired
 	private ClickService clickService;
+	
+	@Autowired
+	private NoticeService noticeService;
+	
 	@Autowired
 	private CompanyMapper companyMapper;
+
 	@RequestMapping("/Home/View")
 	public ModelAndView homeview(HttpServletRequest request, HttpServletResponse responese) {		
 		
@@ -634,5 +642,13 @@ public class MyPageController {
 		return mv;
 		
 	}
+	
+    @RequestMapping("/Notice")
+    public String showNotice(Model model, @RequestParam("user_idx") int user_idx, Notice notice) {
+        List<Integer> noticeIdx = noticeService.getNoticesByUser(user_idx);
+        model.addAttribute("user_idx", user_idx);
+        model.addAttribute("noticeIdx", noticeIdx);
+        return "user/mypage/notification/notice";
+    }
 
 }

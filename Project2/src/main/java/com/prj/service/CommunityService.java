@@ -21,6 +21,7 @@ import com.prj.repository.DutyRepository;
 import com.prj.repository.NoticeRepository;
 import com.prj.repository.ReplyRepository;
 import com.prj.repository.UsersRepository;
+import com.prj.users.notification.service.NoticeService;
 
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +38,8 @@ public class CommunityService {
 	private DutyRepository dutyRepository;
 	@Autowired
 	private ReplyRepository replyRepository;
+	@Autowired
+	private NoticeService noticeService;
 	@Autowired
 	private NoticeRepository noticeRepository;
 
@@ -109,6 +112,21 @@ public class CommunityService {
 		return replyList;
 	}
 
+	/*
+    //댓글 작성시 알림 저장
+    public void sendCommentNotification(Integer communityIdx, Integer replyIdx, Integer senderIdx, Integer receiverIdx, String notification, String subnoti) {
+        Notice notice = new Notice();
+        notice.setCommunityIdx(communityIdx);
+        notice.setReplyIdx(replyIdx);
+        notice.setSenderIdx(senderIdx);
+        notice.setUserIdx(receiverIdx);
+        notice.setType("댓글 알림");
+        notice.setNotification(notification);
+        notice.setSubnoti(subnoti);
+        noticeService.sendNotification(notice);
+    }
+    */
+    
 	public Community updateLikeOn(Long communityIdx) {
 		
 		
@@ -269,6 +287,9 @@ public class CommunityService {
 
 		
 	}
+	
+
+    
 	
 		   
 

@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -32,8 +31,6 @@ import com.prj.main.vo.PostVo;
 import com.prj.main.vo.SkillVo;
 import com.prj.service.PdsService;
 import com.prj.users.vo.EduVo;
-import com.prj.users.vo.ResumeSkillFormVo;
-import com.prj.users.vo.ResumeSkillVo;
 import com.prj.users.vo.ScoreVo;
 
 import jakarta.servlet.http.HttpServletRequest;

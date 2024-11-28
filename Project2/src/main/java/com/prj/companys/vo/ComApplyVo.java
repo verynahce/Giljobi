@@ -9,8 +9,8 @@ public class ComApplyVo {
 	private int resume_idx;
 	private int post_idx;
 	private int user_idx;
-	private String   appli_date;
-	private String   appli_status;
+	private String appli_date;
+	private String appli_status;
 	private String resume_title;
 	private String skill_name;
 	private String user_name;	
@@ -19,7 +19,6 @@ public class ComApplyVo {
 	private String age;	
 	private String cyears;
 	private String cmonths;
-
 
 	}
 	
