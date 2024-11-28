@@ -611,6 +611,7 @@ cursor: pointer;
             li.setAttribute('data-resume-idx', notice.resumeIdx);
             li.setAttribute('data-post-idx', notice.postIdx);
             li.setAttribute('data-type', notice.type);
+            li.setAttribute('data-recieveddate', notice.recieveddate);
 
             // 값이 null이면 기본값을 사용하도록 처리
             const notification = notice.notification || '알림 내용 없음';
@@ -655,7 +656,7 @@ cursor: pointer;
 
                 if (type == "reply") {
                 	handleCommentNotification(communityIdx),markNoticeAsRead(noticeIdx);
-                } else if(type= "resume") {
+                } else if(type== "resume") {
                 	handleResumeNotification(resumeIdx),markNoticeAsRead(noticeIdx);			
                 } else if(type=="post"){
 					handlePostNotification(postIdx),markNoticeAsRead(noticeIdx);			
@@ -675,12 +676,14 @@ cursor: pointer;
                 deleteNotice(noticeIdx);
             });
         });
+
     }
 })
 
 	        .catch(error => console.error('Error:', error));
 	}
  setInterval(() => filterByType(type), 10000); // userIdx를 동적으로 설정 */
+
 
  
 
@@ -732,17 +735,40 @@ function handlePostNotification(postIdx) {
     location.href = `/Main/Jobs/View?post_idx=`+postIdx;
 }
 
+$(document).ready(function() {
+    // 페이지가 로드될 때 모든 알림 항목에 대해 자동 삭제 시도
+    document.querySelectorAll('.notice-item').forEach(item => {
+        const noticeIdx = item.getAttribute('data-notice-idx');
+        const receivedDate = item.getAttribute('data-received-date'); // 수정: data-received-date로 변경
+        autoDelete(noticeIdx, receivedDate);
+    });
+});
+
+
 //알림 삭제
+function autoDelete(noticeIdx, receivedDate) {
+    // 현재 날짜와 30일 전 날짜 계산
+    const currentDate = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+
+    // receivedDate를 Date 객체로 변환
+    const noticeDate = new Date(receivedDate);
+
+    // 30일 이전인지 확인
+    if (noticeDate < thirtyDaysAgo) {
+        // 30일 이전이면 바로 삭제
+        deleteNotice(noticeIdx);
+    } 
+}
 function deleteNotice(noticeIdx) {
-    if (confirm('정말로 삭제하시겠습니까?')) {
         fetch(`/api/notification/remove/\${noticeIdx}`, { method: 'DELETE' })
             .then(response => response.text())
             .then(message => {
-                alert(message);
+            	 console.log(message);
                 location.reload(); // 새로고침
             })
             .catch(error => console.error('Error:', error));
-    }
 }
 
 //읽음상태 변경
@@ -766,7 +792,6 @@ function markNoticeAsRead(noticeIdx) {
         console.error('Error:', error); // 에러 처리
     });
 }
-
 
 setInterval(() => filterByType(type), 10000); // userIdx를 동적으로 설정 */
 </script>

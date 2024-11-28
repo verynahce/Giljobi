@@ -197,6 +197,8 @@ public class MypageBookMarkController {
 		notice.setCompanyIdx(company_idx);
 		notice.setUserIdx(vo.getUser_idx());		
 		notice.setType("resume");
+		notice.setNotification("📑이력서 알림");
+		notice.setSubnoti("회원님께서 지원한 회사에서 회원님의 이력서를 확인하였습니다.");
 		// 중복 메시지 막기
 		Notice configNotice = userMapper.getNoticeClick(notice);		
 		if (configNotice == null) {
