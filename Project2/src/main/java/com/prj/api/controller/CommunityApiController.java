@@ -33,6 +33,7 @@ public class CommunityApiController {
         
          //댓글
          communityService.insertNoticeReply(crDto,created);
+
          
 		return    ResponseEntity.status(HttpStatus.OK).body( created );
 	}
@@ -88,8 +89,7 @@ public class CommunityApiController {
 	}
 	
 	@DeleteMapping("/Delete")
-	public ResponseEntity <CommunityReply> Deletereply(@RequestBody CommunityReplyDTO crDto) {
-		
+	public ResponseEntity <CommunityReply> Deletereply(@RequestBody CommunityReplyDTO crDto) {		
 		
 		CommunityReply deleted = communityService.deleteReply(crDto);
 		ResponseEntity <CommunityReply> result =

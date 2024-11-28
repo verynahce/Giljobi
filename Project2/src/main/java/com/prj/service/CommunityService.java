@@ -268,9 +268,7 @@ public class CommunityService {
          CommunityReply reply = replyRepository.findById(created.getReplyIdx()).orElseThrow( () -> new IllegalArgumentException(
 					"메시지 전송실패! 대상 댓글이 없습니다" ) );		
          LocalDateTime cdate = LocalDateTime.now();
-         String type = "REPLY";
-         String notification ="커뮤니티글에 유저가 댓글을 등록했습니다! 확인해보세요";
-         String subnoti = "댓글등록";
+         String type = "reply";
          Long senderIdx = reply.getUsers().getUserIdx();
         
          
@@ -280,13 +278,25 @@ public class CommunityService {
 		 System.out.println("유저값 "+ rUser);
          // 게시물유저 = 댓글 유저 동일 제외
          if (!cUser.equals(rUser)) {
-             Notice notice = new Notice(community.getUsers(),reply,cdate,type,notification,subnoti,community,senderIdx);           
+             Notice notice = new Notice(community.getUsers(),reply,cdate,type,community,senderIdx);           
              Notice send = noticeRepository.save(notice); 
+    		
 	 
          }
 
 		
 	}
+
+	public void deleteNoticeReply(Long replyIdx) {
+              
+		//1.메시지 있는지 확인		
+		List<Notice> notice =noticeRepository.findByCommunityReplyReplyIdx(replyIdx);	
+		   noticeRepository.deleteAll(notice);
+		   System.out.println("!!!!!!!!!!!!!!삭제 완료 대상 : "+ notice);	
+		 
+		}
+
+	
 	
 
     
