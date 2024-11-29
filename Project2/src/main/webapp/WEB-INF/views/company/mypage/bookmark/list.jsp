@@ -190,7 +190,14 @@
        	  </tr>
        	  <c:forEach var="b" items="${BookList}">
        	  <tr>
+       	  <c:choose>
+       	  <c:when test="${not empty b.user_name}">	
        	   <td>${b.user_name}<br><span class="namebot">(${b.user_gender},${b.age}세)</span></td>
+       	   </c:when>
+       	   <c:otherwise>
+       	   <td>탈퇴회원 </td>
+       	   </c:otherwise>
+       	   </c:choose>
        	   <td>
        	    <a href="/Company/Mypage/Bookmark/View?resume_idx=${b.resume_idx}&company_idx=${b.company_idx}">${b.resume_title}</a>
        	    <br>

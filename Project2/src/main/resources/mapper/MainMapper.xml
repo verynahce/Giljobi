@@ -2,68 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.prj.main.mapper.MainMapper">  
 
-	<!-- 공용 ======================================= -->
-	<select id="getCityList">
-	SELECT *
-	FROM CITY
-	</select>
-	
-	<select id="getDutyList">
-	SELECT *
-	FROM DUTY
-	</select>
-	
-		<select id="getCareerList">
-	SELECT *
-	FROM CAREER
-	</select>
-	
-		<select id="getEmpList">
-	SELECT *
-	FROM EMP
-	</select>
-	
-		<select id="getSkillList">
-	SELECT *
-	FROM SKILL
-	</select>
-		<select id="getCompanyNameList">
-	SELECT *
-	FROM COMPANYS
-	WHERE COMPANY_NAME = #{company_name}
-	</select>
-	
-	<!-- 채용정보 ======================================= -->
-	<select id="getPost">
-		SELECT 
-		    P.POST_IDX,
-		    P.COMPANY_IDX,
-		    P.POST_TITLE,
-		    C.COMPANY_NAME,
-		    C.COMPANY_EMAIL,
-		    C.COMPANY_TEL,
-		    D.DUTY_NAME,
-		    D.DUTY_ID,
-		    CR.CAREER_NAME,
-		    ED.EDU_NAME,
-		    P.POST_SALARY,
-		    P.IMAGE_IDX,
-		    EM.EMP_NAME,
-		    CT.CITY_NAME,
-		    POST_CONTENT,
-		    POST_HIT,
-		    TO_CHAR(P.POST_DDATE, '""YYYY"년 "MM"월 "DD"일"') POST_DDATE,
-		    TO_CHAR(P.POST_CDATE, '""YYYY"년 "MM"월 "DD"일"') POST_CDATE,
-		    TO_CHAR(P.POST_CDATE, '""YYYY"."MM"."DD""') 	  POST_FDATE
-		FROM POST P LEFT JOIN COMPANYS C   ON P.COMPANY_IDX = C.COMPANY_IDX
+
+   <!-- 공용 ======================================= -->
+   <select id="getCityList">
+   SELECT *
+   FROM CITY
+   </select>
+   
+   <select id="getDutyList">
+   SELECT *
+   FROM DUTY
+   </select>
+   
+      <select id="getCareerList">
+   SELECT *
+   FROM CAREER
+   </select>
+   
+      <select id="getEmpList">
+   SELECT *
+   FROM EMP
+   </select>
+   
+      <select id="getSkillList">
+   SELECT *
+   FROM SKILL
+   </select>
+      <select id="getCompanyNameList">
+   SELECT *
+   FROM COMPANYS
+   WHERE COMPANY_NAME = #{company_name}
+   </select>
+   
+   <!-- 채용정보 ======================================= -->
+   <select id="getPost">
+      SELECT 
+          P.POST_IDX,
+          P.COMPANY_IDX,
+          P.POST_TITLE,
+          C.COMPANY_NAME,
+          C.COMPANY_EMAIL,
+          C.COMPANY_TEL,
+          D.DUTY_NAME,
+          D.DUTY_ID,
+          CR.CAREER_NAME,
+          ED.EDU_NAME,
+          P.POST_SALARY,
+          P.IMAGE_IDX,
+          EM.EMP_NAME,
+          CT.CITY_NAME,
+          POST_CONTENT,
+          POST_HIT,
+          TO_CHAR(P.POST_DDATE, '""YYYY"년 "MM"월 "DD"일"') POST_DDATE,
+          TO_CHAR(P.POST_CDATE, '""YYYY"년 "MM"월 "DD"일"') POST_CDATE,
+          TO_CHAR(P.POST_CDATE, '""YYYY"."MM"."DD""')      POST_FDATE
+      FROM POST P LEFT JOIN COMPANYS C   ON P.COMPANY_IDX = C.COMPANY_IDX
                     LEFT JOIN REVIEW      R   ON C.COMPANY_IDX = R.COMPANY_IDX
                     LEFT JOIN CAREER     CR ON P.CAREER_ID      = CR.CAREER_ID
                     LEFT JOIN DUTY        D   ON P.DUTY_ID   = D.DUTY_ID
                     LEFT JOIN EDU          ED  ON P.EDU_ID          = ED.EDU_ID
                     LEFT JOIN EMP          EM ON P.EMP_ID          = EM.EMP_ID
                     LEFT JOIN CITY          CT ON P.CITY_ID          = CT.CITY_ID
-		 WHERE P.POST_IDX = #{post_idx}
-		 GROUP BY	P.POST_IDX,
+       WHERE P.POST_IDX = #{post_idx}
+       GROUP BY   P.POST_IDX,
                      P.COMPANY_IDX,
                      P.POST_TITLE,
                      C.COMPANY_NAME,
@@ -82,104 +83,104 @@
                      POST_FDATE,
                      P.IMAGE_IDX,
                      D.DUTY_ID
-	</select>
-	<select id="getTotPoint">
-	  SELECT (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 FROM REVIEW R JOIN POST P ON R.COMPANY_IDX = P.COMPANY_IDX
-	 WHERE P.POST_IDX = #{post_idx}
-	 
-	 
-	
-	</select>
-	
-  	<select id="getPostList">
-	 SELECT 
-	    P.POST_IDX,
-	    P.COMPANY_IDX,
-	    P.POST_TITLE,
-	    C.COMPANY_NAME,
-	    (SELECT (AVG(WC_POINT) + AVG(WLB_POINT) + AVG(CC_POINT) + AVG(PO_POINT) + AVG(EM_POINT)) / 5 
-	       FROM REVIEW) AS TOT_POINT,
-	    C.COMPANY_EMAIL,
-	    C.COMPANY_TEL,
-	    D.DUTY_ID,
-	    D.DUTY_NAME,
-	    CR.CAREER_NAME,
-	    ED.EDU_NAME,
-	    P.POST_SALARY,
-	    LISTAGG(DISTINCT S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME) AS SKILL_NAME,
-	    EM.EMP_NAME,
-	    CT.CITY_NAME,
-	    POST_CONTENT,
-	    POST_HIT,
-	    TO_CHAR(P.POST_DDATE, 'YYYY"년 "MM"월 "DD"일') AS POST_DDATE,
-	    TO_CHAR(P.POST_CDATE, 'YYYY"년 "MM"월 "DD"일') AS POST_CDATE,
-	    TO_CHAR(P.POST_CDATE, 'YYYY.MM.DD') AS POST_FDATE
-	FROM POST P
-	LEFT JOIN COMPANYS C ON P.COMPANY_IDX = C.COMPANY_IDX
-	LEFT JOIN REVIEW R ON C.COMPANY_IDX = R.COMPANY_IDX
-	LEFT JOIN CAREER CR ON P.CAREER_ID = CR.CAREER_ID
-	LEFT JOIN DUTY D ON P.DUTY_ID = D.DUTY_ID
-	LEFT JOIN EDU ED ON P.EDU_ID = ED.EDU_ID
-	LEFT JOIN EMP EM ON P.EMP_ID = EM.EMP_ID
-	LEFT JOIN CITY CT ON P.CITY_ID = CT.CITY_ID
-	LEFT JOIN POST_SKILL PS ON P.POST_IDX = PS.POST_IDX
-	LEFT JOIN SKILL S ON PS.SKILL_ID = S.SKILL_ID
-	WHERE P.POST_DDATE &gt; SYSDATE
-	GROUP BY 
-	    P.POST_IDX,
-	    P.COMPANY_IDX,
-	    P.POST_TITLE,
-	    C.COMPANY_NAME,
-	    C.COMPANY_EMAIL,
-	    C.COMPANY_TEL,
-	    D.DUTY_ID,
-	    D.DUTY_NAME,
-	    CR.CAREER_NAME,
-	    ED.EDU_NAME,
-	    P.POST_SALARY,
-	    EM.EMP_NAME,
-	    CT.CITY_NAME,
-	    POST_CONTENT,
-	    POST_HIT,
-	    POST_DDATE,
-	    POST_CDATE,
-	    POST_FDATE
-	ORDER BY POST_HIT DESC
+   </select>
+   <select id="getTotPoint">
+     SELECT (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 FROM REVIEW R JOIN POST P ON R.COMPANY_IDX = P.COMPANY_IDX
+    WHERE P.POST_IDX = #{post_idx}
+    
+    
+   
+   </select>
+   
+     <select id="getPostList">
+    SELECT 
+       P.POST_IDX,
+       P.COMPANY_IDX,
+       P.POST_TITLE,
+       C.COMPANY_NAME,
+       (SELECT (AVG(WC_POINT) + AVG(WLB_POINT) + AVG(CC_POINT) + AVG(PO_POINT) + AVG(EM_POINT)) / 5 
+          FROM REVIEW) AS TOT_POINT,
+       C.COMPANY_EMAIL,
+       C.COMPANY_TEL,
+       D.DUTY_ID,
+       D.DUTY_NAME,
+       CR.CAREER_NAME,
+       ED.EDU_NAME,
+       P.POST_SALARY,
+       LISTAGG(DISTINCT S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME) AS SKILL_NAME,
+       EM.EMP_NAME,
+       CT.CITY_NAME,
+       POST_CONTENT,
+       POST_HIT,
+       TO_CHAR(P.POST_DDATE, 'YYYY"년 "MM"월 "DD"일') AS POST_DDATE,
+       TO_CHAR(P.POST_CDATE, 'YYYY"년 "MM"월 "DD"일') AS POST_CDATE,
+       TO_CHAR(P.POST_CDATE, 'YYYY.MM.DD') AS POST_FDATE
+   FROM POST P
+   LEFT JOIN COMPANYS C ON P.COMPANY_IDX = C.COMPANY_IDX
+   LEFT JOIN REVIEW R ON C.COMPANY_IDX = R.COMPANY_IDX
+   LEFT JOIN CAREER CR ON P.CAREER_ID = CR.CAREER_ID
+   LEFT JOIN DUTY D ON P.DUTY_ID = D.DUTY_ID
+   LEFT JOIN EDU ED ON P.EDU_ID = ED.EDU_ID
+   LEFT JOIN EMP EM ON P.EMP_ID = EM.EMP_ID
+   LEFT JOIN CITY CT ON P.CITY_ID = CT.CITY_ID
+   LEFT JOIN POST_SKILL PS ON P.POST_IDX = PS.POST_IDX
+   LEFT JOIN SKILL S ON PS.SKILL_ID = S.SKILL_ID
+   WHERE P.POST_DDATE &gt; SYSDATE
+   GROUP BY 
+       P.POST_IDX,
+       P.COMPANY_IDX,
+       P.POST_TITLE,
+       C.COMPANY_NAME,
+       C.COMPANY_EMAIL,
+       C.COMPANY_TEL,
+       D.DUTY_ID,
+       D.DUTY_NAME,
+       CR.CAREER_NAME,
+       ED.EDU_NAME,
+       P.POST_SALARY,
+       EM.EMP_NAME,
+       CT.CITY_NAME,
+       POST_CONTENT,
+       POST_HIT,
+       POST_DDATE,
+       POST_CDATE,
+       POST_FDATE
+   ORDER BY POST_HIT DESC
 
-  	</select>
+     </select>
  
- 	<select id="getCompanyPost">
-		SELECT 
-		    P.POST_IDX,
-		    P.COMPANY_IDX,
-		    P.POST_TITLE,
-		    C.COMPANY_NAME,
-		    (SELECT (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 FROM REVIEW) TOT_POINT,
-		    C.COMPANY_EMAIL,
-		    C.COMPANY_TEL,
-		    D.DUTY_NAME,
-		    CR.CAREER_NAME,
-		    ED.EDU_NAME,
-		    P.POST_SALARY,
-		    S.SKILL_NAME,
-		    EM.EMP_NAME,
-		    CT.CITY_NAME,
-		    POST_CONTENT,
-		    POST_HIT,
-		    TO_CHAR(P.POST_DDATE, '""YYYY"년 "MM"월 "DD"일"') POST_DDATE,
-		    TO_CHAR(P.POST_CDATE, '""YYYY"년 "MM"월 "DD"일"') POST_CDATE,
-		    TO_CHAR(P.POST_CDATE, '""YYYY"."MM"."DD""') 	  POST_FDATE
-		FROM POST P LEFT JOIN COMPANYS   C      ON P.COMPANY_IDX = C.COMPANY_IDX
-                    LEFT JOIN REVIEW     R   	ON C.COMPANY_IDX = R.COMPANY_IDX
-                    LEFT JOIN CAREER     CR 	ON P.CAREER_ID   = CR.CAREER_ID
-                    LEFT JOIN DUTY       D   	ON P.DUTY_ID     = D.DUTY_ID
-                    LEFT JOIN EDU        ED  	ON P.EDU_ID      = ED.EDU_ID
-                    LEFT JOIN EMP        EM 	ON P.EMP_ID      = EM.EMP_ID
-                    LEFT JOIN CITY       CT 	ON P.CITY_ID     = CT.CITY_ID
-                    LEFT JOIN POST_SKILL PS  	ON P.POST_IDX 	 = PS.POST_IDX
+    <select id="getCompanyPost">
+      SELECT 
+          P.POST_IDX,
+          P.COMPANY_IDX,
+          P.POST_TITLE,
+          C.COMPANY_NAME,
+          (SELECT (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 FROM REVIEW) TOT_POINT,
+          C.COMPANY_EMAIL,
+          C.COMPANY_TEL,
+          D.DUTY_NAME,
+          CR.CAREER_NAME,
+          ED.EDU_NAME,
+          P.POST_SALARY,
+          S.SKILL_NAME,
+          EM.EMP_NAME,
+          CT.CITY_NAME,
+          POST_CONTENT,
+          POST_HIT,
+          TO_CHAR(P.POST_DDATE, '""YYYY"년 "MM"월 "DD"일"') POST_DDATE,
+          TO_CHAR(P.POST_CDATE, '""YYYY"년 "MM"월 "DD"일"') POST_CDATE,
+          TO_CHAR(P.POST_CDATE, '""YYYY"."MM"."DD""')      POST_FDATE
+      FROM POST P LEFT JOIN COMPANYS   C      ON P.COMPANY_IDX = C.COMPANY_IDX
+                    LEFT JOIN REVIEW     R      ON C.COMPANY_IDX = R.COMPANY_IDX
+                    LEFT JOIN CAREER     CR    ON P.CAREER_ID   = CR.CAREER_ID
+                    LEFT JOIN DUTY       D      ON P.DUTY_ID     = D.DUTY_ID
+                    LEFT JOIN EDU        ED     ON P.EDU_ID      = ED.EDU_ID
+                    LEFT JOIN EMP        EM    ON P.EMP_ID      = EM.EMP_ID
+                    LEFT JOIN CITY       CT    ON P.CITY_ID     = CT.CITY_ID
+                    LEFT JOIN POST_SKILL PS     ON P.POST_IDX     = PS.POST_IDX
                     LEFT JOIN SKILL      S      ON PS.SKILL_ID   = S.SKILL_ID
-		 WHERE P.COMPANY_IDX = #{company_idx}
-		 		 GROUP BY	P.POST_IDX,
+       WHERE P.COMPANY_IDX = #{company_idx}
+              GROUP BY   P.POST_IDX,
                      P.COMPANY_IDX,
                      P.POST_TITLE,
                      C.COMPANY_NAME,
@@ -197,46 +198,46 @@
                      POST_DDATE,
                      POST_CDATE,
                      POST_FDATE
-	</select>
+   </select>
  
  <update id="updatePostHit">
-	 	UPDATE POST SET POST_HIT = POST_HIT + 1 WHERE POST_IDX = #{post_idx}
+       UPDATE POST SET POST_HIT = POST_HIT + 1 WHERE POST_IDX = #{post_idx}
  </update>
  
  
  
-  	<select id="getFilteredPosts">
-		SELECT 
-		    P.POST_IDX,
-		    P.COMPANY_IDX,
-		    P.POST_TITLE,
-		    C.COMPANY_NAME,
-		    (SELECT (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 FROM REVIEW) TOT_POINT,
-		    C.COMPANY_EMAIL,
-		    C.COMPANY_TEL,
-		    D.DUTY_ID,
-		    D.DUTY_NAME,
-		    CR.CAREER_NAME,
-		    ED.EDU_NAME,
-		    P.POST_SALARY,
-		    LISTAGG(DISTINCT S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME) AS SKILL_NAME,
-		    EM.EMP_NAME,
-		    CT.CITY_NAME,
-		    POST_CONTENT,
-		    POST_HIT,
-		    TO_CHAR(P.POST_DDATE, '""YYYY"년 "MM"월 "DD"일"') POST_DDATE,
-		    TO_CHAR(P.POST_CDATE, '""YYYY"년 "MM"월 "DD"일"') POST_CDATE,
-		    TO_CHAR(P.POST_CDATE, '""YYYY"."MM"."DD""') 	  POST_FDATE
-		FROM POST P LEFT JOIN COMPANYS C   ON P.COMPANY_IDX = C.COMPANY_IDX
-		                   LEFT JOIN REVIEW      R   ON C.COMPANY_IDX = R.COMPANY_IDX
-		                   LEFT JOIN CAREER     CR ON P.CAREER_ID      = CR.CAREER_ID
-		                   LEFT JOIN DUTY        D   ON P.DUTY_ID   = D.DUTY_ID
-		                   LEFT JOIN EDU          ED  ON P.EDU_ID          = ED.EDU_ID
-		                   LEFT JOIN EMP          EM ON P.EMP_ID          = EM.EMP_ID
-		                   LEFT JOIN CITY          CT ON P.CITY_ID          = CT.CITY_ID
-		                   LEFT JOIN POST_SKILL PS  ON P.POST_IDX = PS.POST_IDX
-		                   LEFT JOIN SKILL         S   ON PS.SKILL_ID  = S.SKILL_ID
-		WHERE P.POST_IDX IN (
+     <select id="getFilteredPosts">
+      SELECT 
+          P.POST_IDX,
+          P.COMPANY_IDX,
+          P.POST_TITLE,
+          C.COMPANY_NAME,
+          (SELECT (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 FROM REVIEW) TOT_POINT,
+          C.COMPANY_EMAIL,
+          C.COMPANY_TEL,
+          D.DUTY_ID,
+          D.DUTY_NAME,
+          CR.CAREER_NAME,
+          ED.EDU_NAME,
+          P.POST_SALARY,
+          LISTAGG(DISTINCT S.SKILL_NAME, ', ') WITHIN GROUP (ORDER BY S.SKILL_NAME) AS SKILL_NAME,
+          EM.EMP_NAME,
+          CT.CITY_NAME,
+          POST_CONTENT,
+          POST_HIT,
+          TO_CHAR(P.POST_DDATE, '""YYYY"년 "MM"월 "DD"일"') POST_DDATE,
+          TO_CHAR(P.POST_CDATE, '""YYYY"년 "MM"월 "DD"일"') POST_CDATE,
+          TO_CHAR(P.POST_CDATE, '""YYYY"."MM"."DD""')      POST_FDATE
+      FROM POST P LEFT JOIN COMPANYS C   ON P.COMPANY_IDX = C.COMPANY_IDX
+                         LEFT JOIN REVIEW      R   ON C.COMPANY_IDX = R.COMPANY_IDX
+                         LEFT JOIN CAREER     CR ON P.CAREER_ID      = CR.CAREER_ID
+                         LEFT JOIN DUTY        D   ON P.DUTY_ID   = D.DUTY_ID
+                         LEFT JOIN EDU          ED  ON P.EDU_ID          = ED.EDU_ID
+                         LEFT JOIN EMP          EM ON P.EMP_ID          = EM.EMP_ID
+                         LEFT JOIN CITY          CT ON P.CITY_ID          = CT.CITY_ID
+                         LEFT JOIN POST_SKILL PS  ON P.POST_IDX = PS.POST_IDX
+                         LEFT JOIN SKILL         S   ON PS.SKILL_ID  = S.SKILL_ID
+      WHERE P.POST_IDX IN (
         SELECT P.POST_IDX
         FROM POST P
         LEFT JOIN POST_SKILL PS ON P.POST_IDX = PS.POST_IDX
@@ -244,22 +245,24 @@
             WHERE PS.SKILL_ID = #{skill_id}
         </if>
                                ) 
-	      AND P.POST_DDATE &gt; SYSDATE 
-	    <if test="city_id != null and city_id != ''">
-	      AND P.city_id = #{city_id}
-	    </if>
-	    <if test="duty_id != null and duty_id != ''">
-	      AND P.duty_id = #{duty_id}
-	    </if>
-	    <if test="career_id != null and career_id != ''">
-	      AND P.career_id = #{career_id}
-	    </if>
-	    <if test="emp_id != null and emp_id != ''">
-	      AND P.emp_id = #{emp_id}
-	    </if>
-	    <if test="company_name != null and company_name != ''">
-	      AND C.company_name = #{company_name, jdbcType=VARCHAR}
-	    </if>
+
+         AND P.POST_DDATE &gt; SYSDATE 
+       <if test="city_id != null and city_id != ''">
+         AND P.city_id = #{city_id}
+       </if>
+       <if test="duty_id != null and duty_id != ''">
+         AND P.duty_id = #{duty_id}
+       </if>
+       <if test="career_id != null and career_id != ''">
+         AND P.career_id = #{career_id}
+       </if>
+       <if test="emp_id != null and emp_id != ''">
+         AND P.emp_id = #{emp_id}
+       </if>
+       <if test="company_name != null and company_name != ''">
+         AND C.company_name = #{company_name, jdbcType=VARCHAR}
+       </if>
+
           GROUP BY P.POST_IDX,
                  P.COMPANY_IDX,
                  P.POST_TITLE,
@@ -283,117 +286,117 @@
   
   <!-- 인재정보 ======================================= -->
   <select id="getResume">
-	 SELECT
-	    R.RESUME_IDX,
-	    U.USER_IDX,
-	    U.USER_NAME,
-	    TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), TO_DATE(U.USER_BIRTHDATE,'YYYY-MM-DD')) / 12) USER_AGE,
-	    U.USER_GENDER,
-	    SUBSTR(U.USER_BIRTHDATE,0,4) USER_YEAR,
-	    U.USER_TEL,
-	    U.USER_EMAIL,
-	    RESUME_TITLE,
-	    EB_NAME,
-	    ED.EDU_NAME,
-	    C.CITY_NAME,
-	    D.DUTY_NAME,
-	    D.DUTY_ID,
-	    E.EMP_NAME,
-	    RC.CAREER_CNAME,
-	    TO_CHAR(RC.CAREER_SDATE,'YYYY.MM') CAREER_SDATE,
-	    TO_CHAR(RC.CAREER_EDATE,'YYYY.MM') CAREER_EDATE,
-	    TRUNC(MONTHS_BETWEEN(RC.CAREER_EDATE,RC.CAREER_SDATE) / 12, 0) CAREER_YEAR,
-	    TRUNC(MOD(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE),12),0) CAREER_MONTH,
-	    RC.CAREER_DESCRIPTION,
-	    COVER_LETTER,
-	    RESUME_HIT,
-	    R.IMAGE_IDX,
-	    TO_CHAR(RESUME_CDATE,'""YYYY"-"MM"-"DD""') RESUME_CDATE,
-	    TO_CHAR(RESUME_FDATE,'""YYYY"-"MM"-"DD""') RESUME_FDATE
-	FROM
-	    RESUME R LEFT JOIN DUTY D 			ON R.DUTY_ID 	= D.DUTY_ID
-	             LEFT JOIN CITY C 			ON R.CITY_ID 	= C.CITY_ID
-	             LEFT JOIN EMP E  			ON R.EMP_ID 	= E.EMP_ID
-	             LEFT JOIN EDU ED 			ON R.EDU_ID 	= ED.EDU_ID 
-                 LEFT JOIN USERS U 		    ON R.USER_IDX 	= U.USER_IDX
+    SELECT
+       R.RESUME_IDX,
+       U.USER_IDX,
+       U.USER_NAME,
+       TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), TO_DATE(U.USER_BIRTHDATE,'YYYY-MM-DD')) / 12) USER_AGE,
+       U.USER_GENDER,
+       SUBSTR(U.USER_BIRTHDATE,0,4) USER_YEAR,
+       U.USER_TEL,
+       U.USER_EMAIL,
+       RESUME_TITLE,
+       EB_NAME,
+       ED.EDU_NAME,
+       C.CITY_NAME,
+       D.DUTY_NAME,
+       D.DUTY_ID,
+       E.EMP_NAME,
+       RC.CAREER_CNAME,
+       TO_CHAR(RC.CAREER_SDATE,'YYYY.MM') CAREER_SDATE,
+       TO_CHAR(RC.CAREER_EDATE,'YYYY.MM') CAREER_EDATE,
+       TRUNC(MONTHS_BETWEEN(RC.CAREER_EDATE,RC.CAREER_SDATE) / 12, 0) CAREER_YEAR,
+       TRUNC(MOD(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE),12),0) CAREER_MONTH,
+       RC.CAREER_DESCRIPTION,
+       COVER_LETTER,
+       RESUME_HIT,
+       R.IMAGE_IDX,
+       TO_CHAR(RESUME_CDATE,'""YYYY"-"MM"-"DD""') RESUME_CDATE,
+       TO_CHAR(RESUME_FDATE,'""YYYY"-"MM"-"DD""') RESUME_FDATE
+   FROM
+       RESUME R LEFT JOIN DUTY D          ON R.DUTY_ID    = D.DUTY_ID
+                LEFT JOIN CITY C          ON R.CITY_ID    = C.CITY_ID
+                LEFT JOIN EMP E           ON R.EMP_ID    = E.EMP_ID
+                LEFT JOIN EDU ED          ON R.EDU_ID    = ED.EDU_ID 
+                 LEFT JOIN USERS U           ON R.USER_IDX    = U.USER_IDX
                  LEFT JOIN RESUME_CAREER RC ON R.RESUME_IDX = RC.RESUME_IDX
-	WHERE R.RESUME_IDX = #{resume_idx}
-	</select>
+   WHERE R.RESUME_IDX = #{resume_idx}
+   </select>
 
- 	<select id="getResumeList">
+    <select id="getResumeList">
   SELECT
-	    R.RESUME_IDX,
-	    U.USER_IDX,
-	    U.USER_NAME,
-	    TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), TO_DATE(U.USER_BIRTHDATE,'YYYY-MM-DD')) / 12) USER_AGE,
-	    U.USER_GENDER,
-	    SUBSTR(U.USER_BIRTHDATE,0,4) USER_YEAR,
-	    U.USER_TEL,
-	    U.USER_EMAIL,
-	    RESUME_TITLE,
-	    EB_NAME,
-	    ED.EDU_NAME,
-	    C.CITY_NAME,
-	    D.DUTY_NAME,
-	    E.EMP_NAME,
-	    RC.CAREER_CNAME,
-	    TO_CHAR(RC.CAREER_SDATE,'YYYY.MM') CAREER_SDATE,
-	    TO_CHAR(RC.CAREER_EDATE,'YYYY.MM') CAREER_EDATE,
-	    TRUNC(MONTHS_BETWEEN(RC.CAREER_EDATE,RC.CAREER_SDATE) / 12, 0) CAREER_YEAR,
-	    TRUNC(MOD(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE),12),0) CAREER_MONTH,
-	    RC.CAREER_DESCRIPTION,
-	    COVER_LETTER,
-	    RESUME_HIT,
-	    TO_CHAR(RESUME_CDATE,'""YYYY"-"MM"-"DD""') RESUME_CDATE,
-	    TO_CHAR(RESUME_FDATE,'""YYYY"-"MM"-"DD""') RESUME_FDATE
-	FROM
-	    RESUME R LEFT JOIN DUTY D 			ON R.DUTY_ID 	= D.DUTY_ID
-	             LEFT JOIN CITY C 			ON R.CITY_ID 	= C.CITY_ID
-	             LEFT JOIN EMP E  			ON R.EMP_ID 	= E.EMP_ID
-	             LEFT JOIN EDU ED 			ON R.EDU_ID 	= ED.EDU_ID 
-                 LEFT JOIN USERS U 		    ON R.USER_IDX 	= U.USER_IDX
+       R.RESUME_IDX,
+       U.USER_IDX,
+       U.USER_NAME,
+       TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), TO_DATE(U.USER_BIRTHDATE,'YYYY-MM-DD')) / 12) USER_AGE,
+       U.USER_GENDER,
+       SUBSTR(U.USER_BIRTHDATE,0,4) USER_YEAR,
+       U.USER_TEL,
+       U.USER_EMAIL,
+       RESUME_TITLE,
+       EB_NAME,
+       ED.EDU_NAME,
+       C.CITY_NAME,
+       D.DUTY_NAME,
+       E.EMP_NAME,
+       RC.CAREER_CNAME,
+       TO_CHAR(RC.CAREER_SDATE,'YYYY.MM') CAREER_SDATE,
+       TO_CHAR(RC.CAREER_EDATE,'YYYY.MM') CAREER_EDATE,
+       TRUNC(MONTHS_BETWEEN(RC.CAREER_EDATE,RC.CAREER_SDATE) / 12, 0) CAREER_YEAR,
+       TRUNC(MOD(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE),12),0) CAREER_MONTH,
+       RC.CAREER_DESCRIPTION,
+       COVER_LETTER,
+       RESUME_HIT,
+       TO_CHAR(RESUME_CDATE,'""YYYY"-"MM"-"DD""') RESUME_CDATE,
+       TO_CHAR(RESUME_FDATE,'""YYYY"-"MM"-"DD""') RESUME_FDATE
+   FROM
+       RESUME R LEFT JOIN DUTY D          ON R.DUTY_ID    = D.DUTY_ID
+                LEFT JOIN CITY C          ON R.CITY_ID    = C.CITY_ID
+                LEFT JOIN EMP E           ON R.EMP_ID    = E.EMP_ID
+                LEFT JOIN EDU ED          ON R.EDU_ID    = ED.EDU_ID 
+                 LEFT JOIN USERS U           ON R.USER_IDX    = U.USER_IDX
                  LEFT JOIN RESUME_CAREER RC ON R.RESUME_IDX = RC.RESUME_IDX
                  
     </select>     
           
-	<select id="getUserResume">
-	 SELECT
-	    R.RESUME_IDX,
-	    U.USER_NAME,
-	    TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), TO_DATE(U.USER_BIRTHDATE,'YYYY-MM-DD')) / 12) USER_AGE,
-	    U.USER_GENDER,
-	    SUBSTR(U.USER_BIRTHDATE,0,4) USER_YEAR,
-	    U.USER_TEL,
-	    U.USER_EMAIL,
-	    RESUME_TITLE,
-	    EB_NAME,
-	    ED.EDU_NAME,
-	    S.SKILL_NAME,
-	    C.CITY_NAME,
-	    D.DUTY_NAME,
-	    E.EMP_NAME,
-	    RC.CAREER_CNAME,
-	    TO_CHAR(RC.CAREER_SDATE,'YYYY.MM') CAREER_SDATE,
-	    TO_CHAR(RC.CAREER_EDATE,'YYYY.MM') CAREER_EDATE,
-	    TRUNC(MONTHS_BETWEEN(RC.CAREER_EDATE,RC.CAREER_SDATE) / 12, 0) CAREER_YEAR,
-	    TRUNC(MOD(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE),12),0) CAREER_MONTH,
-	    RC.CAREER_DESCRIPTION,
-	    COVER_LETTER,
-	    RESUME_HIT,
-	    TO_CHAR(RESUME_CDATE,'""YYYY"-"MM"-"DD""') RESUME_CDATE,
-	    TO_CHAR(RESUME_FDATE,'""YYYY"-"MM"-"DD""') RESUME_FDATE
-	FROM
-	    RESUME R LEFT JOIN DUTY D 			ON R.DUTY_ID 	= D.DUTY_ID
-	             LEFT JOIN CITY C 			ON R.CITY_ID 	= C.CITY_ID
-	             LEFT JOIN EMP E  			ON R.EMP_ID 	= E.EMP_ID
-	             LEFT JOIN EDU ED 			ON R.EDU_ID 	= ED.EDU_ID 
-               LEFT JOIN USERS U 		    ON R.USER_IDX 	= U.USER_IDX
+   <select id="getUserResume">
+    SELECT
+       R.RESUME_IDX,
+       U.USER_NAME,
+       TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), TO_DATE(U.USER_BIRTHDATE,'YYYY-MM-DD')) / 12) USER_AGE,
+       U.USER_GENDER,
+       SUBSTR(U.USER_BIRTHDATE,0,4) USER_YEAR,
+       U.USER_TEL,
+       U.USER_EMAIL,
+       RESUME_TITLE,
+       EB_NAME,
+       ED.EDU_NAME,
+       S.SKILL_NAME,
+       C.CITY_NAME,
+       D.DUTY_NAME,
+       E.EMP_NAME,
+       RC.CAREER_CNAME,
+       TO_CHAR(RC.CAREER_SDATE,'YYYY.MM') CAREER_SDATE,
+       TO_CHAR(RC.CAREER_EDATE,'YYYY.MM') CAREER_EDATE,
+       TRUNC(MONTHS_BETWEEN(RC.CAREER_EDATE,RC.CAREER_SDATE) / 12, 0) CAREER_YEAR,
+       TRUNC(MOD(MONTHS_BETWEEN(RC.CAREER_EDATE, RC.CAREER_SDATE),12),0) CAREER_MONTH,
+       RC.CAREER_DESCRIPTION,
+       COVER_LETTER,
+       RESUME_HIT,
+       TO_CHAR(RESUME_CDATE,'""YYYY"-"MM"-"DD""') RESUME_CDATE,
+       TO_CHAR(RESUME_FDATE,'""YYYY"-"MM"-"DD""') RESUME_FDATE
+   FROM
+       RESUME R LEFT JOIN DUTY D          ON R.DUTY_ID    = D.DUTY_ID
+                LEFT JOIN CITY C          ON R.CITY_ID    = C.CITY_ID
+                LEFT JOIN EMP E           ON R.EMP_ID    = E.EMP_ID
+                LEFT JOIN EDU ED          ON R.EDU_ID    = ED.EDU_ID 
+               LEFT JOIN USERS U           ON R.USER_IDX    = U.USER_IDX
                LEFT JOIN RESUME_SKILL RS  ON R.RESUME_IDX = RS.RESUME_IDX
-               LEFT JOIN SKILL S          ON RS.SKILL_ID 	= S.SKILL_ID
+               LEFT JOIN SKILL S          ON RS.SKILL_ID    = S.SKILL_ID
                LEFT JOIN RESUME_CAREER RC ON R.RESUME_IDX = RC.RESUME_IDX
-	WHERE U.USER_IDX = #{user_idx}
-	</select>
-	
+   WHERE U.USER_IDX = #{user_idx}
+   </select>
+   
 <select id="getFilteredResumes">
   SELECT
     R.RESUME_IDX,
@@ -476,25 +479,25 @@
     R.RESUME_CDATE,
     R.RESUME_FDATE
 </select>
-	
+   
  <update id="updateResumeHit">
-	 	UPDATE RESUME SET RESUME_HIT = RESUME_HIT + 1 WHERE RESUME_IDX = #{resume_idx}
+       UPDATE RESUME SET RESUME_HIT = RESUME_HIT + 1 WHERE RESUME_IDX = #{resume_idx}
  </update>
-	
-	
-	<select id="getCompanyList">
-		SELECT 
-			C.COMPANY_IDX,
-			C.COMPANY_NAME,
-			C.COMPANY_AREA,
-			COUNT(P.POST_IDX) COUNT
-		FROM 
-			COMPANYS C LEFT JOIN POST   P  ON C.COMPANY_IDX = P.COMPANY_IDX
-		GROUP BY 	 C.COMPANY_IDX,C.COMPANY_NAME,C.COMPANY_AREA
-	</select>
-	
+   
+   
+   <select id="getCompanyList">
+      SELECT 
+         C.COMPANY_IDX,
+         C.COMPANY_NAME,
+         C.COMPANY_AREA,
+         COUNT(P.POST_IDX) COUNT
+      FROM 
+         COMPANYS C LEFT JOIN POST   P  ON C.COMPANY_IDX = P.COMPANY_IDX
+      GROUP BY     C.COMPANY_IDX,C.COMPANY_NAME,C.COMPANY_AREA
+   </select>
+   
   <insert id="insetScout">
-  	INSERT INTO scout (
+     INSERT INTO scout (
     scout_idx,
     user_idx,
     post_idx
@@ -504,15 +507,15 @@
     #{arg1}
 )
   </insert>
-	
-	
-	
-	
-	
-	
-	<!-- 지원현황 관련 -->
-	<insert id="insertApply">
-		INSERT INTO APPLICATION (
+   
+   
+   
+   
+   
+   
+   <!-- 지원현황 관련 -->
+   <insert id="insertApply">
+      INSERT INTO APPLICATION (
     appli_idx,
     resume_idx,
     post_idx
@@ -522,10 +525,10 @@
     #{resume_idx},
     #{post_idx}
 )
-	</insert>
-	
-	<insert id="insertReview">
-		INSERT INTO review (
+   </insert>
+   
+   <insert id="insertReview">
+      INSERT INTO review (
     review_idx,
     user_idx,
     company_idx,
@@ -539,141 +542,141 @@
     review_title
 ) VALUES (
     (SELECT NVL(MAX(REVIEW_IDX)+1,0) FROM REVIEW),
-		#{user_idx},
-		 (SELECT COMPANY_IDX FROM COMPANYS
-							WHERE COMPANY_NAME = #{company_name}),
-		#{wc_point},
-		#{wlb_point},
-		#{cc_point},
-		#{po_point},
-		#{em_point},
-		#{review_pros},
+      #{user_idx},
+       (SELECT COMPANY_IDX FROM COMPANYS
+                     WHERE COMPANY_NAME = #{company_name}),
+      #{wc_point},
+      #{wlb_point},
+      #{cc_point},
+      #{po_point},
+      #{em_point},
+      #{review_pros},
     #{review_con},
     #{review_title}
 )
-	</insert>
-	
-	<select id="getCompanyInfo">
-		SELECT 
-	    C.COMPANY_IDX,
-	    C.COMPANY_NAME,
-	    C.COMPANY_TEL,
-	    C.COMPANY_EMAIL,
-	    C.COMPANY_AREA,
-	    C.COMPANY_ADDRESS,
-	    C.IMAGE_IDX,
-	    C.COMPANY_BIRTHDATE,
-	    (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 TOT_POINT,
-	    ROUND(AVG(WC_POINT),1) WC_POINT,
-	    ROUND(AVG(WLB_POINT),1) WLB_POINT,
-	    ROUND(AVG(CC_POINT),1) CC_POINT,
-	    ROUND(AVG(PO_POINT),1) PO_POINT,
-	    ROUND(AVG(EM_POINT),1) EM_POINT
-		FROM COMPANYS C LEFT JOIN REVIEW R ON C.COMPANY_IDX = R.COMPANY_IDX
-		WHERE C.COMPANY_IDX = #{company_idx}
-		GROUP BY   C.COMPANY_IDX,C.COMPANY_NAME,C.COMPANY_TEL,C.COMPANY_EMAIL,C.COMPANY_AREA,C.COMPANY_ADDRESS,C.COMPANY_BIRTHDATE, C.IMAGE_IDX
-	</select>
-	
-	<select id="getReviewCount">
-		SELECT COUNT(*)
-		FROM REVIEW
-		WHERE COMPANY_IDX = #{company_idx}
-	</select>
-	
-	<select id = "getUserReview">
-		
-	SELECT
-	    REVIEW_IDX,
-	    USER_IDX,
-	    COMPANY_IDX,
-	    ROUND((AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5,1) TOT_POINT,
-	    REVIEW_TITLE,
-	    REVIEW_PROS,
-	    REVIEW_CON,
-	    TO_CHAR(REVIEW_DATE,'YYYY-MM-DD') REVIEW_DATE
-	FROM
-	    REVIEW
-			WHERE COMPANY_IDX = #{company_idx}
-			GROUP BY  REVIEW_IDX,
-	    					USER_IDX,
-	    					COMPANY_IDX,
-	    					REVIEW_TITLE,
-						    REVIEW_PROS,
-						    REVIEW_CON,
-	    					REVIEW_DATE
-	</select>
-	
-	
-	<select id="getMyReview">
-	SELECT
-	    R.REVIEW_IDX,
-	    R.USER_IDX,
-	    C.COMPANY_NAME,
-	    ROUND(WC_POINT,1) WC_POINT,
-	    ROUND(WLB_POINT,1) WLB_POINT, 
-	    ROUND(CC_POINT,1) CC_POINT, 
-	    ROUND(PO_POINT,1) PO_POINT,
-	    ROUND(EM_POINT,1) EM_POINT,
-	    REVIEW_TITLE,
-	    REVIEW_PROS,
-	    REVIEW_CON,
-	    TO_CHAR(REVIEW_DATE,'YYYY-MM-DD') REVIEW_DATE
-	FROM
-	    REVIEW R LEFT JOIN COMPANYS C ON R.COMPANY_IDX = C.COMPANY_IDX
-			WHERE USER_IDX = #{user_idx}
-	</select>
-	
+   </insert>
+   
+   <select id="getCompanyInfo">
+      SELECT 
+       C.COMPANY_IDX,
+       C.COMPANY_NAME,
+       C.COMPANY_TEL,
+       C.COMPANY_EMAIL,
+       C.COMPANY_AREA,
+       C.COMPANY_ADDRESS,
+       C.IMAGE_IDX,
+       C.COMPANY_BIRTHDATE,
+       (AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5 TOT_POINT,
+       ROUND(AVG(WC_POINT),1) WC_POINT,
+       ROUND(AVG(WLB_POINT),1) WLB_POINT,
+       ROUND(AVG(CC_POINT),1) CC_POINT,
+       ROUND(AVG(PO_POINT),1) PO_POINT,
+       ROUND(AVG(EM_POINT),1) EM_POINT
+      FROM COMPANYS C LEFT JOIN REVIEW R ON C.COMPANY_IDX = R.COMPANY_IDX
+      WHERE C.COMPANY_IDX = #{company_idx}
+      GROUP BY   C.COMPANY_IDX,C.COMPANY_NAME,C.COMPANY_TEL,C.COMPANY_EMAIL,C.COMPANY_AREA,C.COMPANY_ADDRESS,C.COMPANY_BIRTHDATE, C.IMAGE_IDX
+   </select>
+   
+   <select id="getReviewCount">
+      SELECT COUNT(*)
+      FROM REVIEW
+      WHERE COMPANY_IDX = #{company_idx}
+   </select>
+   
+   <select id = "getUserReview">
+      
+   SELECT
+       REVIEW_IDX,
+       USER_IDX,
+       COMPANY_IDX,
+       ROUND((AVG(WC_POINT)+AVG(WLB_POINT)+AVG(CC_POINT)+AVG(PO_POINT)+AVG(EM_POINT))/5,1) TOT_POINT,
+       REVIEW_TITLE,
+       REVIEW_PROS,
+       REVIEW_CON,
+       TO_CHAR(REVIEW_DATE,'YYYY-MM-DD') REVIEW_DATE
+   FROM
+       REVIEW
+         WHERE COMPANY_IDX = #{company_idx}
+         GROUP BY  REVIEW_IDX,
+                      USER_IDX,
+                      COMPANY_IDX,
+                      REVIEW_TITLE,
+                      REVIEW_PROS,
+                      REVIEW_CON,
+                      REVIEW_DATE
+   </select>
+   
+   
+   <select id="getMyReview">
+   SELECT
+       R.REVIEW_IDX,
+       R.USER_IDX,
+       C.COMPANY_NAME,
+       ROUND(WC_POINT,1) WC_POINT,
+       ROUND(WLB_POINT,1) WLB_POINT, 
+       ROUND(CC_POINT,1) CC_POINT, 
+       ROUND(PO_POINT,1) PO_POINT,
+       ROUND(EM_POINT,1) EM_POINT,
+       REVIEW_TITLE,
+       REVIEW_PROS,
+       REVIEW_CON,
+       TO_CHAR(REVIEW_DATE,'YYYY-MM-DD') REVIEW_DATE
+   FROM
+       REVIEW R LEFT JOIN COMPANYS C ON R.COMPANY_IDX = C.COMPANY_IDX
+         WHERE USER_IDX = #{user_idx}
+   </select>
+   
   <select id="countP">
- 	SELECT COUNT(POST_IDX)
-	FROM POST
-	WHERE COMPANY_IDX = #{company_idx}
+    SELECT COUNT(POST_IDX)
+   FROM POST
+   WHERE COMPANY_IDX = #{company_idx}
   
   </select>
-	
-	<select id="getReviewData">
-		SELECT
-	    R.REVIEW_IDX,
-	    R.USER_IDX,
-	    C.COMPANY_NAME,
-	    ROUND(WC_POINT,1) WC_POINT,
-	    ROUND(WLB_POINT,1) WLB_POINT, 
-	    ROUND(CC_POINT,1) CC_POINT, 
-	    ROUND(PO_POINT,1) PO_POINT,
-	    ROUND(EM_POINT,1) EM_POINT,
-	    REVIEW_TITLE,
-	    REVIEW_PROS,
-	    REVIEW_CON,
-	    TO_CHAR(REVIEW_DATE,'YYYY-MM-DD') REVIEW_DATE
-	FROM
-	    REVIEW R LEFT JOIN COMPANYS C ON R.COMPANY_IDX = C.COMPANY_IDX
-			WHERE R.REVIEW_IDX = #{resume_idx}
-	</select>
-	
-	<update id="updateReview">
-		UPDATE REVIEW
-		SET 	
-			WC_POINT 	 = #{wc_point},          
-			WLB_POINT 	 = #{wlb_point}, 
-			CC_POINT 	 = #{cc_point}, 
-			PO_POINT	 = #{po_point},
-			EM_POINT 	 = #{em_point},
-			REVIEW_TITLE = #{review_title},
-		    REVIEW_PROS  = #{review_pros},
-		    REVIEW_CON    = #{review_con}
-		WHERE REVIEW_IDX = #{review_idx}
-	</update>
-	
-	<delete id="deleteReview">
-		DELETE
-		FROM   REVIEW
-		WHERE  REVIEW_IDX = #{review_idx}
-	</delete>
-	
-	<select  id="getCount">
-		SELECT COUNT(*)
-		FROM   REVIEW
-	</select>
-	
+   
+   <select id="getReviewData">
+      SELECT
+       R.REVIEW_IDX,
+       R.USER_IDX,
+       C.COMPANY_NAME,
+       ROUND(WC_POINT,1) WC_POINT,
+       ROUND(WLB_POINT,1) WLB_POINT, 
+       ROUND(CC_POINT,1) CC_POINT, 
+       ROUND(PO_POINT,1) PO_POINT,
+       ROUND(EM_POINT,1) EM_POINT,
+       REVIEW_TITLE,
+       REVIEW_PROS,
+       REVIEW_CON,
+       TO_CHAR(REVIEW_DATE,'YYYY-MM-DD') REVIEW_DATE
+   FROM
+       REVIEW R LEFT JOIN COMPANYS C ON R.COMPANY_IDX = C.COMPANY_IDX
+         WHERE R.REVIEW_IDX = #{resume_idx}
+   </select>
+   
+   <update id="updateReview">
+      UPDATE REVIEW
+      SET    
+         WC_POINT     = #{wc_point},          
+         WLB_POINT     = #{wlb_point}, 
+         CC_POINT     = #{cc_point}, 
+         PO_POINT    = #{po_point},
+         EM_POINT     = #{em_point},
+         REVIEW_TITLE = #{review_title},
+          REVIEW_PROS  = #{review_pros},
+          REVIEW_CON    = #{review_con}
+      WHERE REVIEW_IDX = #{review_idx}
+   </update>
+   
+   <delete id="deleteReview">
+      DELETE
+      FROM   REVIEW
+      WHERE  REVIEW_IDX = #{review_idx}
+   </delete>
+   
+   <select  id="getCount">
+      SELECT COUNT(*)
+      FROM   REVIEW
+   </select>
+   
    <insert id="bookMarkOn">
    INSERT INTO USER_BOOKMARK (UB_IDX,USER_IDX,COMPANY_IDX)
    VALUES (NVL((SELECT MAX(ub_idx) FROM USER_BOOKMARK), 0) + 1,#{arg0},#{arg1})
@@ -710,44 +713,44 @@
     COUNT(A.APPLI_IDX) AS total_count,
     COUNT(CASE WHEN U.USER_GENDER = '남' THEN 1 END) AS male_count,
     COUNT(CASE WHEN U.USER_GENDER = '여' THEN 1 END) AS female_count
-	FROM 
-	    APPLICATION A 
-	JOIN 
-	    RESUME RE ON A.RESUME_IDX = RE.RESUME_IDX
-	JOIN 
-	    USERS U ON U.USER_IDX = RE.USER_IDX
-	WHERE 
-	    A.POST_IDX = #{post_idx} 
+   FROM 
+       APPLICATION A 
+   JOIN 
+       RESUME RE ON A.RESUME_IDX = RE.RESUME_IDX
+   JOIN 
+       USERS U ON U.USER_IDX = RE.USER_IDX
+   WHERE 
+       A.POST_IDX = #{post_idx} 
    </select>
    
     <!-- JOBS공고추천 -->
    <select id="getPostClickList">
-	SELECT P.POST_TITLE, TO_CHAR(P.POST_DDATE, '~MM.DD') AS POST_DDATE,
-	CO.COMPANY_NAME, E.EMP_NAME,  SUBSTR(C.CAREER_NAME, 1, 2)AS CAREER_NAME, D.DUTY_NAME, P.POST_IDX
-	FROM POST P JOIN COMPANYS CO ON CO.COMPANY_IDX =P.COMPANY_IDX
-	            JOIN DUTY D ON D.DUTY_ID = P.DUTY_ID
-	            JOIN CAREER C ON C.CAREER_ID = P.CAREER_ID
-	            JOIN EMP E ON E.EMP_ID = P.EMP_ID
-	WHERE POST_IDX IN (
-	 SELECT POST_IDX
-	        FROM
-	(SELECT  PC.POST_IDX AS POST_IDX
-	FROM POST_CLICK PC JOIN POST P ON PC.POST_IDX = P.POST_IDX
-	WHERE USER_IDX IN (
-	    SELECT USER_IDX
-	    FROM POST_CLICK
-	    WHERE POST_IDX = #{arg1} AND USER_IDX != #{arg0}
-	)
-	AND PC.POST_IDX != #{arg1} 
-	AND P.POST_DDATE >= SYSDATE 
-	AND P.DUTY_ID = #{arg2}
-	GROUP BY PC.POST_IDX
-	ORDER BY COUNT(PC.POST_IDX) DESC, DBMS_RANDOM.VALUE  
-	)
-	FETCH FIRST 3 ROWS ONLY
-	
-	)
-	   
+   SELECT P.POST_TITLE, TO_CHAR(P.POST_DDATE, '~MM.DD') AS POST_DDATE,
+   CO.COMPANY_NAME, E.EMP_NAME,  SUBSTR(C.CAREER_NAME, 1, 2)AS CAREER_NAME, D.DUTY_NAME, P.POST_IDX
+   FROM POST P JOIN COMPANYS CO ON CO.COMPANY_IDX =P.COMPANY_IDX
+               JOIN DUTY D ON D.DUTY_ID = P.DUTY_ID
+               JOIN CAREER C ON C.CAREER_ID = P.CAREER_ID
+               JOIN EMP E ON E.EMP_ID = P.EMP_ID
+   WHERE POST_IDX IN (
+    SELECT POST_IDX
+           FROM
+   (SELECT  PC.POST_IDX AS POST_IDX
+   FROM POST_CLICK PC JOIN POST P ON PC.POST_IDX = P.POST_IDX
+   WHERE USER_IDX IN (
+       SELECT USER_IDX
+       FROM POST_CLICK
+       WHERE POST_IDX = #{arg1} AND USER_IDX != #{arg0}
+   )
+   AND PC.POST_IDX != #{arg1} 
+   AND P.POST_DDATE >= SYSDATE 
+   AND P.DUTY_ID = #{arg2}
+   GROUP BY PC.POST_IDX
+   ORDER BY COUNT(PC.POST_IDX) DESC, DBMS_RANDOM.VALUE  
+   )
+   FETCH FIRST 3 ROWS ONLY
+   
+   )
+      
    </select>
    
    <select id="getPostclick">
@@ -852,13 +855,13 @@
                  JOIN DUTY D ON R.DUTY_ID = D.DUTY_ID
    WHERE R.RESUME_IDX IN 
    ( SELECT RESUME_IDX
-	        FROM
+           FROM
    ( SELECT RC.RESUME_IDX AS RESUME_IDX
     FROM RESUME_CLICK RC JOIN RESUME R ON RC.RESUME_IDX = R.RESUME_IDX
     WHERE COMPANY_IDX IN (
- 	      SELECT COMPANY_IDX
-	      FROM RESUME_CLICK
-	      WHERE RESUME_IDX = #{arg0} AND COMPANY_IDX != #{arg1}  )
+          SELECT COMPANY_IDX
+         FROM RESUME_CLICK
+         WHERE RESUME_IDX = #{arg0} AND COMPANY_IDX != #{arg1}  )
     AND RC.RESUME_IDX ! = #{arg0}
     AND R.DUTY_ID = #{arg2} 
     GROUP BY RC.RESUME_IDX
@@ -891,8 +894,8 @@
   </select>
   
    <select id="getUserResumeIdx">
-   SELECT USER_IDX ,RESUME_IDX,	TO_CHAR(RESUME_CDATE,'YYYY.MM') RESUME_CDATE,
-	    TO_CHAR(RESUME_FDATE,'YYYY.MM') RESUME_FDATE,RESUME_TITLE
+   SELECT USER_IDX ,RESUME_IDX,   TO_CHAR(RESUME_CDATE,'YYYY.MM') RESUME_CDATE,
+       TO_CHAR(RESUME_FDATE,'YYYY.MM') RESUME_FDATE,RESUME_TITLE
   FROM RESUME
   WHERE USER_IDX = #{user_idx}
    </select>

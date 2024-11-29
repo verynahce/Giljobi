@@ -605,6 +605,7 @@ cursor: pointer;
         noticeList.innerHTML = '<li>알림이 없습니다.</li>';
     } else {
         notices.forEach(notice => {
+        	console.log("노티스 아이디",notice)
             const li = document.createElement('li');
             li.className = 'notice-item';
             li.setAttribute('data-notice-idx', notice.noticeIdx);
@@ -767,7 +768,7 @@ function deleteNotice(noticeIdx) {
             .then(response => response.text())
             .then(message => {
             	 console.log(message);
-                location.reload(); // 새로고침
+                
             })
             .catch(error => console.error('Error:', error));
 }
@@ -792,9 +793,9 @@ function markNoticeAsRead(noticeIdx) {
     .catch(error => {
         console.error('Error:', error); // 에러 처리
     });
+setInterval(() => filterByType(type), 10000); // userIdx를 동적으로 설정 */
 }
 
-setInterval(() => filterByType(type), 10000); // userIdx를 동적으로 설정 */
 </script>
 
 </body>

@@ -8,7 +8,15 @@
  	</select>
  	
  	<insert id="insertUser">
- 		INSERT INTO USERS
+ 		INSERT INTO USERS (USER_IDX,
+USER_ID,
+USER_PW,
+USER_NAME,
+USER_BIRTHDATE,
+USER_GENDER,
+USER_TEL,
+USER_EMAIL,
+USER_ADDRESS)
  		VALUES(
  			    (SELECT NVL(MAX(USER_IDX)+1,0) FROM USERS),
 			    #{user_id},

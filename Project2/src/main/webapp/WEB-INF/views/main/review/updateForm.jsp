@@ -12,7 +12,7 @@
 	<%@include file="/WEB-INF/include/header.jsp"%>
 <main>
  <div class="inner rview">
-      <a class="back-btn" href="List">back</a>
+      <a class="back-btn" href="MyReview">back</a>
       <div class="review-company-profile">
         <div class="company-info">
           <p class="company-name form-style">기업리뷰 작성</p>
