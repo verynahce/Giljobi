@@ -18,64 +18,66 @@ margin-left: -8px;
 </style>
 </head>
 <body>
-	<%@include file="/WEB-INF/include/header.jsp" %>
+   <%@include file="/WEB-INF/include/header.jsp" %>
    <main class="jobs">
         <div class="inner">
           <h3>채용정보</h3>
           <div class="filter-input">
-          	<form action="Main/JobsFilter">
-	            <select id="cityId" name="city_id">
-	              <option value="" selected="selected" style="display: none">지역</option>
-	              <option value="">전국</option>
-	              <c:forEach var="city" items="${cityList}">
-	              	<option value="${city.city_id}">${city.city_name}</option>
-	              </c:forEach>
-	            </select>
-	            <select id="dutyId" name="duty_id">
-	              <option value="" selected="selected" style="display: none" >직무</option>
-	              <option value="">직무무관</option>
-            		<c:forEach var="duty" items="${dutyList}">
-	              		<option value="${duty.duty_id}">${duty.duty_name}</option>
-	              </c:forEach>
-	            </select>
-	            <select id="careerId" name="career_id">
-	              <option value="" selected="selected" style="display: none">경력</option>
-	            <option value="">경력무관</option>
+             <form action="Main/JobsFilter">
+               <select id="cityId" name="city_id">
+                 <option value="" selected="selected" style="display: none">지역</option>
+                 <option value="">전국</option>
+                 <c:forEach var="city" items="${cityList}">
+                    <option value="${city.city_id}">${city.city_name}</option>
+                 </c:forEach>
+               </select>
+               <select id="dutyId" name="duty_id">
+                 <option value="" selected="selected" style="display: none" >직무</option>
+                 <option value="">직무무관</option>
+                  <c:forEach var="duty" items="${dutyList}">
+                       <option value="${duty.duty_id}">${duty.duty_name}</option>
+                 </c:forEach>
+               </select>
+               <select id="careerId" name="career_id">
+                 <option value="" selected="selected" style="display: none">경력</option>
+               <option value="">경력무관</option>
             <c:forEach var="career" items="${careerList}">
-	              	<option value="${career.career_id}">${career.career_name}</option>
-	              </c:forEach>
-	            </select>
-		            <select id="empId" name="emp_id">
-		              <option value="" selected="selected" style="display: none">고용형태</option>
-		            <option value="">고용형태</option>
+                    <option value="${career.career_id}">${career.career_name}</option>
+                 </c:forEach>
+               </select>
+                  <select id="empId" name="emp_id">
+                    <option value="" selected="selected" style="display: none">고용형태</option>
+                  <option value="">고용형태</option>
             <c:forEach var="emp" items="${empList}">
-	              	<option value="${emp.emp_id}">${emp.emp_name}</option>
-	              </c:forEach>
-		            </select>
-							<div class="skill-div">
-		            <input
-		              class="skill-input"
-		              type="text"
-		              placeholder="기술 스택 검색"
-		            />
-		            <input type="hidden" id="skillId">
-		         <button type="reset" onclick='window.location.reload()'>초기화</button>
-		            <ul>
-		            	<c:forEach var="skill" items="${skillList}">
-		            		<li data-id="${ skill.skill_id}">${skill.skill_name}</li>
-		            	</c:forEach>
-		            </ul>
-							</div>
-          	</form>
-          	 <ul class="stack-list">
-          	</ul>
+                    <option value="${emp.emp_id}">${emp.emp_name}</option>
+                 </c:forEach>
+                  </select>
+                     <div class="skill-div">
+                  <input
+                    class="skill-input"
+                    type="text"
+                    placeholder="기술 스택 검색"
+                  />
+                  <input type="hidden" id="skillId">
+                  <input type="text" id="companyNameInput" placeholder="회사명 검색하기" />
+                  
+               <button type="reset" onclick='window.location.reload()'>초기화</button>
+                  <ul>
+                     <c:forEach var="skill" items="${skillList}">
+                        <li data-id="${ skill.skill_id}">${skill.skill_name}</li>
+                     </c:forEach>
+                  </ul>
+                     </div>
+             </form>
+              <ul class="stack-list">
+             </ul>
           </div>
           <div class="main-post">
             <div class="main-post-list">
           <c:forEach var="card" items="${postList}">
           <c:choose>
-          	<c:when test="${not empty card.skill_name }">
-          		 <div class="post-card">
+             <c:when test="${not empty card.skill_name }">
+                 <div class="post-card">
                 <ul>
                   <li class="post-card-img"><a href="/Main/Jobs/View?post_idx=${card.post_idx}"><img src="/images/duty/${card.duty_id}.png"></a></li>
                   <li class="post-card-company">${card.company_name}</li>
@@ -89,9 +91,9 @@ margin-left: -8px;
                  </li>
                 </ul>
               </div>
-          	</c:when>
-          	<c:otherwise>
-          	<div class="post-card">
+             </c:when>
+             <c:otherwise>
+             <div class="post-card">
                 <ul>
                   <li class="post-card-img"><a href="/Main/Jobs/View?post_idx=${card.post_idx}"><img src="/images/duty/${card.duty_id}.png"></a></li>
                   <li class="post-card-company">${card.company_name}</li>
@@ -99,22 +101,31 @@ margin-left: -8px;
                   <li class="post-card-info">${card.city_name}, ${card.duty_name},${card.career_name},${card.emp_name}</li>
                 </ul>
               </div>
-          	</c:otherwise>
+             </c:otherwise>
           </c:choose>
           </c:forEach>
             </div>
           </div>
         </div>
         </main>
-	<%@include file="/WEB-INF/include/footer.jsp" %>
+   <%@include file="/WEB-INF/include/footer.jsp" %>
   <script>
   
-	// 스택 검색을 위한 element
+   // 스택 검색을 위한 element
   const $skillInput = document.querySelector(".skill-input");
   const $skillUl    = document.querySelector(".skill-div ul");
   const $skills     = document.querySelectorAll(".skill-div ul li");
   const $stackList  = document.querySelector(".stack-list");
+  const $companyNameInput = document.getElementById("companyNameInput");
 
+
+//회사명 검색 입력에서 엔터키 이벤트 처리
+  $companyNameInput.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") { // 엔터키가 눌렸을 때
+          event.preventDefault(); // 기본 행동 방지 (폼 제출 등)
+          fillterAjax(); // Ajax 호출
+      }
+  });
   // 검색 인풋 focus
   $skillInput.addEventListener("focus", function(){
     $skillUl.style.display = "block"
@@ -127,9 +138,9 @@ $skillInput.addEventListener("input", function(e) {
     let html = "";
     console.log(e.target.value)
     if(e.target.value != ""){
-    	$skillInput.style.background = "none";
+       $skillInput.style.background = "none";
     }else{
-    	$skillInput.style.background = "url('/images/icon/stack.png') no-repeat 12px center";
+       $skillInput.style.background = "url('/images/icon/stack.png') no-repeat 12px center";
     }
 
     // 모든 스킬을 순회하며 입력값과 일치하는 스킬 찾기
@@ -147,12 +158,12 @@ $skillInput.addEventListener("input", function(e) {
     $skillUl.innerHTML = html;
 });
 
-	$("main").on('click', function(e) {
-	     if($(e.target).closest($skillInput).length == 0) { 
-	          $($skillUl).hide()
-	     }
-		
-		})
+   $("main").on('click', function(e) {
+        if($(e.target).closest($skillInput).length == 0) { 
+             $($skillUl).hide()
+        }
+      
+      })
   
   
   
@@ -192,66 +203,67 @@ document.addEventListener('keydown', function(event) {
 }, true);
   // select 변경 시 Ajax
       $("#cityId,#dutyId,#careerId,#empId").change(function(){
-      	fillterAjax();
-	    });
+         fillterAjax();
+       });
   
   function fillterAjax(skill){
-  	   let cityId = $("#cityId").val();
-	        let dutyId = $("#dutyId").val();
-	        let careerId= $("#careerId").val();
-	        let empId = $("#empId").val();
-			let skillId = $("#skillId").val()
-	        $.ajax({
-	            url: '/Main/JobsFilter',
-	            type: 'GET',
-	            dataType: 'json',
-	            data: { "city_id": cityId, "duty_id": dutyId,"career_id" : careerId ,"emp_id": empId, "skill_id" :skillId},
-	            success: function(response) {
-	                $('.main-post-list').html("");
-	                response.postList.forEach(a => {
-	                	console.log(a.post_idx)
-	              let res = "";
-						if (a.skill_name) {
-						    const skillnameList = a.skill_name.split(",");
-						    skillnameList.forEach(skill => {
-						        res += `<span class="postSkill">\${skill}</span> &nbsp;`;
-						    });
-	                		
-						    $('.main-post-list').append(
-						        '<div class="post-card">' +
-						            '<ul>' +
-						                '<li class="post-card-img"><a href="/Main/Jobs/View?post_idx='+a.post_idx+'"><img src="/images/duty/'+ a.duty_id +'.png"></a></li>' +
-						                '<li class="post-card-company">' + a.company_name + '</li>' +
-						                '<li class="post-card-title"><a href="/Main/Jobs/View?post_idx=' + a.post_idx + '">' + a.post_title + '</a></li>' +
-						                '<li class="post-card-info">' +
-						                    a.city_name + ', ' + a.duty_name + ',' + a.career_name + ' ,' + a.emp_name +
+        let cityId = $("#cityId").val();
+           let dutyId = $("#dutyId").val();
+           let careerId= $("#careerId").val();
+           let empId = $("#empId").val();
+         let skillId = $("#skillId").val();
+         let companyName = $companyNameInput.value; // 회사명 입력값 가져오기
+           $.ajax({
+               url: '/Main/JobsFilter',
+               type: 'GET',
+               dataType: 'json',
+               data: { "city_id": cityId, "duty_id": dutyId,"career_id" : careerId ,"emp_id": empId, "skill_id" :skillId, "company_name": companyName},
+               success: function(response) {
+                   $('.main-post-list').html("");
+                   response.postList.forEach(a => {
+                      console.log(a.post_idx)
+                 let res = "";
+                  if (a.skill_name) {
+                      const skillnameList = a.skill_name.split(",");
+                      skillnameList.forEach(skill => {
+                          res += `<span class="postSkill">\${skill}</span> &nbsp;`;
+                      });
+                         
+                      $('.main-post-list').append(
+                          '<div class="post-card">' +
+                              '<ul>' +
+                                  '<li class="post-card-img"><a href="/Main/Jobs/View?post_idx='+a.post_idx+'"><img src="/images/duty/'+ a.duty_id +'.png"></a></li>' +
+                                  '<li class="post-card-company">' + a.company_name + '</li>' +
+                                  '<li class="post-card-title"><a href="/Main/Jobs/View?post_idx=' + a.post_idx + '">' + a.post_title + '</a></li>' +
+                                  '<li class="post-card-info">' +
+                                      a.city_name + ', ' + a.duty_name + ',' + a.career_name + ' ,' + a.emp_name +
 
-						                '</li><li class="post-card-info stack-line">' + res +
-						            '</li></ul>' +
-						        '</div>'
-						    );
-						} else {
-						    $('.main-post-list').append(
-						        '<div class="post-card">' +
-						            '<ul>' +
-						                '<li class="post-card-img"><a href="/Main/Jobs/View?post_idx=' + a.post_idx + '"><img src="/images/duty/'+a.duty_id +'.png"></a></li>' +
-						                '<li class="post-card-company">' + a.company_name + '</li>' +
-						                '<li class="post-card-title"><a href="/Main/Jobs/View?post_idx=' + a.post_idx + '">' + a.post_title + '</a></li>' +
-						                '<li class="post-card-info">' +
-						                    a.city_name + ', ' + a.duty_name + ',' + a.career_name + ' ,' + a.emp_name +
-						                '</li>' +
-						            '</ul>' +
-						        '</div>'
-						    );
+                                  '</li><li class="post-card-info stack-line">' + res +
+                              '</li></ul>' +
+                          '</div>'
+                      );
+                  } else {
+                      $('.main-post-list').append(
+                          '<div class="post-card">' +
+                              '<ul>' +
+                                  '<li class="post-card-img"><a href="/Main/Jobs/View?post_idx=' + a.post_idx + '"><img src="/images/duty/'+a.duty_id +'.png"></a></li>' +
+                                  '<li class="post-card-company">' + a.company_name + '</li>' +
+                                  '<li class="post-card-title"><a href="/Main/Jobs/View?post_idx=' + a.post_idx + '">' + a.post_title + '</a></li>' +
+                                  '<li class="post-card-info">' +
+                                      a.city_name + ', ' + a.duty_name + ',' + a.career_name + ' ,' + a.emp_name +
+                                  '</li>' +
+                              '</ul>' +
+                          '</div>'
+                      );
 }
-	                   
-	                });
-	            },
-	            error: function(jqXHR, textStatus, errorThrown) {
-	                console.error(textStatus, errorThrown);
-	                alert("데이터를 가져오는 데 실패했습니다. 다시 시도해 주세요.");
-	            }
-	        });
+                      
+                   });
+               },
+               error: function(jqXHR, textStatus, errorThrown) {
+                   console.error(textStatus, errorThrown);
+                   alert("데이터를 가져오는 데 실패했습니다. 다시 시도해 주세요.");
+               }
+           });
   }
   
 
