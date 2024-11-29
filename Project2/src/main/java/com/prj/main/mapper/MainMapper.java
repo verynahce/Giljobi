@@ -2,6 +2,7 @@ package com.prj.main.mapper;
 
 import java.util.List;   
 
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,6 +31,7 @@ import com.prj.users.vo.UserScoutVo;
 
 @Mapper
 public interface MainMapper {
+  
    List<CityVo>    getCityList();
    List<DutyVo>    getDutyList();
    List<CareerVo>    getCareerList();
@@ -46,6 +48,7 @@ public interface MainMapper {
                                         @Param("emp_id")      String empId,
                                         @Param("skill_id")   String skillId, 
                                         @Param("company_name") String companyName);
+
     void updatePostHit(String post_idx);
    
     
@@ -107,7 +110,6 @@ public interface MainMapper {
    List<ResumeListVo> getUserResumeIdx(int user_idx);
    List<NoticeVo> getNoticeUser(int user_idx);
    List<CompanyVo> getCompanyNameList();
-
 
 
 

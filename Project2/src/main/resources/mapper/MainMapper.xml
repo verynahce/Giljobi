@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.prj.main.mapper.MainMapper">  
 
+
    <!-- 공용 ======================================= -->
    <select id="getCityList">
    SELECT *
@@ -244,6 +245,7 @@
             WHERE PS.SKILL_ID = #{skill_id}
         </if>
                                ) 
+
          AND P.POST_DDATE &gt; SYSDATE 
        <if test="city_id != null and city_id != ''">
          AND P.city_id = #{city_id}
@@ -260,6 +262,7 @@
        <if test="company_name != null and company_name != ''">
          AND C.company_name = #{company_name, jdbcType=VARCHAR}
        </if>
+
           GROUP BY P.POST_IDX,
                  P.COMPANY_IDX,
                  P.POST_TITLE,
