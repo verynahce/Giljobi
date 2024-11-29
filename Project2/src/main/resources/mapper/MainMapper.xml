@@ -27,6 +27,11 @@
 	SELECT *
 	FROM SKILL
 	</select>
+		<select id="getCompanyNameList">
+	SELECT *
+	FROM COMPANYS
+	WHERE COMPANY_NAME = #{company_name}
+	</select>
 	
 	<!-- 채용정보 ======================================= -->
 	<select id="getPost">
@@ -251,6 +256,9 @@
 	    </if>
 	    <if test="emp_id != null and emp_id != ''">
 	      AND P.emp_id = #{emp_id}
+	    </if>
+	    <if test="company_name != null and company_name != ''">
+	      AND C.company_name = #{company_name, jdbcType=VARCHAR}
 	    </if>
           GROUP BY P.POST_IDX,
                  P.COMPANY_IDX,

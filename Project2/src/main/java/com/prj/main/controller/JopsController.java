@@ -1,6 +1,6 @@
 package com.prj.main.controller;
 
-import java.util.HashMap;
+import java.util.HashMap;	
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +27,7 @@ import com.prj.service.ClickService;
 import com.prj.service.PdsService;
 import com.prj.users.vo.ApplicationVo;
 import com.prj.users.vo.UserVo;
+import com.prj.companys.vo.CompanyVo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -51,9 +52,10 @@ public class JopsController {
 		List<CareerVo> 	careerList 	= mainMapper.getCareerList();
 		List<EmpVo> 	empList 	= mainMapper.getEmpList();
 		List<SkillVo> 	skillList 	= mainMapper.getSkillList();
+		//List<CompanyVo> companyList = mainMapper.getCompanyNameList();
 	
 		
-		List<PostListVo> postList = mainMapper.getPostList(); 
+		List<PostListVo> postList = mainMapper.getPostList();
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("postList",	postList);
 		mv.addObject("cityList",	cityList);
@@ -61,6 +63,7 @@ public class JopsController {
 		mv.addObject("careerList",	careerList);
 		mv.addObject("empList",		empList);
 		mv.addObject("skillList",	skillList);
+		//mv.addObject("companyList",	companyList);
 		mv.setViewName("main/jobs/list");
 		return mv;
 	}
@@ -71,9 +74,13 @@ public class JopsController {
 	        @RequestParam(required = false, value="duty_id") 	String duty_id,
 	        @RequestParam(required = false, value="career_id") 	String career_id,
 	        @RequestParam(required = false, value="emp_id") 	String emp_id,
-	        @RequestParam(required = false, value="skill_id") 	String skill_id) {
+	        @RequestParam(required = false, value="skill_id") 	String skill_id,
+	        @RequestParam(required = false, value="company_name") 	String company_name) {
+		   if (company_name == null) {
+		        company_name = ""; // 또는 적절한 기본값
+		    }
 	    
-	    List<PostListVo> jopsFilter = mainMapper.getFilteredPosts(city_id, duty_id, career_id, emp_id, skill_id);
+	    List<PostListVo> jopsFilter = mainMapper.getFilteredPosts(city_id, duty_id, career_id, emp_id, skill_id, company_name);
 	    
 	    
 	    Map<String, Object> response = new HashMap<>();

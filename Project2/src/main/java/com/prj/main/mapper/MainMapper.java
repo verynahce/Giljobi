@@ -1,10 +1,11 @@
 package com.prj.main.mapper;
 
-import java.util.List;
+import java.util.List;	
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.prj.companys.vo.CompanyVo;
 import com.prj.main.vo.CareerVo;
 import com.prj.main.vo.CityVo;
 import com.prj.main.vo.ClarificationVo;
@@ -43,7 +44,8 @@ public interface MainMapper {
 	                                 	 @Param("duty_id") 	  String dutyId,
 	                                 	 @Param("career_id")  String careerId,
 	                                 	 @Param("emp_id") 	  String empId,
-	                                 	 @Param("skill_id")   String skillId);
+	                                 	 @Param("skill_id")   String skillId, 
+	                                 	 @Param("company_name") String companyName);
     void updatePostHit(String post_idx);
 	
     
@@ -104,6 +106,7 @@ public interface MainMapper {
 	List<PostListVo> getCompanyPostIdx(int company_idx);
 	List<ResumeListVo> getUserResumeIdx(int user_idx);
 	List<NoticeVo> getNoticeUser(int user_idx);
+	List<CompanyVo> getCompanyNameList();
 
 
 

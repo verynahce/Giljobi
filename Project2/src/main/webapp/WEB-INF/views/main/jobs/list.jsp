@@ -59,6 +59,8 @@ margin-left: -8px;
 		              placeholder="기술 스택 검색"
 		            />
 		            <input type="hidden" id="skillId">
+		            <input type="text" id="companyNameInput" placeholder="회사명 검색하기" />
+		            
 		         <button type="reset" onclick='window.location.reload()'>초기화</button>
 		            <ul>
 		            	<c:forEach var="skill" items="${skillList}">
@@ -114,7 +116,16 @@ margin-left: -8px;
   const $skillUl    = document.querySelector(".skill-div ul");
   const $skills     = document.querySelectorAll(".skill-div ul li");
   const $stackList  = document.querySelector(".stack-list");
+  const $companyNameInput = document.getElementById("companyNameInput");
 
+
+//회사명 검색 입력에서 엔터키 이벤트 처리
+  $companyNameInput.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") { // 엔터키가 눌렸을 때
+          event.preventDefault(); // 기본 행동 방지 (폼 제출 등)
+          fillterAjax(); // Ajax 호출
+      }
+  });
   // 검색 인풋 focus
   $skillInput.addEventListener("focus", function(){
     $skillUl.style.display = "block"
@@ -200,12 +211,13 @@ document.addEventListener('keydown', function(event) {
 	        let dutyId = $("#dutyId").val();
 	        let careerId= $("#careerId").val();
 	        let empId = $("#empId").val();
-			let skillId = $("#skillId").val()
+			let skillId = $("#skillId").val();
+			let companyName = $companyNameInput.value; // 회사명 입력값 가져오기
 	        $.ajax({
 	            url: '/Main/JobsFilter',
 	            type: 'GET',
 	            dataType: 'json',
-	            data: { "city_id": cityId, "duty_id": dutyId,"career_id" : careerId ,"emp_id": empId, "skill_id" :skillId},
+	            data: { "city_id": cityId, "duty_id": dutyId,"career_id" : careerId ,"emp_id": empId, "skill_id" :skillId, "company_name": companyName},
 	            success: function(response) {
 	                $('.main-post-list').html("");
 	                response.postList.forEach(a => {
