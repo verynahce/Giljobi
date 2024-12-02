@@ -20,6 +20,10 @@
   		background: #4876EF;
   	}
   }
+  .alert {
+    color: red;
+    font-weight: bold;
+}
 </style>
 </head>
 <body>
@@ -38,6 +42,14 @@
             <li><input type="text" name="company_id" placeholder="아이디"></li>
             <li><input type="password" name="company_pw" placeholder="비밀번호"></li>
           </ul>
+              <c:if test="${not empty sessionScope.loginFalseMessage}">
+          <br>
+        <div class="alert">
+            ${sessionScope.loginFalseMessage}
+        </div>
+    <br>
+        <c:remove var="loginFalseMessage" scope="session"/> <!-- 메시지를 출력 후 세션에서 제거 -->
+    </c:if>
           <p>
             <input type="checkbox" id="keepId">
             <label for="keepId">아이디 저장</label>
@@ -46,6 +58,7 @@
             <li><button type="submit">로그인</button></li>
             <li><a href="/Company/RegisterForm">회원가입</a></li>
           </ul>
+          
           </form>
         </div>
       </main>
