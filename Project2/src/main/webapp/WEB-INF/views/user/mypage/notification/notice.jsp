@@ -499,8 +499,8 @@ cursor: pointer;
 					                <p>상태: <span class="state">${notice.state != 0 ? '읽지 않음' : '읽음'}</span></p>
 					                <h3><span>${notice.notification}</span></h3>
 					                <p>${notice.subnoti}</p>
-					                <p class="remove" onclick="deleteNotice(noticeIdx)">🗑️</p>
 					            </a>
+					                <p class="remove"></p>
 					        </li>
 					    </c:forEach>
 					</ul>
@@ -581,8 +581,8 @@ cursor: pointer;
  
  const noticeList = document.getElementById("noticeList");
  
+ setInterval(() => filterByType('all'), 10000); // userIdx를 동적으로 설정 */
  function filterByType(type) {
-	    console.log("필터링된 타입:", type);
 	    const notices = document.querySelectorAll('.notice-item');
 	    notices.forEach(notice => {
 	        if (type === 'all' || notice.getAttribute('data-type') === type) {
@@ -600,12 +600,12 @@ cursor: pointer;
 	            return response.json();
 	        })
 .then(notices => {
+	console.log("실행됐냐!")
     noticeList.innerHTML = '';  // 기존 알림 초기화
     if (notices.length === 0) {
         noticeList.innerHTML = '<li>알림이 없습니다.</li>';
     } else {
         notices.forEach(notice => {
-        	console.log("노티스 아이디",notice)
             const li = document.createElement('li');
             li.className = 'notice-item';
             li.setAttribute('data-notice-idx', notice.noticeIdx);
@@ -621,23 +621,21 @@ cursor: pointer;
             const noticeIdx = notice.noticeIdx;
             
             
-            console.log("sef",notification);
-            console.log("sef",subnoti);
             li.innerHTML = `
-                <a href="#" 
-                  >
+                <a href="#">
                    
                    <h3></h3> 
                    <p></p>
                    <p>상태:<span class="state"> </span></p>
                    <p>수신일:<span class="recieveddate"> </span></p>
                 </a>
-                   <p class="remove" onclick="deleteNotice(noticeIdx)">🗑️</p>
+                <div class="remove">🗑</div>
             `;
             li.querySelector('a h3').innerHTML = notification;
 			li.querySelector('a p').innerHTML = subnoti;
 			li.querySelector('a .state').innerHTML = notice.state == 0 ? '읽지 않음' : '읽음';
 			li.querySelector('a .recieveddate').innerHTML = notice.recieveddate;
+			li.querySelector('div').setAttribute('data-notice-idx', notice.noticeIdx);
             noticeList.appendChild(li);
             
             
@@ -654,7 +652,6 @@ cursor: pointer;
                 const postIdx = item.getAttribute('data-post-idx');
                 const type = item.getAttribute('data-type'); // type 가져오기
 
-                console.log("노티스", noticeIdx);
 
                 if (type == "reply") {
                 	handleCommentNotification(communityIdx),markNoticeAsRead(noticeIdx);
@@ -669,11 +666,10 @@ cursor: pointer;
                 }
             });
         });
-        document.querySelectorAll('.remove').forEach(del => {
-        	del.addEventListener('click', () => {
-                const noticeIdx = del.getAttribute('data-notice-idx');
+         document.querySelectorAll('.remove').forEach(item => {
+        	item.addEventListener('click', () => {
+                const noticeIdx = item.getAttribute('data-notice-idx');
 
-                console.log("노티스", noticeIdx);
 
                 deleteNotice(noticeIdx);
             });
@@ -681,10 +677,9 @@ cursor: pointer;
 
     }
 })
-
 	        .catch(error => console.error('Error:', error));
 	}
- setInterval(() => filterByType(type), 10000); // userIdx를 동적으로 설정 */
+
 
 
  
@@ -698,7 +693,6 @@ document.querySelector('.n-delete').addEventListener('click', () => {
 
 
 function getNoticeDetail(noticeIdx) { // noticeIdx를 매개변수로 받음
-    console.log("getNoticeDetail 호출, noticeIdx:", noticeIdx); // 여기서 noticeIdx 확인
     fetch(`/api/notifications/\${noticeIdx}`)
         .then(response => {
             if (!response.ok) {
@@ -707,7 +701,6 @@ function getNoticeDetail(noticeIdx) { // noticeIdx를 매개변수로 받음
             return response.json();
         })
         .then(data => {
-            console.log(data);
             const overlay = document.querySelector('.overlay-notice');
             const container = document.getElementById('notice-container');
             
@@ -749,28 +742,49 @@ $(document).ready(function() {
 
 //알림 삭제
 function autoDelete(noticeIdx, receivedDate) {
-    // 현재 날짜와 30일 전 날짜 계산
-    const currentDate = new Date();
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(currentDate.getDate() - 30);
+    try {
+        // 현재 날짜와 30일 전 날짜 계산
+        const currentDate = new Date();
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(currentDate.getDate() - 30);
 
-    // receivedDate를 Date 객체로 변환
-    const noticeDate = new Date(receivedDate);
+        // receivedDate를 Date 객체로 변환
+        const noticeDate = new Date(receivedDate);
 
-    // 30일 이전인지 확인
-    if (noticeDate < thirtyDaysAgo) {
-        // 30일 이전이면 바로 삭제
-        deleteNotice(noticeIdx);
-    } 
+        if (isNaN(noticeDate)) {
+            console.error("유효하지 않은 날짜 형식:", receivedDate);
+            return;
+        }
+
+        // 30일 이전인지 확인
+        if (noticeDate < thirtyDaysAgo) {
+            // 30일 이전이면 삭제 실행
+            deleteNotice(noticeIdx);
+        } else {
+            console.log(`알림 ${noticeIdx}은 30일 이전이 아닙니다.`);
+        }
+    } catch (error) {
+        console.error("autoDelete 오류:", error);
+    }
 }
 function deleteNotice(noticeIdx) {
-        fetch(`/api/notification/remove/\${noticeIdx}`, { method: 'DELETE' })
-            .then(response => response.text())
-            .then(message => {
-            	 console.log(message);
-                
-            })
-            .catch(error => console.error('Error:', error));
+    const isConfirmed = confirm("정말로 삭제하시겠습니까?");
+    if (!isConfirmed) {
+        return; // 삭제 취소
+    }
+
+    fetch(`/api/notification/remove/${noticeIdx}`, { method: 'DELETE' })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('삭제 요청 실패');
+            }
+            return response.text();
+        })
+        .then(message => {
+            console.log(message);
+            location.reload();
+        })
+        .catch(error => console.error('Error:', error));
 }
 
 //읽음상태 변경
@@ -793,7 +807,6 @@ function markNoticeAsRead(noticeIdx) {
     .catch(error => {
         console.error('Error:', error); // 에러 처리
     });
-setInterval(() => filterByType(type), 10000); // userIdx를 동적으로 설정 */
 }
 
 </script>

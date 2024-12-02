@@ -1,6 +1,6 @@
 package com.prj.users.controller;
 
-import java.io.BufferedReader;
+import java.io.BufferedReader;	
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -59,7 +59,7 @@ public class UserController {
                 };
                 if( vo == null ) {
                            HttpSession  session = request.getSession();
-                   loginFalseMessage = "다시 로그인 시도해주세요";
+                   loginFalseMessage = "아이디와 비밀번호를 확인해주세요";
                    session.setAttribute("loginFalseMessage",loginFalseMessage);
                    return ("redirect:/User/LoginForm");
 

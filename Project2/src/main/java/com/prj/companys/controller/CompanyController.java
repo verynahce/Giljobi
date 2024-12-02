@@ -1,6 +1,7 @@
 package com.prj.companys.controller;
 
-import java.util.List;	
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,6 @@ import com.prj.companys.mapper.CompanyMapper;
 import com.prj.companys.vo.CompanyVo;
 import com.prj.main.mapper.MainMapper;
 import com.prj.main.vo.PostListVo;
-import com.prj.users.vo.UserVo;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -37,24 +37,38 @@ public class CompanyController {
 	
 
 	@PostMapping("/Login")
-	public String login(HttpServletRequest requset,
+	public String login(HttpServletRequest request,
 					    HttpServletRequest response ) {
 
-		System.out.println(requset);
+		System.out.println(request);
 		System.out.println(response);
-		String 		 userid = requset.getParameter("company_id");
-		String 		 passwd = requset.getParameter("company_pw");
+		String 		 userid = request.getParameter("company_id");
+		String 		 passwd = request.getParameter("company_pw");
 		// db 조회
 		CompanyVo 		       vo     = companyMapper.login(userid,passwd);
 		System.out.println(vo);
-		List<PostListVo>       post   = mainMapper.getCompanyPost(vo.getCompany_idx());
-		System.out.println(post);
 		
 		
-		HttpSession session = requset.getSession();
-		session.setAttribute("login", vo);
-		session.setAttribute("post", post);
-		return "redirect:/";
+        String loginFalseMessage = "";
+        if( vo != null ) {
+
+        	List<PostListVo>       post   = mainMapper.getCompanyPost(vo.getCompany_idx());
+        	System.out.println(post);
+            HttpSession session = request.getSession();
+            session.setAttribute( "login", vo );
+            session.setAttribute("post", post);
+            session.setMaxInactiveInterval(2*60*60);
+
+            return ("redirect:/");
+         };
+         if( vo == null ) {
+            HttpSession  session = request.getSession();
+            loginFalseMessage = "아이디와 비밀번호를 확인해주세요";
+            session.setAttribute("loginFalseMessage",loginFalseMessage);
+            return ("redirect:/Company/LoginForm");
+
+         };
+		return "";
 	}	
 	
 	
