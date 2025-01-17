@@ -1,6 +1,6 @@
 <h1>휴먼클라우드웹 프로젝트 - 길잡이(GILJOBI)</h1>
-<img src="https://github.com/user-attachments/assets/4e580974-f065-4e4b-b6dd-69447024d39d">
 
+<img src="https://github.com/user-attachments/assets/ad6b29d9-8490-4eac-8bdb-ac5571a406bb">
 
 <ul>
   <li>프로젝트 결과물 - 노션 :  https://www.notion.so/7b51e513fea743ea824026bd7ea2a139 </li>
@@ -56,6 +56,9 @@
 &nbsp;
 <h2>화면 설계</h2>
 <h3>메인페이지</h3>
-
-
+<h3>공고</h3>
+<h3>이력서</h3>
+<h3>커뮤니티</h3>
+<h3>개인회원</h3>
+<h3>기업회원</h3>
 
