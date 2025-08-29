@@ -1,21 +1,33 @@
 <h1>휴먼클라우드웹 프로젝트 - 길잡이(GILJOBI)</h1>
 
-<img src="https://github.com/user-attachments/assets/ad6b29d9-8490-4eac-8bdb-ac5571a406bb">
+<img width="1920" height="1080" alt="포폴용 헤더-나히" src="https://github.com/user-attachments/assets/5c75b501-2adf-4e73-8121-621cf4165c1e" />
 
 <ul>
-  <li>프로젝트 결과물 - 노션 :  https://www.notion.so/7b51e513fea743ea824026bd7ea2a139 </li>
   <li>프로젝트 기간 : 2024.11.19 ~ 2024.11.29 (10일)</li>
 </ul>
 &nbsp
 <h2>프로젝트 소개</h2>
 <ul>
-  <li>길잡이는 기업과 개인의 구인구직을 지원하며, 맞춤형 솔루션과 풍부한 취업 정보를 제공합니다.</li> 
+  <li>길잡이는 기업과 개인의 구인구직을 지원하며, 맞춤형 취업 정보를 제공합니다.</li> 
   <li>이력서별 평점 기능, 개인 맞춤 알림 서비스, 추천 공고 및 이력서 목록, 커뮤니티 기능 등 회원들의 편리함과 자율성을 중시하여 다양한 서비스를 제공합니다.</li>
 </ul>
 &nbsp
-<h2>개발환경</h2>
 
-## 기술 스택
+<h2>예약 시연 영상</h2>
+<h4>사진 클릭시 이동 >> </h4>
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=v6tctOEp3VM">
+    <img src="https://github.com/user-attachments/assets/4cdc085b-d2bd-401b-88b8-98b5e0d51027" alt="시연 영상 썸네일" width="600"/>
+  </a>
+</div>
+
+
+<h4>사진 클릭시 이동 >> </h4>
+
+
+<h2>담당 업무</h2>
+
+<h2>기술스택</h2>
 
 ![Git-F05032.svg](https://img.shields.io/badge/Git-F05032.svg?&style=for-the-badge&logo=Git&logoColor=white)
 ![GitHuB-181717.svg](https://img.shields.io/badge/GitHub-181717.svg?&style=for-the-badge&logo=GitHub&logoColor=white)
