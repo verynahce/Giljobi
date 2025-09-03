@@ -101,9 +101,14 @@ Array.from(files).forEach(file => formData.append("files", file));
     <strong>해결</strong><br>
     - <code>Paths.get()</code>, <code>File.separator</code>를 사용하여 운영체제(OS) 독립적인 경로 처리
     <pre><code class="language-java">
-// OS 독립적인 경로 처리
-Path path = Paths.get("uploads", fileName);
-File file = new File(path.toString() + File.separator);
+// 파일 저장 경로 설정 (OS 독립적)
+String saveName = uploadPath + File.separator
+                + folderPath + File.separator
+                + uuid + fileName;
+Path savePath = Paths.get(saveName);
+
+// 날짜별 폴더 생성 시 '/' → File.separator 치환
+String folderPath = dataStr.replace("/", File.separator);
     </code></pre>
   </li>
 
