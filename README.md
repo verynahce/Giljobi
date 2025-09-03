@@ -67,7 +67,6 @@
 
 ### API
 ![OpenAI](https://img.shields.io/badge/OpenAI-111111.svg?style=for-the-badge&logo=OpenAI&logoColor=white)
-![Kakao](https://img.shields.io/badge/Kakao-FFCD00.svg?&style=for-the-badge&logo=Kakao&logoColor=white)
 ![TinyMCE](https://img.shields.io/badge/TinyMCE-7D4698?style=for-the-badge&logo=Tor-Browser&logoColor=white)
 
 <h2>트러블 슈팅</h2>
