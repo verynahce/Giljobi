@@ -81,11 +81,16 @@
   </li>
   <li>
     <strong>해결</strong><br>
-    - JavaScript <code>FileList</code> 병합 및 <code>FormData.append()</code> 방식으로 멀티 파일 업로드 지원
+    - <code>$('#btnAddFile')</code> 클릭 시 <code>&lt;input type="file"&gt;</code> 요소를 동적으로 생성하여 고유 ID를 부여
     <pre><code class="language-javascript">
-// 멀티 파일 업로드 처리
-const formData = new FormData();
-Array.from(files).forEach(file => formData.append("files", file));
+// 동적 파일 input 추가
+let num = 1;
+$('#btnAddFile').on('click', function() {
+    let tag = '&lt;input id="input-file' + num + 
+              '" type="file" name="upfile" multiple /&gt;';
+    $('.file').append(tag);
+    num++;
+});
     </code></pre>
   </li>
 
@@ -122,15 +127,17 @@ String folderPath = dataStr.replace("/", File.separator);
   </li>
   <li>
     <strong>해결</strong><br>
-    - 직무 기반 필터링을 적용해 같은 직무 내 클릭 수 TOP3를 추천하도록 로직 개선  
-    - SQL/DTO 설계를 직무 조건에 맞게 수정해 추천 정확도 향상
+    - <code>DUTY_ID</code>(직무 ID) 조건을 추가하고, 동일 직무 내에서 클릭 수 상위 3개를 추천하도록 SQL 개선
     <pre><code class="language-sql">
--- 직무 조건을 WHERE 절에 추가해 추천 공고 조회
-SELECT * 
-FROM job_post
-WHERE job_type = #{jobType}
-ORDER BY click_count DESC
-LIMIT 3;
+-- 직무 기반 + 클릭 수 TOP3 추천 로직
+SELECT RC.RESUME_IDX
+FROM RESUME_CLICK RC
+JOIN RESUME R ON RC.RESUME_IDX = R.RESUME_IDX
+WHERE R.DUTY_ID = #{arg2}
+  AND RC.RESUME_IDX != #{arg0}
+GROUP BY RC.RESUME_IDX
+ORDER BY COUNT(RC.RESUME_IDX) DESC, DBMS_RANDOM.VALUE
+FETCH FIRST 3 ROWS ONLY
     </code></pre>
   </li>
 
