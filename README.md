@@ -149,10 +149,6 @@ FETCH FIRST 3 ROWS ONLY
 
 &nbsp;
 <h2>화면 설계</h2>
-<h3>메인페이지</h3>
-<h3>공고</h3>
-<h3>이력서</h3>
-<h3>커뮤니티</h3>
-<h3>개인회원</h3>
-<h3>기업회원</h3>
+<p>노션 :https://www.notion.so/UI-263e7dcfb28a8162aeb5e97e5ff304ba?source=copy_link </p>
+&nbsp
 
