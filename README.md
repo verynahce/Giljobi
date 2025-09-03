@@ -71,21 +71,66 @@
 ![TinyMCE](https://img.shields.io/badge/TinyMCE-7D4698?style=for-the-badge&logo=Tor-Browser&logoColor=white)
 
 <h2>트러블 슈팅</h2>
-
-<h3>문제 상황</h3>
 <ul>
-  <li><code>input=file</code> 사용 시 동일 파일 업로드가 덮어쓰기로 처리되어 여러 파일 추가 불가</li>
-  <li>운영체제 경로 차이(윈도우 <code>\</code> vs 리눅스 <code>/</code>)로 저장/로드 시 오류 발생</li>
-  <li>추천 공고/이력서 기능이 단순 클릭 수 기반이라 사용자와의 연관성이 부족</li>
+
+  <!-- 사례 1 -->
+  <h3>1. 사례 – 파일 업로드 덮어쓰기 문제</h3>
+  <li>
+    <strong>문제</strong><br>
+    - <code>input=file</code> 사용 시 동일 파일 업로드가 덮어쓰기로 처리되어 여러 파일 추가 불가
+  </li>
+  <li>
+    <strong>해결</strong><br>
+    - JavaScript <code>FileList</code> 병합 및 <code>FormData.append()</code> 방식으로 멀티 파일 업로드 지원
+    <pre><code class="language-javascript">
+// 멀티 파일 업로드 처리
+const formData = new FormData();
+Array.from(files).forEach(file => formData.append("files", file));
+    </code></pre>
+  </li>
+
+  <br><br>
+
+  <!-- 사례 2 -->
+  <h3>2. 사례 – 운영체제(OS) 경로 차이</h3>
+  <li>
+    <strong>문제</strong><br>
+    - 운영체제 경로 차이(윈도우 '\' vs 리눅스 '/')로 저장·로드 시 오류 발생
+  </li>
+  <li>
+    <strong>해결</strong><br>
+    - <code>Paths.get()</code>, <code>File.separator</code>를 사용하여 운영체제(OS) 독립적인 경로 처리
+    <pre><code class="language-java">
+// OS 독립적인 경로 처리
+Path path = Paths.get("uploads", fileName);
+File file = new File(path.toString() + File.separator);
+    </code></pre>
+  </li>
+
+  <br><br>
+
+  <!-- 사례 3 -->
+  <h3>3. 사례 – 추천 공고/이력서 정확도 부족</h3>
+  <li>
+    <strong>문제</strong><br>
+    - 추천 공고/이력서 기능이 단순 클릭 수 기반이라 사용자와의 연관성이 부족
+  </li>
+  <li>
+    <strong>해결</strong><br>
+    - 직무 기반 필터링을 적용해 같은 직무 내 클릭 수 TOP3를 추천하도록 로직 개선  
+    - SQL/DTO 설계를 직무 조건에 맞게 수정해 추천 정확도 향상
+    <pre><code class="language-sql">
+-- 직무 조건을 WHERE 절에 추가해 추천 공고 조회
+SELECT * 
+FROM job_post
+WHERE job_type = #{jobType}
+ORDER BY click_count DESC
+LIMIT 3;
+    </code></pre>
+  </li>
+
 </ul>
 
-<h3>개선 방안</h3>
-<ul>
-  <li><code>Paths.get()</code>, <code>File.separator</code>를 사용하여 운영체제(OS) 독립적인 경로 처리</li>
-  <li>JavaScript <code>FileList</code> 병합 및 <code>FormData.append()</code> 방식으로 멀티 파일 업로드 지원</li>
-  <li>직무 기반 필터링을 적용해 같은 직무 내 클릭 수 TOP3를 추천하도록 로직 개선  
-      → SQL/DTO 설계를 직무 조건에 맞게 수정해 추천 정확도 향상</li>
-</ul>
 
 <h2>ERM</h2>
 <img width="7382" height="5487" alt="Display_1" src="https://github.com/user-attachments/assets/bfc60c34-850e-433f-9c24-7e0a2d321fbb" />
