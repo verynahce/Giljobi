@@ -141,6 +141,44 @@ FETCH FIRST 3 ROWS ONLY
     </code></pre>
   </li>
 
+  <br><br>
+  <h3>4. 사례 – 문자열 날짜 파싱 오류</h3>
+  <li>
+    <strong>문제</strong><br>
+    - "2024년 12월 24일" 문자열을 Date로 변환하는 과정에서 정규식을 사용해 숫자가 아닌 문자를 '-'로 치환했으나, 공백까지 변환되어 "2024- -12- -24-" 형태로 파싱 오류 발생
+  </li>
+  <li>
+    <strong>해결</strong><br>
+    - 불필요한 <code>"- -"</code>를 <code>"-"</code>로 치환하고 마지막 <code>"-"</code>를 제거하여 "2024-12-24" 형태로 변환 후 Date 파싱 처리
+    <pre><code class="language-java">
+// 문자열 -> Date 변환 처리
+String raw = "2024년 12월 24일";
+String parsed = raw.replaceAll("[^0-9]", "-")  // 숫자 아닌 것 → "-"
+                   .replaceAll("-+", "-")      // 중복된 '-' → 단일 '-'
+                   .replaceAll("-$", "");      // 끝의 '-' 제거
+LocalDate date = LocalDate.parse(parsed);      // 2024-12-24
+    </code></pre>
+  </li>
+
+  <br><br>
+  <h3>5. 사례 – 쿠키 기반 좋아요 중복 방지</h3>
+  <li>
+    <strong>문제</strong><br>
+    - 게시글/댓글 좋아요 기능 구현 시, 계정별 중복 방지를 위해 쿠키를 사용했으나  
+      쿠키가 계속 생성되는 문제가 발생 (원인: 쿠키 명칭에 공백 존재)
+  </li>
+  <li>
+    <strong>해결</strong><br>
+    - 쿠키 명칭의 공백을 제거하여 중복 생성 문제 해결 , 다만 쿠키 기반 방식은 조작 가능성이 있어, 실제 서비스에서는 <code>user_id + target_id</code>를 DB에 저장하여 중복 체크하는 것이 바람직함
+    <pre><code class="language-java">
+// 잘못된 쿠키 생성 예시
+Cookie cookie = new Cookie("like postId", "true"); // 공백 포함 → 문제
+
+// 수정 후
+Cookie cookie = new Cookie("like_postId", "true"); // 공백 제거
+response.addCookie(cookie);
+    </code></pre>
+  </li>  
 </ul>
 
 
